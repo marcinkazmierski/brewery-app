@@ -9,11 +9,13 @@ class BeerCard extends StatelessWidget {
   final Beer beer;
 
   const BeerCard({Key key, this.beer}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       child: OpenContainer(
+        closedColor: Colors.transparent,
         closedElevation: 0,
         openElevation: 0,
         closedBuilder: (context, action) => buildBeerCard(context),
@@ -22,47 +24,58 @@ class BeerCard extends StatelessWidget {
     );
   }
 
-  Column buildBeerCard(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: Container(
-            margin: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(26),
-              boxShadow: [kDefaultShadow],
-              image: DecorationImage(
-                fit: BoxFit.fill,
-                image: AssetImage(beer.poster),
+  Container buildBeerCard(BuildContext context) {
+    return Container(
+        decoration: BoxDecoration(color: Colors.transparent),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [kDefaultShadow],
+                  image: DecorationImage(
+                    colorFilter: beer.active
+                        ? null
+                        : ColorFilter.mode(
+                            Colors.black.withOpacity(0.7), BlendMode.darken),
+                    fit: BoxFit.fill,
+                    image: AssetImage(beer.poster),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
-          child: Text(
-            beer.title,
-            style: Theme.of(context)
-                .textTheme
-                .headline5
-                .copyWith(fontWeight: FontWeight.w600),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SvgPicture.asset(
-              "assets/icons/star_fill.svg",
-              height: 20,
+            Padding(
+              padding: EdgeInsets.only(top: kDefaultPadding / 2),
+              child: Text(
+                beer.title,
+                style: TextStyle(color: Colors.white, fontSize: 26),
+              ),
             ),
-            SizedBox(width: kDefaultPadding / 2),
-            Text(
-              "${beer.rating}",
-              style: Theme.of(context).textTheme.bodyText2,
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
+              child: Text(
+                beer.name,
+                style: TextStyle(color: Colors.red, fontSize: 16),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SvgPicture.asset(
+                  "assets/icons/star_fill.svg",
+                  height: 20,
+                ),
+                SizedBox(width: kDefaultPadding / 2),
+                Text(
+                  "${beer.rating}",
+                  style: TextStyle(color: Colors.white),
+                )
+              ],
             )
           ],
-        )
-      ],
-    );
+        ));
   }
 }

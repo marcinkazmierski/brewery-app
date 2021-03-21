@@ -6,22 +6,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/images/logo.png',
-                fit: BoxFit.contain,
-                height: 32,
-              ),
-              Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('Zdalny browar',
-                      style: TextStyle(color: Colors.black)))
-            ],
-          )),
       body: Body(),
     );
   }

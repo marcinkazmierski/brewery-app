@@ -18,12 +18,13 @@ class _CreateLoginFormState extends State<Body> {
       currentFocus.unfocus();
     }
 
-    BlocProvider.of<LoginBloc>(context).add(
-      LoginButtonPressedEvent(
-        login: _loginController.text,
-        password: _passwordController.text,
-      ),
-    );
+    Navigator.pushNamed(context, 'home'); //todo, use BLoC
+    // BlocProvider.of<LoginBloc>(context).add(
+    //   LoginButtonPressedEvent(
+    //     login: _loginController.text,
+    //     password: _passwordController.text,
+    //   ),
+    // );
   }
 
   @override

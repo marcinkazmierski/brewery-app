@@ -4,21 +4,22 @@ class Beer {
   final double rating;
   final List<String> genra;
   final String plot, title, name, poster, backdrop;
+  final bool active;
 
-  Beer({
-    this.poster,
-    this.backdrop,
-    this.title,
-    this.name,
-    this.id,
-    this.year,
-    this.numOfRatings,
-    this.criticsReview,
-    this.metascoreRating,
-    this.rating,
-    this.genra,
-    this.plot,
-  });
+  Beer(
+      {this.poster,
+      this.backdrop,
+      this.title,
+      this.name,
+      this.id,
+      this.year,
+      this.numOfRatings,
+      this.criticsReview,
+      this.metascoreRating,
+      this.rating,
+      this.genra,
+      this.plot,
+      this.active});
 }
 
 // our demo data beer data
@@ -36,6 +37,7 @@ List<Beer> beers = [
     metascoreRating: 76,
     genra: ["Jasne", "Wysoka goryczka"],
     plot: plotText,
+    active: true,
   ),
   Beer(
     id: 2,
@@ -50,6 +52,7 @@ List<Beer> beers = [
     metascoreRating: 76,
     genra: ["Jasne", "Wysoka goryczka"],
     plot: plotText,
+    active: true,
   ),
   Beer(
     id: 1,
@@ -64,6 +67,22 @@ List<Beer> beers = [
     metascoreRating: 79,
     genra: ["Jasne", "Brewkit"],
     plot: plotText,
+    active: true,
+  ),
+  Beer(
+    id: 4,
+    title: "Jasny Kruk",
+    name: "Summer Ale 12°BLG",
+    year: 2020,
+    poster: "assets/images/poster_1.jpg",
+    backdrop: "assets/images/bg2.jpg",
+    numOfRatings: 150212,
+    rating: 7.6,
+    criticsReview: 50,
+    metascoreRating: 79,
+    genra: ["Jasne", "Brewkit"],
+    plot: plotText,
+    active: false,
   ),
 ];
 

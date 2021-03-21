@@ -133,11 +133,11 @@ class BackdropAndRating extends StatelessWidget {
           SafeArea(child: Container(
             margin: EdgeInsets.only(left: kDefaultPadding, top: kDefaultPadding),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.30),
+              color: Colors.black.withOpacity(0.4),
               borderRadius: BorderRadius.circular(30),
             ),
 
-            child: BackButton(),
+            child: BackButton(color: Colors.white),
           )),
         ],
       ),

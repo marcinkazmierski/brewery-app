@@ -1,4 +1,5 @@
 import 'package:brewery/components/simple_bloc_observer.dart';
+import 'package:brewery/screens/home/bloc/home_bloc.dart';
 import 'package:brewery/screens/login/bloc/login_bloc.dart';
 import 'package:brewery/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -33,8 +34,9 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        initialRoute: 'login',
+        initialRoute: 'home',
         routes: {
+          //todo: ogarnąć to z dokumentacji BLoC!
           'login': (context) {
             return MultiBlocProvider(
               providers: [
@@ -43,6 +45,16 @@ class MyApp extends StatelessWidget {
                 ),
               ],
               child: LoginScreen(),
+            );
+          },
+          'home': (context) {
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider<HomeBloc>(
+                  create: (context) => HomeBloc(),
+                ),
+              ],
+              child: HomeScreen(),
             );
           }
         });
