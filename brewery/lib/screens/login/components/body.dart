@@ -34,7 +34,7 @@ class _CreateLoginFormState extends State<Body> {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(
                 content: Text('${state.error}'),
-                backgroundColor: Colors.red,
+                backgroundColor: Colors.redAccent,
               ))
               .closed
               .then((value) => BlocProvider.of<LoginBloc>(context)
@@ -44,6 +44,10 @@ class _CreateLoginFormState extends State<Body> {
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
           return Scaffold(
+            bottomSheet: Container(
+                child: Text(" version 1.0.1 ",
+                    style: TextStyle(color: Colors.grey, fontSize: 8)),
+                decoration: BoxDecoration(color: Colors.black)),
             body: Stack(
               children: <Widget>[
                 Container(
@@ -145,6 +149,21 @@ class _CreateLoginFormState extends State<Body> {
                                 primary: Colors.red, // background
                                 onPrimary: Colors.white, // foreground
                               ),
+                            )),
+                        SizedBox(
+                          height: 30.0,
+                        ),
+                        FadeAnimation(
+                            2,
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.transparent, // background
+                                  onPrimary: Colors.white, // foreground
+                                  shadowColor: Colors.transparent),
+                              child: Padding(
+                                  padding: EdgeInsets.all(15.0),
+                                  child: Text('New User? Create Account')),
                             )),
                       ],
                     ),
