@@ -30,6 +30,28 @@ abstract class LoginEvent extends Equatable {
   const LoginEvent();
 }
 
+class LoginButtonPressedEvent extends LoginEvent {
+  final String login;
+  final String password;
+
+  const LoginButtonPressedEvent({
+    @required this.login,
+    @required this.password,
+  });
+
+  @override
+  List<Object> get props => [this.login, this.password];
+
+  @override
+  String toString() =>
+      'LoginButtonPressedEvent { login: $login, password: ### }';
+}
+
+class DisplayedLoginErrorEvent extends LoginEvent {
+  @override
+  List<Object> get props => [];
+}
+
 /// BLOC
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginInitialState()) {
@@ -37,5 +59,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   @override
-  Stream<LoginState> mapEventToState(LoginEvent event) async* {}
+  Stream<LoginState> mapEventToState(LoginEvent event) async* {
+    if (event is LoginButtonPressedEvent) {
+      yield LoginCreateFailureState(
+          error: "Invalid login or password. Try again!");
+    }
+    if (event is DisplayedLoginErrorEvent) {
+      yield LoginInitialState();
+    }
+  }
 }

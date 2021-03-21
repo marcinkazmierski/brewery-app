@@ -9,19 +9,36 @@ class Body extends StatefulWidget {
 }
 
 class _CreateLoginFormState extends State<Body> {
-  final _nameController = TextEditingController();
+  final _loginController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  _onLoginButtonPressed() {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+
+    BlocProvider.of<LoginBloc>(context).add(
+      LoginButtonPressedEvent(
+        login: _loginController.text,
+        password: _passwordController.text,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state is LoginCreateFailureState) {
-          Scaffold.of(context).showSnackBar(
-            SnackBar(
-              content: Text('${state.error}'),
-              backgroundColor: Colors.red,
-            ),
-          );
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(
+                content: Text('${state.error}'),
+                backgroundColor: Colors.red,
+              ))
+              .closed
+              .then((value) => BlocProvider.of<LoginBloc>(context)
+                  .add(DisplayedLoginErrorEvent()));
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
@@ -32,8 +49,8 @@ class _CreateLoginFormState extends State<Body> {
                 Container(
                   decoration: new BoxDecoration(
                       image: new DecorationImage(
-                          colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.darken),
-
+                          colorFilter: new ColorFilter.mode(
+                              Colors.black.withOpacity(0.5), BlendMode.darken),
                           fit: BoxFit.cover,
                           image: AssetImage("assets/images/bg3.jpg"))),
                 ),
@@ -47,10 +64,9 @@ class _CreateLoginFormState extends State<Body> {
                             2,
                             CircleAvatar(
                               radius: 100.0,
-                              backgroundColor:Colors.transparent,
+                              backgroundColor: Colors.transparent,
                               foregroundColor: Colors.white,
-                              child: Icon(Icons.wifi,
-                                  size: 220),
+                              child: Icon(Icons.wifi, size: 220),
                             )),
                         SizedBox(
                           height: 30.0,
@@ -73,7 +89,7 @@ class _CreateLoginFormState extends State<Body> {
                               style: TextStyle(
                                 color: Colors.black,
                               ),
-                              controller: _nameController,
+                              controller: _loginController,
                               key: Key('loginInput'),
                               decoration: InputDecoration(
                                   focusedBorder: UnderlineInputBorder(
@@ -100,6 +116,7 @@ class _CreateLoginFormState extends State<Body> {
                               style: TextStyle(
                                 color: Colors.black,
                               ),
+                              controller: _passwordController,
                               key: Key('passwordInput'),
                               decoration: InputDecoration(
                                   focusedBorder: UnderlineInputBorder(
@@ -120,8 +137,7 @@ class _CreateLoginFormState extends State<Body> {
                         FadeAnimation(
                             2,
                             ElevatedButton(
-                              key: Key('createLoginButton'),
-                              onPressed: () {},
+                              onPressed: _onLoginButtonPressed,
                               child: Padding(
                                   padding: EdgeInsets.all(15.0),
                                   child: Text('Let\'s start!')),
