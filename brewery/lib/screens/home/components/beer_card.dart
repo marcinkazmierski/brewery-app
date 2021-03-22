@@ -30,22 +30,35 @@ class BeerCard extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Expanded(
-              child: Container(
-                margin: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [kDefaultShadow],
-                  image: DecorationImage(
-                    colorFilter: beer.active
-                        ? null
-                        : ColorFilter.mode(
-                            Colors.black.withOpacity(0.7), BlendMode.darken),
-                    fit: BoxFit.fill,
-                    image: AssetImage(beer.poster),
+              child: Stack(children: <Widget>[
+                Container(
+                  margin: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [kDefaultShadow],
+                    image: DecorationImage(
+                      colorFilter: beer.active
+                          ? null
+                          : ColorFilter.mode(
+                              Colors.black.withOpacity(0.7), BlendMode.darken),
+                      fit: BoxFit.fill,
+                      image: AssetImage(beer.poster),
+                    ),
                   ),
                 ),
-              ),
+                beer.active
+                    ? Container()
+                    : Center(
+                        child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                        child: Text(
+                            "Tego piwa nie masz jeszcze w swoim zbiorze :(",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white)),
+                      )),
+              ]),
             ),
             Padding(
               padding: EdgeInsets.only(top: kDefaultPadding / 2),
