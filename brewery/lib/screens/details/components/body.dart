@@ -10,6 +10,7 @@ class Body extends StatelessWidget {
   final Beer beer;
 
   const Body({Key key, this.beer}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     // it will provide us total height and width
@@ -28,7 +29,7 @@ class Body extends StatelessWidget {
               horizontal: kDefaultPadding,
             ),
             child: Text(
-              "Beer Summary",
+              "Opis stylu",
               style: Theme.of(context).textTheme.headline5,
             ),
           ),
@@ -41,6 +42,45 @@ class Body extends StatelessWidget {
               ),
             ),
           ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: kDefaultPadding / 2,
+              horizontal: kDefaultPadding,
+            ),
+            child: Text(
+              "Chmiele",
+              style: Theme.of(context).textTheme.headline5,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+            child: Text(
+              beer.hops,
+              style: TextStyle(
+                color: Color(0xFF737599),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: kDefaultPadding / 2,
+              horizontal: kDefaultPadding,
+            ),
+            child: Text(
+              "Słody",
+              style: Theme.of(context).textTheme.headline5,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+            child: Text(
+              beer.malts,
+              style: TextStyle(
+                color: Color(0xFF737599),
+              ),
+            ),
+          ),
+          SizedBox(height: kDefaultPadding),
         ],
       ),
     );

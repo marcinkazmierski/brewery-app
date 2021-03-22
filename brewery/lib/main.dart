@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        initialRoute: 'home',
+        initialRoute: 'login',
         routes: {
           //todo: ogarnąć to z dokumentacji BLoC!
           'login': (context) {

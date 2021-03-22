@@ -47,7 +47,8 @@ class _BeerCarouselState extends State<BeerCarousel> {
           },
           controller: _pageController,
           physics: ClampingScrollPhysics(),
-          itemCount: beers.length, // we have 3 demo beers
+          itemCount: beers.length,
+          // we have 3 demo beers
           itemBuilder: (context, index) => buildBeerSlider(index),
         ),
       ),
@@ -58,12 +59,15 @@ class _BeerCarouselState extends State<BeerCarousel> {
         animation: _pageController,
         builder: (context, child) {
           double value = 0;
+          value = index - initialPage.toDouble();
           if (_pageController.position.haveDimensions) {
             value = index - _pageController.page;
-            // We use 0.038 because 180*0.038 = 7 almost and we need to rotate our poster 7 degree
-            // we use clamp so that our value vary from -1 to 1
-            value = (value * 0.038).clamp(-1, 1);
           }
+
+          // We use 0.038 because 180*0.038 = 7 almost and we need to rotate our poster 7 degree
+          // we use clamp so that our value vary from -1 to 1
+          value = (value * 0.038).clamp(-1, 1);
+
           return AnimatedOpacity(
             duration: Duration(milliseconds: 350),
             opacity: initialPage == index ? 1 : 0.4,

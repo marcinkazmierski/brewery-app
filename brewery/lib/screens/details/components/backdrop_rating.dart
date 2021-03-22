@@ -75,7 +75,7 @@ class BackdropAndRating extends StatelessWidget {
                               ),
                               TextSpan(text: "10\n"),
                               TextSpan(
-                                text: "150,212",
+                                text: "666 ocen",
                                 style: TextStyle(color: kTextLightColor),
                               ),
                             ],
@@ -89,7 +89,7 @@ class BackdropAndRating extends StatelessWidget {
                       children: <Widget>[
                         SvgPicture.asset("assets/icons/star.svg"),
                         SizedBox(height: kDefaultPadding / 4),
-                        Text("Rate This",
+                        Text("Oceń to piwo!",
                             style: Theme.of(context).textTheme.bodyText2),
                       ],
                     ),
@@ -114,12 +114,12 @@ class BackdropAndRating extends StatelessWidget {
                         ),
                         SizedBox(height: kDefaultPadding / 4),
                         Text(
-                          "Metascore",
+                          "Recenzje",
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          "62 critic reviews",
+                          "62 opinii",
                           style: TextStyle(color: kTextLightColor),
                         )
                       ],

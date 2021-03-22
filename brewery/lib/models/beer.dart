@@ -3,7 +3,7 @@ class Beer {
   final int id, year, numOfRatings, criticsReview, metascoreRating;
   final double rating;
   final List<String> genra;
-  final String plot, title, name, poster, backdrop;
+  final String plot, title, name, poster, backdrop, hops, malts;
   final bool active;
 
   Beer(
@@ -19,6 +19,8 @@ class Beer {
       this.rating,
       this.genra,
       this.plot,
+      this.hops,
+      this.malts,
       this.active});
 }
 
@@ -37,6 +39,8 @@ List<Beer> beers = [
     metascoreRating: 76,
     genra: ["Jasne", "Wysoka goryczka"],
     plot: plotText,
+    hops: hopsText,
+    malts: maltsText,
     active: true,
   ),
   Beer(
@@ -52,6 +56,8 @@ List<Beer> beers = [
     metascoreRating: 76,
     genra: ["Jasne", "Wysoka goryczka"],
     plot: plotText,
+    hops: hopsText,
+    malts: maltsText,
     active: true,
   ),
   Beer(
@@ -67,6 +73,8 @@ List<Beer> beers = [
     metascoreRating: 79,
     genra: ["Jasne", "Brewkit"],
     plot: plotText,
+    hops: hopsText,
+    malts: maltsText,
     active: true,
   ),
   Beer(
@@ -82,9 +90,14 @@ List<Beer> beers = [
     metascoreRating: 79,
     genra: ["Jasne", "Brewkit"],
     plot: plotText,
+    hops: hopsText,
+    malts: maltsText,
     active: false,
   ),
 ];
 
 String plotText =
     "Obecnie jeden z najbardziej rozpoznawalnych stylów piwa górnej fermentacji. Jeden z najczęściej warzonych przez rzemieślnicze browary. APA czyli American Pale Ale. Lekkie, rześkie o owocowym aromacie, który zawdzięcza mieszance najpopularniejszych, amerykańskich odmian chmielu. Specjalny sposób chmielenia pozwala na użycie dużej ilości chmielu, bez podnoszenia goryczki.";
+String maltsText =
+    "Pale Ale - 3,4kg \nMonachijski - 0,4kg \nMelanoidynowy 40 - 0,2kg \nAbbey - 0,4kg";
+String hopsText = "Chmiel Saaz - 45g \nChmiel Styrian Goldings - 30g";

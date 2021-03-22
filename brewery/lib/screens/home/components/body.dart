@@ -44,9 +44,9 @@ class _BeerListFormState extends State<Body> {
                             2,
                             Center(
                               child: Text(
-                                'Zdalny browar',
+                                'Wybierz piwo:',
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 46),
+                                    color: Colors.white, fontSize: 40),
                               ),
                             )),
                         SizedBox(height: kDefaultPadding),
@@ -57,51 +57,16 @@ class _BeerListFormState extends State<Body> {
                 ),
               ],
             ),
-            bottomNavigationBar: BottomNavigationBar(
-              currentIndex: 0,
-              // this will be set when a new tab is tapped
-              type: BottomNavigationBarType.fixed,
-              backgroundColor: Colors.redAccent,
-              selectedItemColor: Colors.white,
-              unselectedItemColor: Colors.white.withOpacity(.60),
-              selectedFontSize: 14,
-              unselectedFontSize: 14,
-              onTap: (value) {
-                print("BottomNavigationBarItem tap: " + value.toString());
-                Navigator.pushNamed(context, 'login'); //todo, use BLoC
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: Colors.red,
+              onPressed: () {
+                print("Add beer");
               },
-              items: [
-                BottomNavigationBarItem(
-                  icon: new Icon(Icons.home),
-                  label: 'Home',
-                ),
-                BottomNavigationBarItem(
-                  icon: new Icon(Icons.mail),
-                  label: 'Messages',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.logout),
-                  label: 'Wyloguj',
-                )
-              ],
+              tooltip: 'Add new',
+              child: Icon(Icons.add),
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-class BodyX extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // it enable scroll on small device
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          SizedBox(height: kDefaultPadding),
-          BeerCarousel(),
-        ],
       ),
     );
   }
