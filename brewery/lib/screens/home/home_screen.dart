@@ -1,7 +1,5 @@
-import 'package:brewery/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:brewery/screens/home/components/body.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatelessWidget {
   @override

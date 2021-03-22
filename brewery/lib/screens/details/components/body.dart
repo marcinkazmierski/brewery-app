@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:brewery/constants.dart';
 import 'package:brewery/models/beer.dart';
-
 import 'backdrop_rating.dart';
 import 'genres.dart';
 import 'title_duration_and_fav_btn.dart';
