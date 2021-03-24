@@ -1,18 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:brewery/models/beer.dart';
-
+import 'package:rating_dialog/rating_dialog.dart';
 import '../../../constants.dart';
 
-class BackdropAndRating extends StatelessWidget {
+class BackdropAndRating extends StatefulWidget {
+  final Size size;
+  final Beer beer;
+
   const BackdropAndRating({
     Key key,
     @required this.size,
     @required this.beer,
   }) : super(key: key);
 
+  @override
+  State<BackdropAndRating> createState() =>
+      _BackdropAndRatingState(size: this.size, beer: this.beer);
+}
+
+class _BackdropAndRatingState extends State<BackdropAndRating> {
   final Size size;
   final Beer beer;
+
+  _BackdropAndRatingState({
+    @required this.size,
+    @required this.beer,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -87,10 +101,14 @@ class BackdropAndRating extends StatelessWidget {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        SvgPicture.asset("assets/icons/star.svg"),
-                        SizedBox(height: kDefaultPadding / 4),
-                        Text("Oceń to piwo!",
-                            style: Theme.of(context).textTheme.bodyText2),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.redAccent, // background
+                            onPrimary: Colors.white, // foreground
+                          ),
+                          child: Text("Oceń to piwo!" ),
+                          onPressed: _showRatingDialog,
+                        ),
                       ],
                     ),
                     // Metascore
@@ -130,17 +148,49 @@ class BackdropAndRating extends StatelessWidget {
             ),
           ),
           // Back Button
-          SafeArea(child: Container(
-            margin: EdgeInsets.only(left: kDefaultPadding, top: kDefaultPadding),
+          SafeArea(
+              child: Container(
+            margin:
+                EdgeInsets.only(left: kDefaultPadding, top: kDefaultPadding),
             decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.4),
               borderRadius: BorderRadius.circular(30),
             ),
-
             child: BackButton(color: Colors.white),
           )),
         ],
       ),
+    );
+  }
+
+  // show the rating dialog
+  void _showRatingDialog() {
+    final _dialog = RatingDialog(
+      title: 'Oceń to piwo!',
+      message: 'Wybierz ocenę i dodaj komentarz',
+      initialRating: 1,
+      commentHint: 'Twój komentarz...',
+      image: Container(
+        height: 100,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.fitHeight, image: AssetImage(this.beer.poster))),
+      ),
+      submitButton: 'Wystaw ocenę!',
+      onCancelled: () => print('cancelled'),
+      onSubmitted: (response) {
+        print('rating: ${response.rating}, comment: ${response.comment}');
+        // TODO: add your own logic
+        if (response.rating < 3.0) {
+        } else {}
+      },
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      barrierDismissible: true, // set to false if you want to force a rating
+      builder: (context) => _dialog,
     );
   }
 }

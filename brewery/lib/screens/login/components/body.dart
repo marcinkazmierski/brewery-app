@@ -52,8 +52,8 @@ class _CreateLoginFormState extends State<Body> {
             body: Stack(
               children: <Widget>[
                 Container(
-                  decoration: new BoxDecoration(
-                      image: new DecorationImage(
+                  decoration:   BoxDecoration(
+                      image:   DecorationImage(
                           colorFilter: new ColorFilter.mode(
                               Colors.black.withOpacity(0.5), BlendMode.darken),
                           fit: BoxFit.cover,

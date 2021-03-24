@@ -34,6 +34,7 @@ dependencies:
   http: ^0.13.1 # A composable, Future-based library for making HTTP requests.
   equatable: ^2.0.0 # Package that allows comparisons between objects without having to override the == operator
   simple_animations: ^3.0.3
+  rating_dialog: ^2.0.0
 
 dev_dependencies:
   flutter_test:
