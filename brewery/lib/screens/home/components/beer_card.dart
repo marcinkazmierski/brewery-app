@@ -7,8 +7,9 @@ import '../../../constants.dart';
 
 class BeerCard extends StatelessWidget {
   final Beer beer;
+  final bool isActive;
 
-  const BeerCard({Key key, this.beer}) : super(key: key);
+  const BeerCard({Key key, this.beer, this.isActive}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,33 +32,39 @@ class BeerCard extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: Stack(children: <Widget>[
-                Container(
-                  margin: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [kDefaultShadow],
-                    image: DecorationImage(
-                      colorFilter: beer.active
-                          ? null
-                          : ColorFilter.mode(
-                              Colors.black.withOpacity(0.7), BlendMode.darken),
-                      fit: BoxFit.fill,
-                      image: AssetImage(beer.poster),
+                AnimatedOpacity(
+                  duration: Duration(milliseconds: 350),
+                  opacity: (this.isActive && !beer.active) ? 0.5 : 1,
+                  child: Container(
+                    margin: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [kDefaultShadow],
+                      image: DecorationImage(
+                        fit: BoxFit.fill,
+                        image: AssetImage(beer.poster),
+                      ),
                     ),
                   ),
                 ),
-                beer.active
-                    ? Container()
-                    : Center(
+                (this.isActive && !beer.active)
+                    ? Center(
                         child: Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                        child: Text(
-                            "Tego piwa nie masz jeszcze w swoim zbiorze :(",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white)),
-                      )),
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: Colors.redAccent,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                              "Tego piwa nie masz jeszcze w swoim zbiorze :(",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      ))
+                    : Container(),
               ]),
             ),
             Padding(

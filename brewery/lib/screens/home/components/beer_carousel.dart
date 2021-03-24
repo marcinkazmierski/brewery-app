@@ -14,7 +14,7 @@ class BeerCarousel extends StatefulWidget {
 
 class _BeerCarouselState extends State<BeerCarousel> {
   PageController _pageController;
-  int initialPage = 1;
+  int initialPage = 0;
 
   @override
   void initState() {
@@ -73,7 +73,8 @@ class _BeerCarouselState extends State<BeerCarousel> {
             opacity: initialPage == index ? 1 : 0.4,
             child: Transform.rotate(
               angle: math.pi * value,
-              child: BeerCard(beer: beers[index]),
+              child:
+                  BeerCard(beer: beers[index], isActive: index == initialPage),
             ),
           );
         },

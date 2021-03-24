@@ -107,7 +107,7 @@ class _CreateLoginFormState extends State<Body> {
                                   hintStyle: TextStyle(color: Colors.black54),
                                   filled: true,
                                   fillColor: Colors.white.withOpacity(0.5),
-                                  hintText: 'Your login'),
+                                  hintText: 'Twój e-mail'),
                             )),
                         SizedBox(
                           height: 15.0,
@@ -134,7 +134,7 @@ class _CreateLoginFormState extends State<Body> {
                                   hintStyle: TextStyle(color: Colors.black54),
                                   filled: true,
                                   fillColor: Colors.white.withOpacity(0.5),
-                                  hintText: 'Your password'),
+                                  hintText: 'Twoje hasło'),
                             )),
                         SizedBox(
                           height: 45.0,
@@ -145,7 +145,7 @@ class _CreateLoginFormState extends State<Body> {
                               onPressed: _onLoginButtonPressed,
                               child: Padding(
                                   padding: EdgeInsets.all(15.0),
-                                  child: Text('Let\'s start!')),
+                                  child: Text('Zaczynamy!')),
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.red, // background
                                 onPrimary: Colors.white, // foreground
@@ -164,7 +164,7 @@ class _CreateLoginFormState extends State<Body> {
                                   shadowColor: Colors.transparent),
                               child: Padding(
                                   padding: EdgeInsets.all(15.0),
-                                  child: Text('New User? Create Account')),
+                                  child: Text('Jesteś nowy? Stwórz konto')),
                             )),
                       ],
                     ),
