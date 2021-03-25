@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:brewery/constants.dart';
 import 'beer_carousel.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -11,6 +12,19 @@ class Body extends StatefulWidget {
 }
 
 class _BeerListFormState extends State<Body> {
+  Future scanBarcodeNormal() async {
+    String barcodeScanRes;
+
+    barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+        "#ff6666", "Anuluj", true, ScanMode.QR);
+    print(barcodeScanRes);
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('Dodano pomyślnie kod: "$barcodeScanRes"'),
+      backgroundColor: Colors.green,
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<HomeBloc, HomeState>(
@@ -36,10 +50,10 @@ class _BeerListFormState extends State<Body> {
                 ),
                 Center(
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.all(25.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
+                        SizedBox(height: kDefaultPadding),
                         FadeAnimation(
                             2,
                             Center(
@@ -59,9 +73,7 @@ class _BeerListFormState extends State<Body> {
             ),
             floatingActionButton: FloatingActionButton(
               backgroundColor: Colors.red,
-              onPressed: () {
-                print("Add beer");
-              },
+              onPressed: scanBarcodeNormal,
               tooltip: 'Add new',
               child: Icon(Icons.add),
             ),
