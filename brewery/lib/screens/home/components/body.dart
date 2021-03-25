@@ -18,11 +18,33 @@ class _BeerListFormState extends State<Body> {
     barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
         "#ff6666", "Anuluj", true, ScanMode.QR);
     print(barcodeScanRes);
+    bool closeModal = false;
+    if (barcodeScanRes != "-1") {
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return new WillPopScope(
+                onWillPop: () async {
+                  return closeModal;
+                },
+                child: AlertDialog(
+                  title: Text('Czekaj...'),
+                  content: SingleChildScrollView(
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                ));
+          });
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Dodano pomyślnie kod: "$barcodeScanRes"'),
-      backgroundColor: Colors.green,
-    ));
+      await new Future.delayed(const Duration(seconds: 2));
+      closeModal = true;
+      Navigator.pop(context); // close showDialog
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Dodano pomyślnie kod: "$barcodeScanRes"'),
+        backgroundColor: Colors.green,
+      ));
+    }
   }
 
   @override
