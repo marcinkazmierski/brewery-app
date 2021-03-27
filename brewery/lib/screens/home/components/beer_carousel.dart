@@ -1,3 +1,4 @@
+import 'package:brewery/repositories/repository.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:math' as math;
@@ -15,6 +16,8 @@ class BeerCarousel extends StatefulWidget {
 class _BeerCarouselState extends State<BeerCarousel> {
   PageController _pageController;
   int initialPage = 0;
+  List<Beer> beers;
+  Repository repository = new FakeRepository();
 
   @override
   void initState() {
@@ -25,6 +28,7 @@ class _BeerCarouselState extends State<BeerCarousel> {
       // by default our beer poster
       initialPage: initialPage,
     );
+    this.beers = this.repository.getBeers();
   }
 
   @override
@@ -47,7 +51,7 @@ class _BeerCarouselState extends State<BeerCarousel> {
           },
           controller: _pageController,
           physics: ClampingScrollPhysics(),
-          itemCount: beers.length,
+          itemCount: this.beers.length,
           // we have 3 demo beers
           itemBuilder: (context, index) => buildBeerSlider(index),
         ),
@@ -73,8 +77,8 @@ class _BeerCarouselState extends State<BeerCarousel> {
             opacity: initialPage == index ? 1 : 0.4,
             child: Transform.rotate(
               angle: math.pi * value,
-              child:
-                  BeerCard(beer: beers[index], isActive: index == initialPage),
+              child: BeerCard(
+                  beer: this.beers[index], isActive: index == initialPage),
             ),
           );
         },
