@@ -2,6 +2,8 @@ import 'package:brewery/components/simple_bloc_observer.dart';
 import 'package:brewery/screens/home/bloc/home_bloc.dart';
 import 'package:brewery/screens/login/bloc/login_bloc.dart';
 import 'package:brewery/screens/login/login_screen.dart';
+import 'package:brewery/screens/registration/bloc/registration_bloc.dart';
+import 'package:brewery/screens/registration/registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:brewery/screens/home/home_screen.dart';
 import 'package:bloc/bloc.dart';
@@ -45,6 +47,16 @@ class MyApp extends StatelessWidget {
                 ),
               ],
               child: LoginScreen(),
+            );
+          },
+          'registration': (context) {
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider<RegistrationBloc>(
+                  create: (context) => RegistrationBloc(),
+                ),
+              ],
+              child: RegistrationScreen(),
             );
           },
           'home': (context) {

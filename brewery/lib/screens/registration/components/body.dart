@@ -1,5 +1,6 @@
 import 'package:brewery/components/fade_animation.dart';
-import 'package:brewery/screens/login/bloc/login_bloc.dart';
+import 'package:brewery/screens/registration/bloc/registration_bloc.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,31 +19,16 @@ class _CreateLoginFormState extends State<Body> {
       currentFocus.unfocus();
     }
 
-    Navigator.pushNamed(context, 'home'); //todo, use BLoC
-    // BlocProvider.of<LoginBloc>(context).add(
-    //   LoginButtonPressedEvent(
-    //     login: _loginController.text,
-    //     password: _passwordController.text,
-    //   ),
-    // );
+    Navigator.pushNamed(context, 'login'); //todo, use BLoC
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginBloc, LoginState>(
+    return BlocListener<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
-        if (state is LoginCreateFailureState) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(
-                content: Text('${state.error}'),
-                backgroundColor: Colors.redAccent,
-              ))
-              .closed
-              .then((value) => BlocProvider.of<LoginBloc>(context)
-                  .add(DisplayedLoginErrorEvent()));
-        }
+        // todo
       },
-      child: BlocBuilder<LoginBloc, LoginState>(
+      child: BlocBuilder<RegistrationBloc, RegistrationState>(
         builder: (context, state) {
           return Scaffold(
             bottomSheet: Container(
@@ -52,8 +38,8 @@ class _CreateLoginFormState extends State<Body> {
             body: Stack(
               children: <Widget>[
                 Container(
-                  decoration:   BoxDecoration(
-                      image:   DecorationImage(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
                           colorFilter: new ColorFilter.mode(
                               Colors.black.withOpacity(0.5), BlendMode.darken),
                           fit: BoxFit.cover,
@@ -115,6 +101,30 @@ class _CreateLoginFormState extends State<Body> {
                         FadeAnimation(
                             2,
                             TextFormField(
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                              controller: _loginController,
+                              key: Key('nickInput'),
+                              decoration: InputDecoration(
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.red),
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.account_circle,
+                                    color: Colors.black,
+                                  ),
+                                  hintStyle: TextStyle(color: Colors.black54),
+                                  filled: true,
+                                  fillColor: Colors.white.withOpacity(0.5),
+                                  hintText: 'Twój nick'),
+                            )),
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                        FadeAnimation(
+                            2,
+                            TextFormField(
                               obscureText: true,
                               enableSuggestions: false,
                               autocorrect: false,
@@ -145,7 +155,7 @@ class _CreateLoginFormState extends State<Body> {
                               onPressed: _onLoginButtonPressed,
                               child: Padding(
                                   padding: EdgeInsets.all(15.0),
-                                  child: Text('Zaczynamy!')),
+                                  child: Text('Zarejestruj!')),
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.red, // background
                                 onPrimary: Colors.white, // foreground
@@ -158,7 +168,8 @@ class _CreateLoginFormState extends State<Body> {
                             2,
                             ElevatedButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, 'registration'); //todo, use BLoC
+                                Navigator.pushNamed(
+                                    context, 'login'); //todo, use BLoC
                               },
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.transparent, // background
@@ -166,7 +177,7 @@ class _CreateLoginFormState extends State<Body> {
                                   shadowColor: Colors.transparent),
                               child: Padding(
                                   padding: EdgeInsets.all(15.0),
-                                  child: Text('Jesteś nowy? Stwórz konto')),
+                                  child: Text('Masz już konto? Zaloguj się')),
                             )),
                       ],
                     ),
