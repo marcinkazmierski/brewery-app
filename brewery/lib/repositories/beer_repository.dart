@@ -1,12 +1,12 @@
 import 'package:brewery/models/beer.dart';
 
-abstract class Repository {
+abstract class BeerRepository {
   List<Beer> getBeers();
 }
 
 // class ApiRepository implements Repository {}
 
-class FakeRepository implements Repository {
+class FakeRepository implements BeerRepository {
   @override
   List<Beer> getBeers() {
     String plotText =

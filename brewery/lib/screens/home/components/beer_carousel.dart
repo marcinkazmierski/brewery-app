@@ -1,4 +1,4 @@
-import 'package:brewery/repositories/repository.dart';
+import 'package:brewery/repositories/beer_repository.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:math' as math;
@@ -17,7 +17,7 @@ class _BeerCarouselState extends State<BeerCarousel> {
   PageController _pageController;
   int initialPage = 0;
   List<Beer> beers;
-  Repository repository = new FakeRepository();
+  BeerRepository repository = new FakeRepository();
 
   @override
   void initState() {
