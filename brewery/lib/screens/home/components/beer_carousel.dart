@@ -17,7 +17,7 @@ class _BeerCarouselState extends State<BeerCarousel> {
   PageController _pageController;
   int initialPage = 0;
   List<Beer> beers;
-  BeerRepository repository = new FakeRepository();
+  BeerRepository repository = new FakeBeerRepository();
 
   @override
   void initState() {

@@ -6,7 +6,7 @@ abstract class BeerRepository {
 
 // class ApiRepository implements Repository {}
 
-class FakeRepository implements BeerRepository {
+class FakeBeerRepository implements BeerRepository {
   @override
   List<Beer> getBeers() {
     String plotText =
