@@ -46,7 +46,7 @@ class _CreateLoginFormState extends State<Body> {
         builder: (context, state) {
           return Scaffold(
             bottomSheet: Container(
-                child: Text(" version 1.0.1 ",
+                child: Text(" version 1.0.2 ",
                     style: TextStyle(color: Colors.grey, fontSize: 8)),
                 decoration: BoxDecoration(color: Colors.black)),
             body: Stack(
