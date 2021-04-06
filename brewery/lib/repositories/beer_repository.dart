@@ -2,6 +2,12 @@ import 'package:brewery/models/beer.dart';
 
 abstract class BeerRepository {
   List<Beer> getBeers();
+
+  Beer addBeerByCode(String code);
+
+  bool addRate(Beer beer, double rate);
+
+  bool addReview(Beer beer, String comment);
 }
 
 // class ApiRepository implements Repository {}
@@ -87,5 +93,36 @@ class FakeBeerRepository implements BeerRepository {
     ];
 
     return beers;
+  }
+
+  @override
+  bool addReview(Beer beer, String comment) {
+    return true;
+  }
+
+  @override
+  bool addRate(Beer beer, double rate) {
+    return true;
+  }
+
+  @override
+  Beer addBeerByCode(String code) {
+    return Beer(
+      id: 99,
+      title: "Nowe Piwo",
+      name: "Pale Ale 12°BLG",
+      year: 2020,
+      poster: "assets/images/poster_1.jpg",
+      backdrop: "assets/images/bg2.jpg",
+      numOfRatings: 150212,
+      rating: 7.6,
+      criticsReview: 50,
+      metascoreRating: 79,
+      genra: ["Jasne", "Brewkit"],
+      plot: "Opis....",
+      hops: "Chmiele...",
+      malts: "Słody...",
+      active: true,
+    );
   }
 }
