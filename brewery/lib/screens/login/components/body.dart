@@ -1,4 +1,5 @@
 import 'package:brewery/components/fade_animation.dart';
+import 'package:brewery/screens/home/bloc/home_bloc.dart';
 import 'package:brewery/screens/login/bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,13 +19,13 @@ class _CreateLoginFormState extends State<Body> {
       currentFocus.unfocus();
     }
 
-    Navigator.pushNamed(context, 'home'); //todo, use BLoC
-    // BlocProvider.of<LoginBloc>(context).add(
-    //   LoginButtonPressedEvent(
-    //     login: _loginController.text,
-    //     password: _passwordController.text,
-    //   ),
-    // );
+    //Navigator.pushNamed(context, 'home');
+    BlocProvider.of<LoginBloc>(context).add(
+      LoginButtonPressedEvent(
+        login: _loginController.text,
+        password: _passwordController.text,
+      ),
+    );
   }
 
   @override
@@ -41,6 +42,9 @@ class _CreateLoginFormState extends State<Body> {
               .then((value) => BlocProvider.of<LoginBloc>(context)
                   .add(DisplayedLoginErrorEvent()));
         }
+        if (state is UserAuthenticatedState) {
+          Navigator.pushNamed(context, 'home', arguments: state.user);
+        }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
@@ -52,8 +56,8 @@ class _CreateLoginFormState extends State<Body> {
             body: Stack(
               children: <Widget>[
                 Container(
-                  decoration:   BoxDecoration(
-                      image:   DecorationImage(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
                           colorFilter: new ColorFilter.mode(
                               Colors.black.withOpacity(0.5), BlendMode.darken),
                           fit: BoxFit.cover,
@@ -139,6 +143,11 @@ class _CreateLoginFormState extends State<Body> {
                         SizedBox(
                           height: 45.0,
                         ),
+                        Center(
+                          child: state is LoginLoading
+                              ? CircularProgressIndicator()
+                              : null,
+                        ),
                         FadeAnimation(
                             2,
                             ElevatedButton(
@@ -158,7 +167,8 @@ class _CreateLoginFormState extends State<Body> {
                             2,
                             ElevatedButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, 'registration'); //todo, use BLoC
+                                Navigator.pushNamed(
+                                    context, 'registration'); //todo, use BLoC
                               },
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.transparent, // background

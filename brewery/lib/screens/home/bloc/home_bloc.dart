@@ -22,6 +22,14 @@ abstract class HomeEvent extends Equatable {
   const HomeEvent();
 }
 
+class DisplayHomeEvent extends HomeEvent {
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() => 'DisplayHomeEvent {}';
+}
+
 class DisplayScannerEvent extends HomeEvent {
   @override
   List<Object> get props => [];
@@ -54,11 +62,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
     if (event is DisplayScannerEvent) {
       yield DisplayScannerState();
-    }
-    if (event is AddNewBeerEvent) {
+    } else if (event is AddNewBeerEvent) {
       String code = event.code;
       Beer newBeer = beerRepository.addBeerByCode(code);
       //todo
+    } else if (event is HomeEvent) {
+      yield HomeInitialState();
     }
   }
 }

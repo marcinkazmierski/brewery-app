@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:brewery/models/user.dart';
+import 'package:brewery/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -12,6 +14,20 @@ abstract class LoginState extends Equatable {
 }
 
 class LoginInitialState extends LoginState {}
+
+class LoginLoading extends LoginState {}
+
+class UserAuthenticatedState extends LoginState {
+  final User user;
+
+  UserAuthenticatedState({this.user});
+
+  @override
+  List<Object> get props => [user];
+
+  @override
+  String toString() => 'UserAuthenticatedState { user: $user }';
+}
 
 class LoginCreateFailureState extends LoginState {
   final String error;
@@ -54,15 +70,24 @@ class DisplayedLoginErrorEvent extends LoginEvent {
 
 /// BLOC
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc() : super(LoginInitialState()) {
+  UserRepository userRepository;
+
+  LoginBloc({@required this.userRepository}) : super(LoginInitialState()) {
     print(">>>> LoginBloc START");
   }
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     if (event is LoginButtonPressedEvent) {
-      yield LoginCreateFailureState(
-          error: "Invalid login or password. Try again!");
+      yield LoginLoading();
+
+      try {
+        User user =
+            await this.userRepository.login(event.login, event.password);
+        yield UserAuthenticatedState(user: user);
+      } catch (error) {
+        yield LoginCreateFailureState(error: error.toString());
+      }
     }
     if (event is DisplayedLoginErrorEvent) {
       yield LoginInitialState();

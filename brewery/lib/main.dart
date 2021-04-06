@@ -1,5 +1,7 @@
 import 'package:brewery/components/simple_bloc_observer.dart';
+import 'package:brewery/models/user.dart';
 import 'package:brewery/repositories/beer_repository.dart';
+import 'package:brewery/repositories/user_repository.dart';
 import 'package:brewery/screens/home/bloc/home_bloc.dart';
 import 'package:brewery/screens/login/bloc/login_bloc.dart';
 import 'package:brewery/screens/login/login_screen.dart';
@@ -11,26 +13,21 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
-  BeerRepository beerRepository = new FakeBeerRepository();
-
   Bloc.observer = SimpleBlocObserver();
-  runApp(
-    BlocProvider<LoginBloc>(
-      create: (context) {
-        LoginBloc loginBloc = LoginBloc();
-        return loginBloc;
-      },
-      child: MyApp(beerRepository: beerRepository),
-    ),
-  );
+  runApp(MyApp(
+      beerRepository: new FakeBeerRepository(),
+      userRepository: new FakeUserRepository()));
 }
 
 class MyApp extends StatelessWidget {
   BeerRepository beerRepository;
+  UserRepository userRepository;
 
   MyApp(
       {@required
-          this.beerRepository}); // This widget is the root of your application.
+          this.beerRepository,
+      @required
+          this.userRepository}); // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -46,7 +43,8 @@ class MyApp extends StatelessWidget {
             return MultiBlocProvider(
               providers: [
                 BlocProvider<LoginBloc>(
-                  create: (context) => LoginBloc(),
+                  create: (context) =>
+                      LoginBloc(userRepository: this.userRepository),
                 ),
               ],
               child: LoginScreen(),
@@ -63,6 +61,9 @@ class MyApp extends StatelessWidget {
             );
           },
           'home': (context) {
+            final User user = ModalRoute.of(context).settings.arguments as User;
+            //todo
+            print("USER: " + user.email);
             return MultiBlocProvider(
               providers: [
                 BlocProvider<HomeBloc>(

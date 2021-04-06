@@ -1,7 +1,9 @@
+import 'dart:async';
+import 'package:brewery/exceptions/exception.dart';
 import 'package:brewery/models/user.dart';
 
 abstract class UserRepository {
-  User login(String email, String password);
+  Future<User> login(String email, String password);
 
   bool register(String email, String nick, String password);
 
@@ -9,8 +11,11 @@ abstract class UserRepository {
 }
 
 class FakeUserRepository extends UserRepository {
-  @override
-  User login(String email, String password) {
+  Future<User> login(String email, String password) async {
+    if (email.isEmpty || password.isEmpty) {
+      throw new ValidateException("Invalid login or password. Try again!");
+    }
+    await Future.delayed(Duration(seconds: 1));
     return new User(id: 1, email: email, nick: "TestowyNick");
   }
 
