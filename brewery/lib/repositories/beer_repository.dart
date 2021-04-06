@@ -1,3 +1,4 @@
+import 'package:brewery/exceptions/exception.dart';
 import 'package:brewery/models/beer.dart';
 
 abstract class BeerRepository {
@@ -97,11 +98,17 @@ class FakeBeerRepository implements BeerRepository {
 
   @override
   bool addReview(Beer beer, String comment) {
+    if (!beer.active) {
+      throw new InvalidBeerStatusException("Beer must by active for you!");
+    }
     return true;
   }
 
   @override
   bool addRate(Beer beer, double rate) {
+    if (!beer.active) {
+      throw new InvalidBeerStatusException("Beer must by active for you!");
+    }
     return true;
   }
 
@@ -118,7 +125,7 @@ class FakeBeerRepository implements BeerRepository {
       rating: 7.6,
       criticsReview: 50,
       metascoreRating: 79,
-      genra: ["Jasne", "Brewkit"],
+      genra: ["Jasne", "Pełne"],
       plot: "Opis....",
       hops: "Chmiele...",
       malts: "Słody...",
