@@ -4,9 +4,12 @@ import 'package:brewery/screens/home/components/body.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildAppBar(context),
-      body: Body(),
+    return new WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: buildAppBar(context),
+        body: Body(),
+      ),
     );
   }
 
