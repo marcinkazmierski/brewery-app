@@ -83,11 +83,11 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
                             style: TextStyle(color: Colors.black),
                             children: [
                               TextSpan(
-                                text: "${beer.rating}/",
+                                text: "  ${beer.rating}/",
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w600),
                               ),
-                              TextSpan(text: "10\n"),
+                              TextSpan(text: "5\n"),
                               TextSpan(
                                 text: "666 ocen",
                                 style: TextStyle(color: kTextLightColor),
@@ -101,47 +101,27 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.redAccent, // background
-                            onPrimary: Colors.white, // foreground
-                          ),
-                          child: Text("Oceń to piwo!"),
-                          onPressed: _showRatingDialog,
-                        ),
+                        beer.active
+                            ? ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.redAccent, // background
+                                  onPrimary: Colors.white, // foreground
+                                ),
+                                child: Text("Oceń to piwo!"),
+                                onPressed: _showRatingDialog,
+                              )
+                            : ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.grey, // background
+                                  onPrimary: Colors.white, // foreground
+                                ),
+                                child: Text(
+                                    "Dodaj piwo do zbioru \n i wtedy oceń!",
+                                    textAlign: TextAlign.center),
+                                onPressed: () {},
+                              ),
                       ],
                     ),
-                    // Metascore
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: Color(0xFF51CF66),
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                          child: Text(
-                            "${beer.metascoreRating}",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: kDefaultPadding / 4),
-                        Text(
-                          "Recenzje",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500),
-                        ),
-                        Text(
-                          "62 opinii",
-                          style: TextStyle(color: kTextLightColor),
-                        )
-                      ],
-                    )
                   ],
                 ),
               ),
