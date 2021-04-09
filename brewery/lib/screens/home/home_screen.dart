@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:brewery/screens/home/components/body.dart';
+import 'package:flutter/services.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -23,11 +24,16 @@ class HomeScreen extends StatelessWidget {
         PopupMenuButton<String>(
           onSelected: (String value) {
             print(value);
-            Navigator.pushNamed(context, 'login'); //todo, use BLoC
+            if (value == "Wyloguj") {
+              Navigator.pushNamed(context, 'login'); //todo, use BLoC
+            }
+            if (value == "Zamknij") {
+              SystemNavigator.pop();
+            }
           },
           icon: Icon(Icons.menu),
           itemBuilder: (BuildContext context) {
-            return {'Ustawienia', 'Wyloguj'}.map((String choice) {
+            return {'Ustawienia', 'Wyloguj', 'Zamknij'}.map((String choice) {
               return PopupMenuItem<String>(
                 value: choice,
                 child: Text(choice),
