@@ -1,4 +1,5 @@
 import 'package:brewery/components/fade_animation.dart';
+import 'package:brewery/constants.dart';
 import 'package:brewery/screens/home/bloc/home_bloc.dart';
 import 'package:brewery/screens/login/bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,7 @@ class _CreateLoginFormState extends State<Body> {
         builder: (context, state) {
           return Scaffold(
             bottomSheet: Container(
-                child: Text(" version 1.0.2 ",
+                child: Text(kAppVersion,
                     style: TextStyle(color: Colors.grey, fontSize: 8)),
                 decoration: BoxDecoration(color: Colors.black)),
             body: Stack(

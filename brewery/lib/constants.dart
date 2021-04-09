@@ -13,3 +13,5 @@ const kDefaultShadow = BoxShadow(
   blurRadius: 4,
   color: Colors.black26,
 );
+
+const String kAppVersion = " version 1.0.2 ";
