@@ -36,7 +36,7 @@ class Body extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
             child: Text(
-              beer.plot,
+              beer.description,
               style: TextStyle(
                 color: Color(0xFF737599),
               ),

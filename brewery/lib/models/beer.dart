@@ -2,8 +2,8 @@
 class Beer {
   final int id;
   final double rating;
-  final List<String> genra;
-  final String plot, title, name, poster, backdrop, hops, malts;
+  final List<String> tags;
+  final String description, title, name, poster, backdrop, hops, malts;
   final bool active;
 
   Beer(
@@ -13,8 +13,8 @@ class Beer {
       this.name,
       this.id,
       this.rating,
-      this.genra,
-      this.plot,
+      this.tags,
+      this.description,
       this.hops,
       this.malts,
       this.active});
