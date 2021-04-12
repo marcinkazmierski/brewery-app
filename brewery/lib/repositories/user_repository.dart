@@ -3,6 +3,8 @@ import 'package:brewery/exceptions/exception.dart';
 import 'package:brewery/models/user.dart';
 
 abstract class UserRepository {
+  User getCurrentUser();
+
   Future<User> login(String email, String password);
 
   bool register(String email, String nick, String password);
@@ -27,5 +29,10 @@ class FakeUserRepository extends UserRepository {
   @override
   bool register(String email, String nick, String password) {
     return true;
+  }
+
+  @override
+  User getCurrentUser() {
+    return new User(id: 1, email: "email@test.com", nick: "TestowyNick");
   }
 }
