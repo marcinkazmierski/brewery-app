@@ -35,6 +35,7 @@ class FakeBeerRepository implements BeerRepository {
         hops: hopsText,
         malts: maltsText,
         active: true,
+        reviews: [],
       ),
       Beer(
         id: 2,
@@ -48,6 +49,7 @@ class FakeBeerRepository implements BeerRepository {
         hops: hopsText,
         malts: maltsText,
         active: true,
+        reviews: [],
       ),
       Beer(
         id: 1,
@@ -61,6 +63,7 @@ class FakeBeerRepository implements BeerRepository {
         hops: hopsText,
         malts: maltsText,
         active: true,
+        reviews: [],
       ),
       Beer(
         id: 4,
@@ -74,6 +77,7 @@ class FakeBeerRepository implements BeerRepository {
         hops: hopsText,
         malts: maltsText,
         active: false,
+        reviews: [],
       ),
     ];
 
@@ -110,6 +114,7 @@ class FakeBeerRepository implements BeerRepository {
       hops: "Chmiele...",
       malts: "Słody...",
       active: true,
+      reviews: [],
     );
   }
 }

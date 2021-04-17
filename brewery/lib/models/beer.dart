@@ -1,10 +1,13 @@
 // Our beer model
+import 'package:brewery/models/review.dart';
+
 class Beer {
   final int id;
   final double rating;
   final List<String> tags;
   final String description, title, name, poster, backdrop, hops, malts;
   final bool active;
+  final List<Review> reviews;
 
   Beer(
       {this.poster,
@@ -17,5 +20,6 @@ class Beer {
       this.description,
       this.hops,
       this.malts,
-      this.active});
+      this.active,
+      this.reviews});
 }
