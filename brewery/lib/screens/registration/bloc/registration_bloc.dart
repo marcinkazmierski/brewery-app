@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:brewery/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -12,6 +13,8 @@ abstract class RegistrationState extends Equatable {
 }
 
 class RegistrationInitialState extends RegistrationState {}
+
+class RegisteredState extends RegistrationState {}
 
 class RegistrationCreateFailureState extends RegistrationState {
   final String error;
@@ -31,22 +34,22 @@ abstract class RegistrationEvent extends Equatable {
 }
 
 class RegistrationButtonPressedEvent extends RegistrationEvent {
-  final String login;
+  final String email;
   final String nick;
   final String password;
 
   const RegistrationButtonPressedEvent({
-    @required this.login,
+    @required this.email,
     @required this.nick,
     @required this.password,
   });
 
   @override
-  List<Object> get props => [this.login, this.nick, this.password];
+  List<Object> get props => [this.email, this.nick, this.password];
 
   @override
   String toString() =>
-      'RegistrationButtonPressedEvent { login: $login, nick: $nick, password: ### }';
+      'RegistrationButtonPressedEvent { email: $email, nick: $nick, password: ### }';
 }
 
 class DisplayedRegistrationErrorEvent extends RegistrationEvent {
@@ -56,16 +59,26 @@ class DisplayedRegistrationErrorEvent extends RegistrationEvent {
 
 /// BLOC
 class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
-  RegistrationBloc() : super(RegistrationInitialState()) {
+  UserRepository userRepository;
+
+  RegistrationBloc({@required this.userRepository})
+      : super(RegistrationInitialState()) {
     print(">>>> RegistrationBloc START");
   }
 
   @override
   Stream<RegistrationState> mapEventToState(RegistrationEvent event) async* {
     if (event is RegistrationButtonPressedEvent) {
-      //todo
-      yield RegistrationCreateFailureState(
-          error: "Invalid login or password. Try again!");
+      bool result = await this
+          .userRepository
+          .register(event.email, event.nick, event.password);
+
+      if (!result) {
+        yield RegistrationCreateFailureState(
+            error: "Registration error. Try again later!");
+      } else {
+        yield RegisteredState();
+      }
     }
     if (event is DisplayedRegistrationErrorEvent) {
       yield RegistrationInitialState();

@@ -54,7 +54,8 @@ class MyApp extends StatelessWidget {
             return MultiBlocProvider(
               providers: [
                 BlocProvider<RegistrationBloc>(
-                  create: (context) => RegistrationBloc(),
+                  create: (context) =>
+                      RegistrationBloc(userRepository: this.userRepository),
                 ),
               ],
               child: RegistrationScreen(),

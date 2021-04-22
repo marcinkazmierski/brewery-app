@@ -10,6 +10,7 @@ class Body extends StatefulWidget {
 
 class _CreateLoginFormState extends State<Body> {
   final _loginController = TextEditingController();
+  final _nickController = TextEditingController();
   final _passwordController = TextEditingController();
 
   _onLoginButtonPressed() {
@@ -18,14 +19,33 @@ class _CreateLoginFormState extends State<Body> {
       currentFocus.unfocus();
     }
 
-    Navigator.pushNamed(context, 'login'); //todo, use BLoC
+    //Navigator.pushNamed(context, 'login');
+    BlocProvider.of<RegistrationBloc>(context).add(
+      RegistrationButtonPressedEvent(
+        email: _loginController.text,
+        nick: _nickController.text,
+        password: _passwordController.text,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
-        // todo
+        if (state is RegistrationCreateFailureState) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(
+                content: Text('${state.error}'),
+                backgroundColor: Colors.redAccent,
+              ))
+              .closed
+              .then((value) => BlocProvider.of<RegistrationBloc>(context)
+                  .add(DisplayedRegistrationErrorEvent()));
+        }
+        if (state is RegisteredState) {
+          Navigator.pushNamed(context, 'login');
+        }
       },
       child: BlocBuilder<RegistrationBloc, RegistrationState>(
         builder: (context, state) {
@@ -99,7 +119,7 @@ class _CreateLoginFormState extends State<Body> {
                               style: TextStyle(
                                 color: Colors.black,
                               ),
-                              controller: _loginController,
+                              controller: _nickController,
                               key: Key('nickInput'),
                               decoration: InputDecoration(
                                   focusedBorder: UnderlineInputBorder(

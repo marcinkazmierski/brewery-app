@@ -7,9 +7,9 @@ abstract class UserRepository {
 
   Future<User> login(String email, String password);
 
-  bool register(String email, String nick, String password);
+  Future<bool> register(String email, String nick, String password);
 
-  bool logout();
+  Future<bool> logout();
 }
 
 class FakeUserRepository extends UserRepository {
@@ -22,13 +22,13 @@ class FakeUserRepository extends UserRepository {
   }
 
   @override
-  bool logout() {
+  Future<bool> logout() async {
     return true;
   }
 
   @override
-  bool register(String email, String nick, String password) {
-    return true;
+  Future<bool> register(String email, String nick, String password) async {
+    return email.isNotEmpty && nick.isNotEmpty && password.isNotEmpty;
   }
 
   @override
