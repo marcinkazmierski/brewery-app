@@ -95,7 +95,7 @@ class Body extends StatelessWidget {
             padding: EdgeInsets.symmetric(
               horizontal: kDefaultPadding,
             ),
-            child: ReviewsList(),
+            child: ReviewsList(reviews: beer.reviews),
           ),
         ],
       ),

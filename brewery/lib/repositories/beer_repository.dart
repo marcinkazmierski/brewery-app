@@ -1,5 +1,7 @@
 import 'package:brewery/exceptions/exception.dart';
 import 'package:brewery/models/beer.dart';
+import 'package:brewery/models/review.dart';
+import 'package:brewery/models/user.dart';
 
 abstract class BeerRepository {
   List<Beer> getBeers();
@@ -35,7 +37,16 @@ class FakeBeerRepository implements BeerRepository {
         hops: hopsText,
         malts: maltsText,
         active: true,
-        reviews: [],
+        reviews: [
+          Review(
+              owner: User(id: 1, email: "test1@test.pl", nick: "Komentator"),
+              text: 'Wszystko fajnie! Polecam!',
+              rating: 4.5),
+          Review(
+              owner: User(id: 1, email: "test2@test.pl", nick: "Adam"),
+              text: 'Fajnie smakuje!!!',
+              rating: 5.0),
+        ],
       ),
       Beer(
         id: 2,
@@ -49,7 +60,12 @@ class FakeBeerRepository implements BeerRepository {
         hops: hopsText,
         malts: maltsText,
         active: true,
-        reviews: [],
+        reviews: [
+          Review(
+              owner: User(id: 1, email: "test3@test.pl", nick: "Komentator"),
+              text: 'Niezłe! Polecam!',
+              rating: 4.0)
+        ],
       ),
       Beer(
         id: 1,
