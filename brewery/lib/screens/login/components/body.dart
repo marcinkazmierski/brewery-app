@@ -1,6 +1,5 @@
 import 'package:brewery/components/fade_animation.dart';
 import 'package:brewery/constants.dart';
-import 'package:brewery/screens/home/bloc/home_bloc.dart';
 import 'package:brewery/screens/login/bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +22,7 @@ class _CreateLoginFormState extends State<Body> {
     //Navigator.pushNamed(context, 'home');
     BlocProvider.of<LoginBloc>(context).add(
       LoginButtonPressedEvent(
-        login: _loginController.text,
+        email: _loginController.text,
         password: _passwordController.text,
       ),
     );

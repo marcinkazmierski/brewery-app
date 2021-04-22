@@ -47,20 +47,20 @@ abstract class LoginEvent extends Equatable {
 }
 
 class LoginButtonPressedEvent extends LoginEvent {
-  final String login;
+  final String email;
   final String password;
 
   const LoginButtonPressedEvent({
-    @required this.login,
+    @required this.email,
     @required this.password,
   });
 
   @override
-  List<Object> get props => [this.login, this.password];
+  List<Object> get props => [this.email, this.password];
 
   @override
   String toString() =>
-      'LoginButtonPressedEvent { login: $login, password: ### }';
+      'LoginButtonPressedEvent { email: $email, password: ### }';
 }
 
 class DisplayedLoginErrorEvent extends LoginEvent {
@@ -83,7 +83,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       try {
         User user =
-            await this.userRepository.login(event.login, event.password);
+            await this.userRepository.login(event.email, event.password);
         yield UserAuthenticatedState(user: user);
       } catch (error) {
         yield LoginCreateFailureState(error: error.toString());
