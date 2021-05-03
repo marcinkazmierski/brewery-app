@@ -11,9 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:brewery/screens/home/home_screen.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 
-void main() {
+Future main() async {
   Bloc.observer = SimpleBlocObserver();
+  await DotEnv.load(fileName: ".env");
+  print(DotEnv.env['test']);
   runApp(MyApp(
       beerRepository: new FakeBeerRepository(),
       userRepository: new FakeUserRepository()));

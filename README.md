@@ -1,6 +1,9 @@
 # brewery-app - Zdalny browar
 Flutter mobile application.
 
+## installation/run
+- copy .env.dist to .env
+
 ## web version:
 - flutter doctor
 - flutter devices
