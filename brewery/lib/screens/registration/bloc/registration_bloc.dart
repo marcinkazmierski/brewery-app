@@ -16,6 +16,8 @@ class RegistrationInitialState extends RegistrationState {}
 
 class RegisteredState extends RegistrationState {}
 
+class RegistrationLoading extends RegistrationState {}
+
 class RegistrationCreateFailureState extends RegistrationState {
   final String error;
 
@@ -69,15 +71,14 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
   @override
   Stream<RegistrationState> mapEventToState(RegistrationEvent event) async* {
     if (event is RegistrationButtonPressedEvent) {
-      bool result = await this
-          .userRepository
-          .register(event.email, event.nick, event.password);
-
-      if (!result) {
-        yield RegistrationCreateFailureState(
-            error: "Registration error. Try again later!");
-      } else {
+      try {
+        yield RegistrationLoading();
+        bool result = await this
+            .userRepository
+            .register(event.email, event.nick, event.password);
         yield RegisteredState();
+      } catch (error) {
+        yield RegistrationCreateFailureState(error: error.toString());
       }
     }
     if (event is DisplayedRegistrationErrorEvent) {

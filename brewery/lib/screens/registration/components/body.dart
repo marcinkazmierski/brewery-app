@@ -44,6 +44,11 @@ class _CreateLoginFormState extends State<Body> {
                   .add(DisplayedRegistrationErrorEvent()));
         }
         if (state is RegisteredState) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+                'Zarejestrowano pomyślnie. Sprawdź mail w celu dokończenia procesu!'),
+            backgroundColor: Colors.lightGreen,
+          ));
           Navigator.pushNamed(context, 'login');
         }
       },
@@ -163,6 +168,11 @@ class _CreateLoginFormState extends State<Body> {
                             )),
                         SizedBox(
                           height: 45.0,
+                        ),
+                        Center(
+                          child: state is RegistrationLoading
+                              ? CircularProgressIndicator()
+                              : null,
                         ),
                         FadeAnimation(
                             2,

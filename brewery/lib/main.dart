@@ -16,10 +16,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 Future main() async {
   Bloc.observer = SimpleBlocObserver();
   await dotenv.load(fileName: ".env");
-  print(dotenv.env['test']);
   runApp(MyApp(
       beerRepository: new FakeBeerRepository(),
-      userRepository: new FakeUserRepository()));
+      userRepository:
+          new ApiUserRepository(apiUrl: dotenv.env['API_URL'].toString())));
 }
 
 class MyApp extends StatelessWidget {

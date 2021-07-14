@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:brewery/exceptions/exception.dart';
 import 'package:brewery/models/user.dart';
+import 'package:meta/meta.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -18,14 +19,31 @@ abstract class UserRepository {
 }
 
 class ApiUserRepository extends UserRepository {
-  @override
-  User getCurrentUser() {}
+  final String apiUrl;
+
+  ApiUserRepository({@required this.apiUrl});
 
   @override
-  Future<bool> logout() {}
+  Future<bool> logout() async {
+    return true;
+  }
 
   @override
-  Future<bool> register(String email, String nick, String password) {}
+  Future<bool> register(String email, String nick, String password) async {
+    if (email.isEmpty || nick.isEmpty || password.isEmpty) {
+      throw new ValidateException(
+          "Invalid login, nick or password. Try again!");
+    }
+
+    Map data = {'email': email, 'nick': nick, 'password': password};
+    Map decoded = await _request(data, 'register');
+    return true;
+  }
+
+  @override
+  User getCurrentUser() {
+    return new User(id: 1, email: "email@test.com", nick: "TestowyNick");
+  }
 
   @override
   Future<User> login(String email, String password) async {
@@ -33,22 +51,30 @@ class ApiUserRepository extends UserRepository {
       throw new ValidateException("Invalid login or password. Try again!");
     }
     Map data = {'email': email, 'password': password};
-    var body = json.encode(data);
 
-    final response = await http.post(
-        Uri.parse(dotenv.env['API_URL'].toString() + 'auth/authenticate'),
+    Map decoded = await _request(data, 'auth/authenticate');
+    return new User(
+        id: decoded['userId'],
+        email: decoded['email'],
+        nick: decoded['userNick']);
+  }
+
+  Future<Map> _request(Map input, String uri) async {
+    var body = json.encode(input);
+    print(body);
+    final response = await http.post(Uri.parse(this.apiUrl + uri),
         headers: {
           HttpHeaders.contentTypeHeader: "application/json; charset=UTF-8",
         },
         body: body);
-    Map decoded = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
-      return new User(
-          id: decoded['userId'],
-          email: decoded['email'],
-          nick: decoded['userNick']);
+      Map decoded = jsonDecode(response.body);
+      return decoded;
+    } else if (response.statusCode == 204) {
+      return null;
     } else {
+      Map decoded = jsonDecode(response.body);
       throw Exception(decoded['error']['userMessage']);
     }
   }
