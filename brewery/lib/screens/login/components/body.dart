@@ -178,6 +178,20 @@ class _CreateLoginFormState extends State<Body> {
                                   padding: EdgeInsets.all(15.0),
                                   child: Text('Jesteś nowy? Stwórz konto')),
                             )),
+                        FadeAnimation(
+                            2,
+                            ElevatedButton(
+                              onPressed: () {
+                                print('reset-password');
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.transparent, // background
+                                  onPrimary: Colors.white, // foreground
+                                  shadowColor: Colors.transparent),
+                              child: Padding(
+                                  padding: EdgeInsets.all(15.0),
+                                  child: Text('Nie pamiętasz hasła?')),
+                            )),
                       ],
                     ),
                   ),
