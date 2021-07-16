@@ -9,3 +9,7 @@ class ValidateException implements Exception {
 class InvalidBeerStatusException extends ValidateException {
   InvalidBeerStatusException(String message) : super(message);
 }
+
+class UnauthorizedException extends ValidateException {
+  UnauthorizedException(String message) : super(message);
+}

@@ -2,11 +2,10 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 import 'package:brewery/exceptions/exception.dart';
+import 'package:brewery/gateways/local_storage_gateway.dart';
 import 'package:brewery/models/user.dart';
 import 'package:meta/meta.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 abstract class UserRepository {
   User getCurrentUser();
@@ -15,13 +14,17 @@ abstract class UserRepository {
 
   Future<bool> register(String email, String nick, String password);
 
+  Future<bool> resetPassword(String email); //todo
+
   Future<bool> logout();
 }
 
 class ApiUserRepository extends UserRepository {
   final String apiUrl;
+  LocalStorageGateway localStorageGateway;
 
-  ApiUserRepository({@required this.apiUrl});
+  ApiUserRepository(
+      {@required this.apiUrl, @required this.localStorageGateway});
 
   @override
   Future<bool> logout() async {
@@ -41,6 +44,7 @@ class ApiUserRepository extends UserRepository {
   }
 
   @override
+  @deprecated
   User getCurrentUser() {
     return new User(id: 1, email: "email@test.com", nick: "TestowyNick");
   }
@@ -53,6 +57,7 @@ class ApiUserRepository extends UserRepository {
     Map data = {'email': email, 'password': password};
 
     Map decoded = await _request(data, 'auth/authenticate');
+    this.localStorageGateway.setCurrentUserAuthToken(decoded['token']);
     return new User(
         id: decoded['userId'],
         email: decoded['email'],
@@ -78,29 +83,10 @@ class ApiUserRepository extends UserRepository {
       throw Exception(decoded['error']['userMessage']);
     }
   }
-}
-
-class FakeUserRepository extends UserRepository {
-  Future<User> login(String email, String password) async {
-    if (email.isEmpty || password.isEmpty) {
-      throw new ValidateException("Invalid login or password. Try again!");
-    }
-    await Future.delayed(Duration(seconds: 1));
-    return new User(id: 1, email: email, nick: "TestowyNick");
-  }
 
   @override
-  Future<bool> logout() async {
-    return true;
-  }
-
-  @override
-  Future<bool> register(String email, String nick, String password) async {
-    return email.isNotEmpty && nick.isNotEmpty && password.isNotEmpty;
-  }
-
-  @override
-  User getCurrentUser() {
-    return new User(id: 1, email: "email@test.com", nick: "TestowyNick");
+  Future<bool> resetPassword(String email) {
+    // TODO: implement resetPassword
+    throw UnimplementedError();
   }
 }

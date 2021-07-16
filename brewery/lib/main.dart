@@ -1,4 +1,5 @@
 import 'package:brewery/components/simple_bloc_observer.dart';
+import 'package:brewery/gateways/local_storage_gateway.dart';
 import 'package:brewery/models/user.dart';
 import 'package:brewery/repositories/beer_repository.dart';
 import 'package:brewery/repositories/user_repository.dart';
@@ -17,9 +18,10 @@ Future main() async {
   Bloc.observer = SimpleBlocObserver();
   await dotenv.load(fileName: ".env");
   runApp(MyApp(
-      beerRepository: new FakeBeerRepository(),
-      userRepository:
-          new ApiUserRepository(apiUrl: dotenv.env['API_URL'].toString())));
+      beerRepository: new FakeBeerRepository(), //todo
+      userRepository: new ApiUserRepository(
+          apiUrl: dotenv.env['API_URL'].toString(),
+          localStorageGateway: new LocalStorageGateway())));
 }
 
 class MyApp extends StatelessWidget {
