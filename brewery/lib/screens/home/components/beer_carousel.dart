@@ -1,23 +1,24 @@
-import 'package:brewery/repositories/beer_repository.dart';
 import 'package:flutter/material.dart';
-
 import 'dart:math' as math;
-
 import 'package:brewery/models/beer.dart';
-
 import '../../../constants.dart';
 import 'beer_card.dart';
 
 class BeerCarousel extends StatefulWidget {
+  final List<Beer> beers;
+
+  BeerCarousel({this.beers});
+
   @override
-  _BeerCarouselState createState() => _BeerCarouselState();
+  _BeerCarouselState createState() => _BeerCarouselState(beers: this.beers);
 }
 
 class _BeerCarouselState extends State<BeerCarousel> {
+  final List<Beer> beers;
   PageController _pageController;
   int initialPage = 0;
-  List<Beer> beers;
-  BeerRepository repository = new FakeBeerRepository();
+
+  _BeerCarouselState({this.beers});
 
   @override
   void initState() {
@@ -28,7 +29,6 @@ class _BeerCarouselState extends State<BeerCarousel> {
       // by default our beer poster
       initialPage: initialPage,
     );
-    this.beers = this.repository.getBeers();
   }
 
   @override

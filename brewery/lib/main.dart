@@ -18,7 +18,9 @@ Future main() async {
   Bloc.observer = SimpleBlocObserver();
   await dotenv.load(fileName: ".env");
   runApp(MyApp(
-      beerRepository: new FakeBeerRepository(), //todo
+      beerRepository: new ApiBeerRepository(
+          apiUrl: dotenv.env['API_URL'].toString(),
+          localStorageGateway: new LocalStorageGateway()),
       userRepository: new ApiUserRepository(
           apiUrl: dotenv.env['API_URL'].toString(),
           localStorageGateway: new LocalStorageGateway())));

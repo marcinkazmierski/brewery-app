@@ -41,7 +41,7 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50)),
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage(beer.backdrop),
+                image: NetworkImage(beer.backdrop),
               ),
             ),
           ),

@@ -51,7 +51,12 @@ class _BeerListFormState extends State<Body> {
   Widget build(BuildContext context) {
     return BlocListener<HomeBloc, HomeState>(
       listener: (context, state) {
-        // todo ?
+        if (state is HomeFailureState) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('${state.error}'),
+            backgroundColor: Colors.redAccent,
+          ));
+        }
       },
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
@@ -68,23 +73,26 @@ class _BeerListFormState extends State<Body> {
                 ),
                 Center(
                   child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        SizedBox(height: kDefaultPadding),
-                        FadeAnimation(
-                            2,
-                            Center(
-                              child: Text(
-                                'Wybierz piwo:',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 40),
-                              ),
-                            )),
-                        SizedBox(height: kDefaultPadding),
-                        FadeAnimation(2, BeerCarousel()),
-                      ],
-                    ),
+                    child: state is HomeLoadedState
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              SizedBox(height: kDefaultPadding),
+                              FadeAnimation(
+                                  2,
+                                  Center(
+                                    child: Text(
+                                      'Wybierz piwo:',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 40),
+                                    ),
+                                  )),
+                              SizedBox(height: kDefaultPadding),
+                              FadeAnimation(
+                                  2, BeerCarousel(beers: state.beers)),
+                            ],
+                          )
+                        : CircularProgressIndicator(),
                   ),
                 ),
               ],

@@ -15,7 +15,31 @@ abstract class HomeState extends Equatable {
 
 class HomeInitialState extends HomeState {}
 
+class HomeLoadedState extends HomeState {
+  final List<Beer> beers;
+
+  HomeLoadedState({this.beers});
+
+  @override
+  List<Object> get props => [beers];
+
+  @override
+  String toString() => 'HomeLoadedState { beers: $beers }';
+}
+
 class DisplayScannerState extends HomeState {}
+
+class HomeFailureState extends HomeState {
+  final String error;
+
+  const HomeFailureState({this.error});
+
+  @override
+  List<Object> get props => [error];
+
+  @override
+  String toString() => 'HomeFailureState { error: $error }';
+}
 
 ///EVENT
 abstract class HomeEvent extends Equatable {
@@ -66,8 +90,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       String code = event.code;
       Beer newBeer = beerRepository.addBeerByCode(code);
       //todo
-    } else if (event is HomeEvent) {
+    } else if (event is DisplayHomeEvent) {
       yield HomeInitialState();
+
+      try {
+        List<Beer> beers = await this.beerRepository.getBeers();
+        yield HomeLoadedState(beers: beers);
+      } catch (error) {
+        yield HomeFailureState(error: error.toString());
+      }
     }
   }
 }
