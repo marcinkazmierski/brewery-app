@@ -22,12 +22,12 @@ class TitleDurationAndFabBtn extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  beer.title,
+                  beer.name,
                   style: Theme.of(context).textTheme.headline5,
                 ),
                 SizedBox(height: kDefaultPadding / 2),
                 Text(
-                  beer.name,
+                  beer.title,
                   style: TextStyle(color: kTextLightColor),
                 ),
               ],

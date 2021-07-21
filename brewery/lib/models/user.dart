@@ -16,6 +16,14 @@ class User {
       this.status,
       this.beers});
 
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['userId'],
+      email: json['email'] ?? '',
+      nick: json['userNick'],
+    );
+  }
+
   @override
   String toString() {
     return 'User{id: $id, email: $email, nick: $nick, status: $status, beers: $beers}';
