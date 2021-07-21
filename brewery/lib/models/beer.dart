@@ -22,4 +22,26 @@ class Beer {
       this.malts,
       this.active,
       this.reviews});
+
+  factory Beer.fromJson(Map<String, dynamic> item) {
+    List<Review> reviews = [];
+    item["beerReviews"].forEach((r) {
+      reviews.add(Review.fromJson(r));
+    });
+
+    return Beer(
+      id: item['beerId'],
+      title: item['beerTitle'],
+      name: item['beerName'],
+      poster: item['beerIcon'],
+      backdrop: item['beerBackgroundImage'],
+      rating: item['beerRating'],
+      tags: new List<String>.from(item['beerTags']),
+      description: item['beerDescription'],
+      hops: item['beerHops'],
+      malts: item['beerMalts'],
+      active: item['beerStatus'] == "unlocked",
+      reviews: reviews,
+    );
+  }
 }

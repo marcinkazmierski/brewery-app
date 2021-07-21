@@ -30,28 +30,7 @@ class ApiBeerRepository extends ApiRepository implements BeerRepository {
 
     List<Beer> beers = [];
     decoded["beers"].forEach((item) {
-      List<Review> reviews = [];
-      item["beerReviews"].forEach((r) {
-        reviews.add(Review.fromJson(r));
-      });
-
-      Beer beer = new Beer(
-        id: item['beerId'],
-        title: item['beerTitle'],
-        name: item['beerName'],
-        poster: item['beerIcon'],
-        backdrop: item['beerBackgroundImage'],
-        rating: item['beerRating'],
-        //todo
-        tags: new List<String>.from(item['beerTags']),
-        description: item['beerDescription'],
-        hops: item['beerHops'],
-        malts: item['beerMalts'],
-        active: item['beerStatus'] == "unlocked",
-        reviews: reviews,
-      );
-
-      beers.add(beer);
+      beers.add(Beer.fromJson(item));
     });
 
     return beers;
