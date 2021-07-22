@@ -5,13 +5,13 @@ class Beer {
   final int id;
   final double rating;
   final List<String> tags;
-  final String description, title, name, poster, backdrop, hops, malts;
+  final String description, title, name, icon, backgroundImage, hops, malts;
   final bool active;
   final List<Review> reviews;
 
   Beer(
-      {this.poster,
-      this.backdrop,
+      {this.icon,
+      this.backgroundImage,
       this.title,
       this.name,
       this.id,
@@ -33,8 +33,8 @@ class Beer {
       id: item['beerId'],
       title: item['beerTitle'],
       name: item['beerName'],
-      poster: item['beerIcon'],
-      backdrop: item['beerBackgroundImage'],
+      icon: item['beerIcon'],
+      backgroundImage: item['beerBackgroundImage'],
       rating: item['beerRating'],
       tags: new List<String>.from(item['beerTags']),
       description: item['beerDescription'],

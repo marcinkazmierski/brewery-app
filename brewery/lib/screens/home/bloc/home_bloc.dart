@@ -29,6 +29,8 @@ class HomeLoadedState extends HomeState {
 
 class DisplayScannerState extends HomeState {}
 
+class AddedBeerSuccessfulState extends HomeState {}
+
 class HomeFailureState extends HomeState {
   final String error;
 
@@ -88,8 +90,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield DisplayScannerState();
     } else if (event is AddNewBeerEvent) {
       String code = event.code;
-      Beer newBeer = beerRepository.addBeerByCode(code);
-      //todo
+
+      try {
+        await beerRepository.addBeerByCode(code);
+        yield AddedBeerSuccessfulState();
+      } catch (error) {
+        yield HomeFailureState(error: error.toString());
+      }
     } else if (event is DisplayHomeEvent) {
       yield HomeInitialState();
 

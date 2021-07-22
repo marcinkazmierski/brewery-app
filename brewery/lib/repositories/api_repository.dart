@@ -43,7 +43,8 @@ abstract class ApiRepository {
       Map decoded = jsonDecode(response.body);
       print("_parseResponse ERROR");
       print(decoded);
-      throw Exception(decoded.containsKey(['error'])
+
+      throw Exception(decoded.containsKey('error')
           ? decoded['error']['userMessage']
           : "General error");
     }

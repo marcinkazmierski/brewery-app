@@ -35,15 +35,14 @@ class _BeerListFormState extends State<Body> {
                   ),
                 ));
           });
-
-      await new Future.delayed(const Duration(seconds: 2));
       closeModal = true;
       Navigator.pop(context); // close showDialog
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Dodano pomyślnie kod: "$barcodeScanRes"'),
-        backgroundColor: Colors.green,
-      ));
+      BlocProvider.of<HomeBloc>(context).add(
+        AddNewBeerEvent(
+          code: barcodeScanRes,
+        ),
+      );
     }
   }
 
@@ -56,6 +55,13 @@ class _BeerListFormState extends State<Body> {
             content: Text('${state.error}'),
             backgroundColor: Colors.redAccent,
           ));
+          BlocProvider.of<HomeBloc>(context).add(DisplayHomeEvent());
+        } else if (state is AddedBeerSuccessfulState) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Dodano pomyślnie nowe piwo do Twojego zbioru'),
+            backgroundColor: Colors.green,
+          ));
+          BlocProvider.of<HomeBloc>(context).add(DisplayHomeEvent());
         }
       },
       child: BlocBuilder<HomeBloc, HomeState>(

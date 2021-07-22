@@ -42,7 +42,7 @@ class BeerCard extends StatelessWidget {
                       boxShadow: [kDefaultShadow],
                       image: DecorationImage(
                         fit: BoxFit.fill,
-                        image: NetworkImage(beer.poster),
+                        image: NetworkImage(beer.icon),
                       ),
                     ),
                   ),

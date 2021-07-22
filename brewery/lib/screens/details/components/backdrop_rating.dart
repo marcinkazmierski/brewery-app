@@ -41,7 +41,7 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50)),
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: NetworkImage(beer.backdrop),
+                image: NetworkImage(beer.backgroundImage),
               ),
             ),
           ),
@@ -154,7 +154,7 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
         height: 100,
         decoration: BoxDecoration(
             image: DecorationImage(
-                fit: BoxFit.fitHeight, image: AssetImage(this.beer.poster))),
+                fit: BoxFit.fitHeight, image: NetworkImage(beer.icon))),
       ),
       submitButton: 'Wystaw ocenę!',
       onCancelled: () => print('cancelled'),

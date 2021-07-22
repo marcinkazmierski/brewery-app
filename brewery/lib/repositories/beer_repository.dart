@@ -9,7 +9,7 @@ import 'package:meta/meta.dart';
 abstract class BeerRepository {
   Future<List<Beer>> getBeers();
 
-  Beer addBeerByCode(String code);
+  Future<void> addBeerByCode(String code);
 
   bool addRate(Beer beer, double rate);
 
@@ -53,20 +53,9 @@ class ApiBeerRepository extends ApiRepository implements BeerRepository {
   }
 
   @override
-  Beer addBeerByCode(String code) {
-    return Beer(
-      id: 99,
-      title: "Nowe Piwo",
-      name: "Pale Ale 12°BLG",
-      poster: "assets/images/poster_1.jpg",
-      backdrop: "assets/images/bg2.jpg",
-      rating: 2.6,
-      tags: ["Jasne", "Pełne"],
-      description: "Opis....",
-      hops: "Chmiele...",
-      malts: "Słody...",
-      active: true,
-      reviews: [],
-    );
+  Future<void> addBeerByCode(String code) async {
+    String authToken = await this.localStorageGateway.getCurrentUserAuthToken();
+    Map data = {'beerCode': code};
+    await requestPost(data, 'beers', authToken);
   }
 }
