@@ -11,9 +11,7 @@ abstract class BeerRepository {
 
   Future<void> addBeerByCode(String code);
 
-  bool addRate(Beer beer, double rate);
-
-  bool addReview(Beer beer, String comment);
+  bool addReview(Beer beer, String comment, double rate);
 }
 
 class ApiBeerRepository extends ApiRepository implements BeerRepository {
@@ -37,20 +35,13 @@ class ApiBeerRepository extends ApiRepository implements BeerRepository {
   }
 
   @override
-  bool addReview(Beer beer, String comment) {
+  bool addReview(Beer beer, String comment, double rate) {
     if (!beer.active) {
       throw new InvalidBeerStatusException("Beer must by active for you!");
     }
     return true;
   }
 
-  @override
-  bool addRate(Beer beer, double rate) {
-    if (!beer.active) {
-      throw new InvalidBeerStatusException("Beer must by active for you!");
-    }
-    return true;
-  }
 
   @override
   Future<void> addBeerByCode(String code) async {

@@ -1,8 +1,10 @@
+import 'package:brewery/screens/home/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:brewery/models/beer.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 import '../../../constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BackdropAndRating extends StatefulWidget {
   final Size size;
@@ -159,6 +161,13 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
       submitButton: 'Wystaw ocenę!',
       onCancelled: () => print('cancelled'),
       onSubmitted: (response) {
+        // BlocProvider.of<HomeBloc>(context).add(
+        //   AddNewReviewEvent(
+        //     beer: this.beer,
+        //     comment: response.comment,
+        //     rating: response.rating,
+        //   ),
+        // );
         print('rating: ${response.rating}, comment: ${response.comment}');
         // TODO: add your own logic
         if (response.rating < 3.0) {

@@ -76,6 +76,8 @@ class AddNewBeerEvent extends HomeEvent {
   String toString() => 'AddNewBeerEvent { code: $code }';
 }
 
+
+
 /// BLOC
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   BeerRepository beerRepository;
@@ -90,7 +92,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield DisplayScannerState();
     } else if (event is AddNewBeerEvent) {
       String code = event.code;
-
       try {
         await beerRepository.addBeerByCode(code);
         yield AddedBeerSuccessfulState();
@@ -99,7 +100,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     } else if (event is DisplayHomeEvent) {
       yield HomeInitialState();
-
       try {
         List<Beer> beers = await this.beerRepository.getBeers();
         yield HomeLoadedState(beers: beers);
