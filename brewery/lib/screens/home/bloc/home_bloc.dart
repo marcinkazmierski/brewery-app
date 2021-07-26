@@ -31,6 +31,8 @@ class DisplayScannerState extends HomeState {}
 
 class AddedBeerSuccessfulState extends HomeState {}
 
+class AddedReviewSuccessfulState extends HomeState {}
+
 class HomeFailureState extends HomeState {
   final String error;
 
@@ -76,7 +78,21 @@ class AddNewBeerEvent extends HomeEvent {
   String toString() => 'AddNewBeerEvent { code: $code }';
 }
 
+class AddNewReviewEvent extends HomeEvent {
+  final Beer beer;
+  final String comment;
+  final int rating;
 
+  const AddNewReviewEvent(
+      {@required this.beer, @required this.comment, @required this.rating});
+
+  @override
+  List<Object> get props => [this.beer, this.comment, this.rating];
+
+  @override
+  String toString() =>
+      'AddNewReviewEvent { beer: $beer, comment: $comment, rating: $rating }';
+}
 
 /// BLOC
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
@@ -103,6 +119,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       try {
         List<Beer> beers = await this.beerRepository.getBeers();
         yield HomeLoadedState(beers: beers);
+      } catch (error) {
+        yield HomeFailureState(error: error.toString());
+      }
+    } else if (event is AddNewReviewEvent) {
+      try {
+        await beerRepository.addReview(
+            event.beer, event.comment, event.rating.toDouble());
+        yield AddedReviewSuccessfulState();
       } catch (error) {
         yield HomeFailureState(error: error.toString());
       }

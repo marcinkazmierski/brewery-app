@@ -172,11 +172,6 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
         // TODO: add your own logic
         if (response.rating < 3.0) {
         } else {}
-
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Dzięki za Twoją ocenę!'),
-          backgroundColor: Colors.green,
-        ));
       },
     );
 
