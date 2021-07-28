@@ -8,7 +8,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<HomeBloc>(context).add(
-      DisplayHomeEvent(),
+      DisplayHomeEvent(), //todo?
     );
 
     return new WillPopScope(

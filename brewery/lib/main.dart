@@ -1,9 +1,12 @@
 import 'package:brewery/components/simple_bloc_observer.dart';
 import 'package:brewery/gateways/local_storage_gateway.dart';
+import 'package:brewery/models/beer.dart';
 import 'package:brewery/models/user.dart';
 import 'package:brewery/repositories/beer_repository.dart';
 import 'package:brewery/repositories/user_repository.dart';
+import 'package:brewery/screens/details/details_screen.dart';
 import 'package:brewery/screens/home/bloc/home_bloc.dart';
+import 'package:brewery/screens/details/bloc/details_bloc.dart';
 import 'package:brewery/screens/login/bloc/login_bloc.dart';
 import 'package:brewery/screens/login/login_screen.dart';
 import 'package:brewery/screens/registration/bloc/registration_bloc.dart';
@@ -80,6 +83,20 @@ class MyApp extends StatelessWidget {
                 ),
               ],
               child: HomeScreen(),
+            );
+          },
+          'details': (context) {
+            final Beer beer = ModalRoute.of(context).settings.arguments as Beer;
+            //todo
+            print("BEER: " + beer.title);
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider<DetailsBloc>(
+                  create: (context) => DetailsBloc(
+                      beerRepository: this.beerRepository, beer: beer),
+                ),
+              ],
+              child: DetailsScreen(),
             );
           }
         });

@@ -1,10 +1,8 @@
-import 'package:brewery/screens/home/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:brewery/models/beer.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 import '../../../constants.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BackdropAndRating extends StatefulWidget {
   final Size size;

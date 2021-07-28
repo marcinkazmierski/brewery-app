@@ -62,12 +62,6 @@ class _BeerListFormState extends State<Body> {
             backgroundColor: Colors.green,
           ));
           BlocProvider.of<HomeBloc>(context).add(DisplayHomeEvent());
-        }else   if (state is AddedReviewSuccessfulState) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('Dzięki za Twoją ocenę!'),
-            backgroundColor: Colors.green,
-          ));
-          BlocProvider.of<HomeBloc>(context).add(DisplayHomeEvent());
         }
       },
       child: BlocBuilder<HomeBloc, HomeState>(

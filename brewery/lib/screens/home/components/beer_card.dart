@@ -15,13 +15,16 @@ class BeerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-      child: OpenContainer(
-        closedColor: Colors.transparent,
-        closedElevation: 0,
-        openElevation: 0,
-        closedBuilder: (context, action) => buildBeerCard(context),
-        openBuilder: (context, action) => DetailsCard(beer: beer),
+      child:
+      InkWell(
+          onTap: (){
+            print("Container clicked");
+            Navigator.pushNamed(context, 'details', arguments: this.beer);
+          },
+          child:   buildBeerCard(context),
       ),
+
+
     );
   }
 

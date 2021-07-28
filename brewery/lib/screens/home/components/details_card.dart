@@ -1,9 +1,9 @@
-import 'package:brewery/screens/home/components/backdrop_rating.dart';
-import 'package:brewery/screens/home/components/genres.dart';
-import 'package:brewery/screens/home/components/title_duration_and_fav_btn.dart';
+import 'package:brewery/screens/details/components/backdrop_rating.dart';
+import 'package:brewery/screens/details/components/genres.dart';
+import 'package:brewery/screens/details/components/title_duration_and_fav_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:brewery/models/beer.dart';
-import 'package:brewery/screens/home/components/reviews_list.dart';
+import 'package:brewery/screens/details/components/reviews_list.dart';
 import 'package:brewery/constants.dart';
 
 class DetailsCard extends StatelessWidget {
