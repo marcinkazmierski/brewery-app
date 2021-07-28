@@ -1,14 +1,10 @@
-import 'package:brewery/components/fade_animation.dart';
 import 'package:brewery/screens/details/bloc/details_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:brewery/screens/details/components/backdrop_rating.dart';
 import 'package:brewery/screens/details/components/genres.dart';
 import 'package:brewery/screens/details/components/title_duration_and_fav_btn.dart';
-import 'package:flutter/material.dart';
-import 'package:brewery/models/beer.dart';
 import 'package:brewery/screens/details/components/reviews_list.dart';
 import 'package:brewery/constants.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Body extends StatefulWidget {
@@ -17,8 +13,6 @@ class Body extends StatefulWidget {
 }
 
 class _BeerDetailsFormState extends State<Body> {
-
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<DetailsBloc, DetailsState>(
@@ -28,23 +22,26 @@ class _BeerDetailsFormState extends State<Body> {
             content: Text('${state.error}'),
             backgroundColor: Colors.redAccent,
           ));
-        }else   if (state is AddedReviewSuccessfulState) {
+          BlocProvider.of<DetailsBloc>(context).add(DisplayDetailsEvent(beer: state.beer));
+        } else if (state is AddedReviewSuccessfulState) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('Dzięki za Twoją ocenę!'),
             backgroundColor: Colors.green,
           ));
+          BlocProvider.of<DetailsBloc>(context).add(DisplayDetailsEvent(beer: state.beer));
         }
       },
       child: BlocBuilder<DetailsBloc, DetailsState>(
         builder: (context, state) {
-          if(state is DetailsDisplayState) {
+
             return Scaffold(
               body: SingleChildScrollView(
                 // it will provide us total height and width
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    BackdropAndRating(size: MediaQuery.of(context).size, beer: state.beer),
+                    BackdropAndRating(
+                        size: MediaQuery.of(context).size, beer: state.beer),
                     SizedBox(height: kDefaultPadding / 2),
                     TitleDurationAndFabBtn(beer: state.beer),
                     Genres(beer: state.beer),
@@ -55,10 +52,7 @@ class _BeerDetailsFormState extends State<Body> {
                       ),
                       child: Text(
                         "Opis stylu",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headline5,
+                        style: Theme.of(context).textTheme.headline5,
                       ),
                     ),
                     Padding(
@@ -78,10 +72,7 @@ class _BeerDetailsFormState extends State<Body> {
                       ),
                       child: Text(
                         "Chmiele",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headline5,
+                        style: Theme.of(context).textTheme.headline5,
                       ),
                     ),
                     Padding(
@@ -101,10 +92,7 @@ class _BeerDetailsFormState extends State<Body> {
                       ),
                       child: Text(
                         "Słody",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headline5,
+                        style: Theme.of(context).textTheme.headline5,
                       ),
                     ),
                     Padding(
@@ -125,10 +113,7 @@ class _BeerDetailsFormState extends State<Body> {
                       ),
                       child: Text(
                         "Recenzje",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headline5,
+                        style: Theme.of(context).textTheme.headline5,
                       ),
                     ),
                     Container(
@@ -141,9 +126,6 @@ class _BeerDetailsFormState extends State<Body> {
                 ),
               ),
             );
-          }else{
-            return CircularProgressIndicator();
-          }
         },
       ),
     );

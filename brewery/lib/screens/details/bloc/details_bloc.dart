@@ -7,34 +7,38 @@ import 'package:flutter/material.dart';
 
 ///STATE
 abstract class DetailsState extends Equatable {
-  const DetailsState();
-
-  @override
-  List<Object> get props => [];
-}
-
-
-class DetailsDisplayState extends DetailsState {
   final Beer beer;
 
-  DetailsDisplayState({@required this.beer});
+  DetailsState({@required this.beer});
 
   @override
   List<Object> get props => [beer];
 
   @override
+  String toString() => 'DetailsState { beer: $beer }';
+}
+
+class DetailsDisplayState extends DetailsState {
+  DetailsDisplayState({@required Beer beer}) : super(beer: beer);
+
+  @override
   String toString() => 'DetailsDisplayState { beer: $beer }';
 }
 
-class AddedReviewSuccessfulState extends DetailsState {}
+class AddedReviewSuccessfulState extends DetailsState {
+  AddedReviewSuccessfulState({@required Beer beer}) : super(beer: beer);
+
+  @override
+  String toString() => 'AddedReviewSuccessfulState { beer: $beer }';
+}
 
 class DetailsFailureState extends DetailsState {
   final String error;
 
-  const DetailsFailureState({this.error});
+  DetailsFailureState({this.error, Beer beer}) : super(beer: beer);
 
   @override
-  List<Object> get props => [error];
+  List<Object> get props => [error, beer];
 
   @override
   String toString() => 'DetailsFailureState { error: $error }';
@@ -91,7 +95,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       try {
         await beerRepository.addReview(
             event.beer, event.comment, event.rating.toDouble());
-        yield AddedReviewSuccessfulState();
+        yield AddedReviewSuccessfulState(beer: event.beer);
       } catch (error) {
         yield DetailsFailureState(error: error.toString());
       }

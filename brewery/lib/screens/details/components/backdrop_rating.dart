@@ -1,8 +1,10 @@
+import 'package:brewery/screens/details/bloc/details_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:brewery/models/beer.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 import '../../../constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BackdropAndRating extends StatefulWidget {
   final Size size;
@@ -108,7 +110,10 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
                                   onPrimary: Colors.white, // foreground
                                 ),
                                 child: Text("Oceń to piwo!"),
-                                onPressed: _showRatingDialog,
+                                onPressed: () {
+                                  _showRatingDialog(context);
+                                },
+                                //onPressed: _showRatingDialog,
                               )
                             : ElevatedButton(
                                 style: ElevatedButton.styleFrom(
@@ -144,7 +149,7 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
   }
 
   // show the rating dialog
-  void _showRatingDialog() {
+  void _showRatingDialog(BuildContext context) {
     final _dialog = RatingDialog(
       title: 'Oceń to piwo!',
       message: 'Wybierz ocenę i dodaj komentarz',
@@ -159,13 +164,13 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
       submitButton: 'Wystaw ocenę!',
       onCancelled: () => print('cancelled'),
       onSubmitted: (response) {
-        // BlocProvider.of<HomeBloc>(context).add(
-        //   AddNewReviewEvent(
-        //     beer: this.beer,
-        //     comment: response.comment,
-        //     rating: response.rating,
-        //   ),
-        // );
+        BlocProvider.of<DetailsBloc>(context).add(
+          AddNewReviewEvent(
+            beer: this.beer,
+            comment: response.comment,
+            rating: response.rating,
+          ),
+        );
         print('rating: ${response.rating}, comment: ${response.comment}');
         // TODO: add your own logic
         if (response.rating < 3.0) {
