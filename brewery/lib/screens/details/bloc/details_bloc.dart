@@ -25,6 +25,13 @@ class DetailsDisplayState extends DetailsState {
   String toString() => 'DetailsDisplayState { beer: $beer }';
 }
 
+class AddReviewLoadingState extends DetailsState {
+  AddReviewLoadingState({@required Beer beer}) : super(beer: beer);
+
+  @override
+  String toString() => 'AddReviewLoadingState { beer: $beer }';
+}
+
 class AddedReviewSuccessfulState extends DetailsState {
   AddedReviewSuccessfulState({@required Beer beer}) : super(beer: beer);
 
@@ -35,7 +42,8 @@ class AddedReviewSuccessfulState extends DetailsState {
 class DetailsFailureState extends DetailsState {
   final String error;
 
-  DetailsFailureState({this.error, Beer beer}) : super(beer: beer);
+  DetailsFailureState({@required this.error, @required Beer beer})
+      : super(beer: beer);
 
   @override
   List<Object> get props => [error, beer];
@@ -93,11 +101,12 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       yield DetailsDisplayState(beer: event.beer);
     } else if (event is AddNewReviewEvent) {
       try {
-        await beerRepository.addReview(
+        yield AddReviewLoadingState(beer: event.beer);
+        Beer beer = await beerRepository.addReview(
             event.beer, event.comment, event.rating.toDouble());
-        yield AddedReviewSuccessfulState(beer: event.beer);
+        yield AddedReviewSuccessfulState(beer: beer);
       } catch (error) {
-        yield DetailsFailureState(error: error.toString());
+        yield DetailsFailureState(error: error.toString(), beer: event.beer);
       }
     }
   }

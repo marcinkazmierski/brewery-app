@@ -14,7 +14,7 @@ class Review {
     return Review(
       text: json['reviewText'],
       owner: owner,
-      rating: json['reviewRating'],
+      rating: double.parse(json['reviewRating'].toString()),
       createdAt: json['reviewCreatedAt'],
     );
   }

@@ -1,8 +1,6 @@
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:brewery/models/beer.dart';
-import 'package:brewery/screens/home/components/details_card.dart';
 import '../../../constants.dart';
 
 class BeerCard extends StatelessWidget {
@@ -15,16 +13,13 @@ class BeerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-      child:
-      InkWell(
-          onTap: (){
-            print("Container clicked");
-            Navigator.pushNamed(context, 'details', arguments: this.beer);
-          },
-          child:   buildBeerCard(context),
+      child: InkWell(
+        onTap: () {
+          print("Container clicked");
+          Navigator.pushNamed(context, 'details', arguments: this.beer);
+        },
+        child: buildBeerCard(context),
       ),
-
-
     );
   }
 
