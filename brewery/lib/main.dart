@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:brewery/components/simple_bloc_observer.dart';
 import 'package:brewery/gateways/local_storage_gateway.dart';
 import 'package:brewery/models/beer.dart';
@@ -16,17 +18,20 @@ import 'package:brewery/screens/home/home_screen.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:uni_links/uni_links.dart';
 
 Future main() async {
   Bloc.observer = SimpleBlocObserver();
   await dotenv.load(fileName: ".env");
+  LocalStorageGateway localStorageGateway = new LocalStorageGateway();
+
   runApp(MyApp(
       beerRepository: new ApiBeerRepository(
           apiUrl: dotenv.env['API_URL'].toString(),
-          localStorageGateway: new LocalStorageGateway()),
+          localStorageGateway: localStorageGateway),
       userRepository: new ApiUserRepository(
           apiUrl: dotenv.env['API_URL'].toString(),
-          localStorageGateway: new LocalStorageGateway())));
+          localStorageGateway: localStorageGateway)));
 }
 
 class MyApp extends StatelessWidget {
@@ -46,21 +51,11 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        initialRoute: 'login',
+        initialRoute: '/login',
         routes: {
-          //todo: ogarnąć to z dokumentacji BLoC!
-          'login': (context) {
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider<LoginBloc>(
-                  create: (context) =>
-                      LoginBloc(userRepository: this.userRepository),
-                ),
-              ],
-              child: LoginScreen(),
-            );
-          },
-          'registration': (context) {
+          '/': (context) => Login(context),
+          '/login': (context) => Login(context),
+          '/registration': (context) {
             return MultiBlocProvider(
               providers: [
                 BlocProvider<RegistrationBloc>(
@@ -71,24 +66,9 @@ class MyApp extends StatelessWidget {
               child: RegistrationScreen(),
             );
           },
-          'home': (context) {
-            final User user = ModalRoute.of(context).settings.arguments as User;
-            //todo
-            print("USER: " + user.email);
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider<HomeBloc>(
-                  create: (context) =>
-                      HomeBloc(beerRepository: this.beerRepository),
-                ),
-              ],
-              child: HomeScreen(),
-            );
-          },
-          'details': (context) {
+          '/home': (context) => Home(context),
+          '/details': (context) {
             final Beer beer = ModalRoute.of(context).settings.arguments as Beer;
-            //todo
-            print("BEER: " + beer.title);
             return MultiBlocProvider(
               providers: [
                 BlocProvider<DetailsBloc>(
@@ -100,5 +80,27 @@ class MyApp extends StatelessWidget {
             );
           }
         });
+  }
+
+  MultiBlocProvider Login(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<LoginBloc>(
+          create: (context) => LoginBloc(userRepository: this.userRepository)..add(AppStarted()),
+        ),
+      ],
+      child: LoginScreen(),
+    );
+  }
+
+  MultiBlocProvider Home(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<HomeBloc>(
+          create: (context) => HomeBloc(beerRepository: this.beerRepository),
+        ),
+      ],
+      child: HomeScreen(),
+    );
   }
 }

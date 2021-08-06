@@ -19,7 +19,6 @@ class _CreateLoginFormState extends State<Body> {
       currentFocus.unfocus();
     }
 
-    //Navigator.pushNamed(context, 'home');
     BlocProvider.of<LoginBloc>(context).add(
       LoginButtonPressedEvent(
         email: _loginController.text,
@@ -43,7 +42,7 @@ class _CreateLoginFormState extends State<Body> {
                   .add(DisplayedLoginErrorEvent()));
         }
         if (state is UserAuthenticatedState) {
-          Navigator.pushNamed(context, 'home', arguments: state.user);
+          Navigator.pushNamed(context, '/home', arguments: state.user);
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
@@ -174,7 +173,7 @@ class _CreateLoginFormState extends State<Body> {
                             ElevatedButton(
                               onPressed: () {
                                 Navigator.pushNamed(
-                                    context, 'registration'); //todo, use BLoC
+                                    context, '/registration'); //todo, use BLoC
                               },
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.transparent, // background

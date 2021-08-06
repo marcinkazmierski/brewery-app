@@ -16,7 +16,7 @@ class BeerCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           print("Container clicked");
-          Navigator.pushNamed(context, 'details', arguments: this.beer);
+          Navigator.pushNamed(context, '/details', arguments: this.beer);
         },
         child: buildBeerCard(context),
       ),

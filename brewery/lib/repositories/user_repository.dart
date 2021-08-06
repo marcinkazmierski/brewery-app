@@ -6,8 +6,6 @@ import 'package:brewery/repositories/api_repository.dart';
 import 'package:meta/meta.dart';
 
 abstract class UserRepository {
-  User getCurrentUser();
-
   Future<User> login(String email, String password);
 
   Future<bool> register(String email, String nick, String password);
@@ -15,6 +13,8 @@ abstract class UserRepository {
   Future<bool> resetPassword(String email);
 
   Future<bool> logout();
+
+  Future<User> profile();
 }
 
 class ApiUserRepository extends ApiRepository implements UserRepository {
@@ -42,11 +42,6 @@ class ApiUserRepository extends ApiRepository implements UserRepository {
   }
 
   @override
-  User getCurrentUser() {
-    return new User(id: 1, email: "email@test.com", nick: "TestowyNick");
-  }
-
-  @override
   Future<User> login(String email, String password) async {
     if (email.isEmpty || password.isEmpty) {
       throw new ValidateException("Invalid login or password. Try again!");
@@ -64,5 +59,16 @@ class ApiUserRepository extends ApiRepository implements UserRepository {
   Future<bool> resetPassword(String email) {
     // TODO: implement resetPassword
     throw UnimplementedError();
+  }
+
+  @override
+  Future<User> profile() async {
+    Map data = {};
+    Map decoded = await requestPost(data, 'user');
+    this.localStorageGateway.setCurrentUserAuthToken(decoded['token']);
+    return new User(
+        id: decoded['userId'],
+        email: decoded['email'],
+        nick: decoded['userNick']);
   }
 }

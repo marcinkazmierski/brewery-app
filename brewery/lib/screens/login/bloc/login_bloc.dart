@@ -17,6 +17,8 @@ class LoginInitialState extends LoginState {}
 
 class LoginLoading extends LoginState {}
 
+class AuthenticationAuthenticated extends LoginState {}
+
 class UserAuthenticatedState extends LoginState {
   final User user;
 
@@ -44,6 +46,11 @@ class LoginCreateFailureState extends LoginState {
 ///EVENT
 abstract class LoginEvent extends Equatable {
   const LoginEvent();
+}
+
+class AppStarted extends LoginEvent {
+  @override
+  List<Object> get props => [];
 }
 
 class LoginButtonPressedEvent extends LoginEvent {
@@ -78,9 +85,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
+    if (event is AppStarted) {
+      try {
+        User user = await this.userRepository.profile();
+        yield UserAuthenticatedState(user: user);
+      } catch (error) {
+        print(error.toString());
+        yield LoginInitialState();
+      }
+    }
     if (event is LoginButtonPressedEvent) {
       yield LoginLoading();
-
       try {
         User user =
             await this.userRepository.login(event.email, event.password);

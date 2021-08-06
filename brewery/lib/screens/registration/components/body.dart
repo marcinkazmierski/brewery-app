@@ -19,7 +19,7 @@ class _CreateLoginFormState extends State<Body> {
       currentFocus.unfocus();
     }
 
-    //Navigator.pushNamed(context, 'login');
+    //Navigator.pushNamed(context, '/login');
     BlocProvider.of<RegistrationBloc>(context).add(
       RegistrationButtonPressedEvent(
         email: _loginController.text,
@@ -49,7 +49,7 @@ class _CreateLoginFormState extends State<Body> {
                 'Zarejestrowano pomyślnie. Sprawdź mail w celu dokończenia procesu!'),
             backgroundColor: Colors.lightGreen,
           ));
-          Navigator.pushNamed(context, 'login');
+          Navigator.pushNamed(context, '/login');
         }
       },
       child: BlocBuilder<RegistrationBloc, RegistrationState>(
@@ -200,7 +200,7 @@ class _CreateLoginFormState extends State<Body> {
                             ElevatedButton(
                               onPressed: () {
                                 Navigator.pushNamed(
-                                    context, 'login'); //todo, use BLoC
+                                    context, '/login'); //todo, use BLoC
                               },
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.transparent, // background
