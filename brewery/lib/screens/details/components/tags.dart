@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:brewery/components/genre_card.dart';
+import 'package:brewery/screens/details/components/tag_card.dart';
 import 'package:brewery/models/beer.dart';
 
 import '../../../constants.dart';
 
-class Genres extends StatelessWidget {
-  const Genres({
+class Tags extends StatelessWidget {
+  const Tags({
     Key key,
     @required this.beer,
   }) : super(key: key);
@@ -21,8 +21,8 @@ class Genres extends StatelessWidget {
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: beer.tags.length,
-          itemBuilder: (context, index) => GenreCard(
-            genre: beer.tags[index],
+          itemBuilder: (context, index) => TagsCard(
+            tag: beer.tags[index],
           ),
         ),
       ),

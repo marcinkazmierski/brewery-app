@@ -1,7 +1,7 @@
 import 'package:brewery/screens/details/bloc/details_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:brewery/screens/details/components/backdrop_rating.dart';
-import 'package:brewery/screens/details/components/genres.dart';
+import 'package:brewery/screens/details/components/tags.dart';
 import 'package:brewery/screens/details/components/title_duration_and_fav_btn.dart';
 import 'package:brewery/screens/details/components/reviews_list.dart';
 import 'package:brewery/constants.dart';
@@ -44,7 +44,7 @@ class _BeerDetailsFormState extends State<Body> {
                         size: MediaQuery.of(context).size, beer: state.beer),
                     SizedBox(height: kDefaultPadding / 2),
                     TitleDurationAndFabBtn(beer: state.beer),
-                    Genres(beer: state.beer),
+                    Tags(beer: state.beer),
                     Padding(
                       padding: EdgeInsets.symmetric(
                         vertical: kDefaultPadding / 2,

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
+import '../../../constants.dart';
 
-class GenreCard extends StatelessWidget {
-  final String genre;
+class TagsCard extends StatelessWidget {
+  final String tag;
 
-  const GenreCard({Key key, this.genre}) : super(key: key);
+  const TagsCard({Key key, this.tag}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,7 +21,7 @@ class GenreCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
-        genre,
+        tag,
         style: TextStyle(color: kTextColor.withOpacity(0.8), fontSize: 16),
       ),
     );
