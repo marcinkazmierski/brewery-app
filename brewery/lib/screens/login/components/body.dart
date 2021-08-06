@@ -143,23 +143,29 @@ class _CreateLoginFormState extends State<Body> {
                         SizedBox(
                           height: 45.0,
                         ),
-                        Center(
-                          child: state is LoginLoading
-                              ? CircularProgressIndicator()
-                              : null,
-                        ),
                         FadeAnimation(
                             2,
-                            ElevatedButton(
-                              onPressed: _onLoginButtonPressed,
-                              child: Padding(
-                                  padding: EdgeInsets.all(15.0),
-                                  child: Text('Zaczynamy!')),
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.red, // background
-                                onPrimary: Colors.white, // foreground
-                              ),
-                            )),
+                            state is LoginLoading
+                                ? ElevatedButton(
+                                    onPressed: () {},
+                                    child: Padding(
+                                        padding: EdgeInsets.all(5.0),
+                                        child: CircularProgressIndicator()),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.red, // background
+                                      onPrimary: Colors.white, // foreground
+                                    ),
+                                  )
+                                : ElevatedButton(
+                                    onPressed: _onLoginButtonPressed,
+                                    child: Padding(
+                                        padding: EdgeInsets.all(15.0),
+                                        child: Text('Zaczynamy!')),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.red, // background
+                                      onPrimary: Colors.white, // foreground
+                                    ),
+                                  )),
                         SizedBox(
                           height: 30.0,
                         ),
