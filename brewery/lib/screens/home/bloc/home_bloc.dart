@@ -76,8 +76,6 @@ class AddNewBeerEvent extends HomeEvent {
   String toString() => 'AddNewBeerEvent { code: $code }';
 }
 
-
-
 /// BLOC
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   BeerRepository beerRepository;

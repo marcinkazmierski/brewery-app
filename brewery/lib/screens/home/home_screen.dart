@@ -31,7 +31,7 @@ class HomeScreen extends StatelessWidget {
           onSelected: (String value) {
             print(value);
             if (value == "Wyloguj") {
-              Navigator.pushNamed(context, '/login'); //todo, use BLoC
+              Navigator.pushNamed(context, '/logout');
             }
             if (value == "Zamknij") {
               SystemNavigator.pop();

@@ -55,6 +55,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => Login(context),
           '/login': (context) => Login(context),
+          '/logout': (context) => Logout(context),
           '/registration': (context) {
             return MultiBlocProvider(
               providers: [
@@ -87,6 +88,17 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<LoginBloc>(
           create: (context) => LoginBloc(userRepository: this.userRepository)..add(AppStarted()),
+        ),
+      ],
+      child: LoginScreen(),
+    );
+  }
+
+  MultiBlocProvider Logout(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<LoginBloc>(
+          create: (context) => LoginBloc(userRepository: this.userRepository)..add(LogoutEvent()),
         ),
       ],
       child: LoginScreen(),

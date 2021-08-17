@@ -53,6 +53,14 @@ class AppStarted extends LoginEvent {
   List<Object> get props => [];
 }
 
+class LogoutEvent extends LoginEvent {
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() => 'LogoutEvent {}';
+}
+
 class LoginButtonPressedEvent extends LoginEvent {
   final String email;
   final String password;
@@ -105,6 +113,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
     }
     if (event is DisplayedLoginErrorEvent) {
+      yield LoginInitialState();
+    }
+
+    if (event is LogoutEvent) {
+      await this.userRepository.logout();
       yield LoginInitialState();
     }
   }

@@ -26,6 +26,7 @@ class ApiUserRepository extends ApiRepository implements UserRepository {
 
   @override
   Future<bool> logout() async {
+    this.localStorageGateway.setCurrentUserAuthToken("");
     return true;
   }
 
@@ -63,9 +64,8 @@ class ApiUserRepository extends ApiRepository implements UserRepository {
 
   @override
   Future<User> profile() async {
-    Map data = {};
-    Map decoded = await requestPost(data, 'user');
-    this.localStorageGateway.setCurrentUserAuthToken(decoded['token']);
+    String authToken = await this.localStorageGateway.getCurrentUserAuthToken();
+    Map decoded = await requestGet('user', authToken);
     return new User(
         id: decoded['userId'],
         email: decoded['email'],
