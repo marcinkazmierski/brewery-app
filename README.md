@@ -14,3 +14,10 @@ Flutter mobile application.
 ![Login page](screenshots/screenshot_1.png)
 ![Main page](screenshots/screenshot_2.png)
 ![Details page](screenshots/screenshot_3.png)
+
+
+## TODO
+- firebase logs
+- możliwość edycji oceny,
+- jak już oceniłeś piwo to przycisk powinien być: piwo już oceniłeś
+-

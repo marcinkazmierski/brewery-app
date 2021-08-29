@@ -41,7 +41,7 @@ abstract class ApiRepository {
       return null;
     } else {
       Map decoded = jsonDecode(response.body);
-      print("_parseResponse ERROR");
+
       print(decoded);
 
       throw Exception(decoded.containsKey('error')

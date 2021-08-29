@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:brewery/components/simple_bloc_observer.dart';
 import 'package:brewery/gateways/local_storage_gateway.dart';
 import 'package:brewery/models/beer.dart';
-import 'package:brewery/models/user.dart';
 import 'package:brewery/repositories/beer_repository.dart';
 import 'package:brewery/repositories/user_repository.dart';
 import 'package:brewery/screens/details/details_screen.dart';
@@ -18,7 +17,6 @@ import 'package:brewery/screens/home/home_screen.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:uni_links/uni_links.dart';
 
 Future main() async {
   Bloc.observer = SimpleBlocObserver();
@@ -87,7 +85,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<LoginBloc>(
-          create: (context) => LoginBloc(userRepository: this.userRepository)..add(AppStarted()),
+          create: (context) =>
+              LoginBloc(userRepository: this.userRepository)..add(AppStarted()),
         ),
       ],
       child: LoginScreen(),
@@ -98,7 +97,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<LoginBloc>(
-          create: (context) => LoginBloc(userRepository: this.userRepository)..add(LogoutEvent()),
+          create: (context) => LoginBloc(userRepository: this.userRepository)
+            ..add(LogoutEvent()),
         ),
       ],
       child: LoginScreen(),
@@ -109,7 +109,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<HomeBloc>(
-          create: (context) => HomeBloc(beerRepository: this.beerRepository),
+          create: (context) => HomeBloc(beerRepository: this.beerRepository)
+            ..add(InitHomeEvent()),
         ),
       ],
       child: HomeScreen(),

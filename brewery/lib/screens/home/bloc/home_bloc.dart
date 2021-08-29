@@ -4,6 +4,7 @@ import 'package:brewery/repositories/beer_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:uni_links/uni_links.dart';
 
 ///STATE
 abstract class HomeState extends Equatable {
@@ -14,6 +15,8 @@ abstract class HomeState extends Equatable {
 }
 
 class HomeInitialState extends HomeState {}
+
+class HomeLoadingState extends HomeState {}
 
 class HomeLoadedState extends HomeState {
   final List<Beer> beers;
@@ -46,6 +49,14 @@ class HomeFailureState extends HomeState {
 ///EVENT
 abstract class HomeEvent extends Equatable {
   const HomeEvent();
+}
+
+class InitHomeEvent extends HomeEvent {
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() => 'InitHomeEvent {}';
 }
 
 class DisplayHomeEvent extends HomeEvent {
@@ -86,7 +97,25 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   @override
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
-    if (event is DisplayScannerEvent) {
+    if (event is InitHomeEvent) {
+      yield HomeInitialState();
+      try {
+        final uri = await getInitialUri();
+        if (uri == null) {
+          print('no initial uri');
+        } else {
+          print('got initial uri: $uri');
+          print(uri.queryParameters);
+          if (uri.queryParameters.containsKey('code')) {
+            print('beer code:' + uri.queryParameters['code']);
+            await beerRepository.addBeerByCode(uri.queryParameters['code']);
+            yield AddedBeerSuccessfulState();
+          }
+        }
+      } catch (error) {
+        // yield HomeFailureState(error: error.toString());
+      }
+    } else if (event is DisplayScannerEvent) {
       yield DisplayScannerState();
     } else if (event is AddNewBeerEvent) {
       String code = event.code;
@@ -97,7 +126,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         yield HomeFailureState(error: error.toString());
       }
     } else if (event is DisplayHomeEvent) {
-      yield HomeInitialState();
+      yield HomeLoadingState();
       try {
         List<Beer> beers = await this.beerRepository.getBeers();
         yield HomeLoadedState(beers: beers);

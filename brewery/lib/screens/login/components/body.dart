@@ -65,140 +65,154 @@ class _CreateLoginFormState extends State<Body> {
                 Center(
                   child: SingleChildScrollView(
                     padding: EdgeInsets.all(25.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        FadeAnimation(
-                            2,
-                            CircleAvatar(
-                              radius: 100.0,
-                              backgroundColor: Colors.transparent,
-                              foregroundColor: Colors.white,
-                              child: Icon(Icons.wifi, size: 220),
-                            )),
-                        SizedBox(
-                          height: 30.0,
-                        ),
-                        FadeAnimation(
-                            2,
-                            Center(
-                              child: Text(
-                                'Zdalny browar',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 46),
+                    child: state is CheckingAuth
+                        ? CircularProgressIndicator()
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              FadeAnimation(
+                                  2,
+                                  CircleAvatar(
+                                    radius: 100.0,
+                                    backgroundColor: Colors.transparent,
+                                    foregroundColor: Colors.white,
+                                    child: Icon(Icons.wifi, size: 220),
+                                  )),
+                              SizedBox(
+                                height: 30.0,
                               ),
-                            )),
-                        SizedBox(
-                          height: 45.0,
-                        ),
-                        FadeAnimation(
-                            2,
-                            TextFormField(
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
-                              controller: _loginController,
-                              key: Key('loginInput'),
-                              decoration: InputDecoration(
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.red),
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.alternate_email,
-                                    color: Colors.black,
-                                  ),
-                                  hintStyle: TextStyle(color: Colors.black54),
-                                  filled: true,
-                                  fillColor: Colors.white.withOpacity(0.5),
-                                  hintText: 'Twój e-mail'),
-                            )),
-                        SizedBox(
-                          height: 15.0,
-                        ),
-                        FadeAnimation(
-                            2,
-                            TextFormField(
-                              obscureText: true,
-                              enableSuggestions: false,
-                              autocorrect: false,
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
-                              controller: _passwordController,
-                              key: Key('passwordInput'),
-                              decoration: InputDecoration(
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.red),
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.vpn_key,
-                                    color: Colors.black,
-                                  ),
-                                  hintStyle: TextStyle(color: Colors.black54),
-                                  filled: true,
-                                  fillColor: Colors.white.withOpacity(0.5),
-                                  hintText: 'Twoje hasło'),
-                            )),
-                        SizedBox(
-                          height: 45.0,
-                        ),
-                        FadeAnimation(
-                            2,
-                            state is LoginLoading
-                                ? ElevatedButton(
-                                    onPressed: () {},
-                                    child: Padding(
-                                        padding: EdgeInsets.all(5.0),
-                                        child: CircularProgressIndicator()),
-                                    style: ElevatedButton.styleFrom(
-                                      primary: Colors.red, // background
-                                      onPrimary: Colors.white, // foreground
-                                    ),
-                                  )
-                                : ElevatedButton(
-                                    onPressed: _onLoginButtonPressed,
-                                    child: Padding(
-                                        padding: EdgeInsets.all(15.0),
-                                        child: Text('Zaczynamy!')),
-                                    style: ElevatedButton.styleFrom(
-                                      primary: Colors.red, // background
-                                      onPrimary: Colors.white, // foreground
+                              FadeAnimation(
+                                  2,
+                                  Center(
+                                    child: Text(
+                                      'Zdalny browar',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 46),
                                     ),
                                   )),
-                        SizedBox(
-                          height: 30.0,
-                        ),
-                        FadeAnimation(
-                            2,
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, '/registration'); //todo, use BLoC
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.transparent, // background
-                                  onPrimary: Colors.white, // foreground
-                                  shadowColor: Colors.transparent),
-                              child: Padding(
-                                  padding: EdgeInsets.all(15.0),
-                                  child: Text('Jesteś nowy? Stwórz konto')),
-                            )),
-                        FadeAnimation(
-                            2,
-                            ElevatedButton(
-                              onPressed: () {
-                                print('reset-password');
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.transparent, // background
-                                  onPrimary: Colors.white, // foreground
-                                  shadowColor: Colors.transparent),
-                              child: Padding(
-                                  padding: EdgeInsets.all(15.0),
-                                  child: Text('Nie pamiętasz hasła?')),
-                            )),
-                      ],
-                    ),
+                              SizedBox(
+                                height: 45.0,
+                              ),
+                              FadeAnimation(
+                                  2,
+                                  TextFormField(
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                    controller: _loginController,
+                                    key: Key('loginInput'),
+                                    decoration: InputDecoration(
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.red),
+                                        ),
+                                        prefixIcon: Icon(
+                                          Icons.alternate_email,
+                                          color: Colors.black,
+                                        ),
+                                        hintStyle:
+                                            TextStyle(color: Colors.black54),
+                                        filled: true,
+                                        fillColor:
+                                            Colors.white.withOpacity(0.5),
+                                        hintText: 'Twój e-mail'),
+                                  )),
+                              SizedBox(
+                                height: 15.0,
+                              ),
+                              FadeAnimation(
+                                  2,
+                                  TextFormField(
+                                    obscureText: true,
+                                    enableSuggestions: false,
+                                    autocorrect: false,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                    controller: _passwordController,
+                                    key: Key('passwordInput'),
+                                    decoration: InputDecoration(
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.red),
+                                        ),
+                                        prefixIcon: Icon(
+                                          Icons.vpn_key,
+                                          color: Colors.black,
+                                        ),
+                                        hintStyle:
+                                            TextStyle(color: Colors.black54),
+                                        filled: true,
+                                        fillColor:
+                                            Colors.white.withOpacity(0.5),
+                                        hintText: 'Twoje hasło'),
+                                  )),
+                              SizedBox(
+                                height: 45.0,
+                              ),
+                              FadeAnimation(
+                                  2,
+                                  state is LoginLoading
+                                      ? ElevatedButton(
+                                          onPressed: () {},
+                                          child: Padding(
+                                              padding: EdgeInsets.all(5.0),
+                                              child:
+                                                  CircularProgressIndicator()),
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Colors.red, // background
+                                            onPrimary:
+                                                Colors.white, // foreground
+                                          ),
+                                        )
+                                      : ElevatedButton(
+                                          onPressed: _onLoginButtonPressed,
+                                          child: Padding(
+                                              padding: EdgeInsets.all(15.0),
+                                              child: Text('Zaczynamy!')),
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Colors.red, // background
+                                            onPrimary:
+                                                Colors.white, // foreground
+                                          ),
+                                        )),
+                              SizedBox(
+                                height: 30.0,
+                              ),
+                              FadeAnimation(
+                                  2,
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(context,
+                                          '/registration'); //todo, use BLoC
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        primary:
+                                            Colors.transparent, // background
+                                        onPrimary: Colors.white, // foreground
+                                        shadowColor: Colors.transparent),
+                                    child: Padding(
+                                        padding: EdgeInsets.all(15.0),
+                                        child:
+                                            Text('Jesteś nowy? Stwórz konto')),
+                                  )),
+                              FadeAnimation(
+                                  2,
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      print('reset-password');
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        primary:
+                                            Colors.transparent, // background
+                                        onPrimary: Colors.white, // foreground
+                                        shadowColor: Colors.transparent),
+                                    child: Padding(
+                                        padding: EdgeInsets.all(15.0),
+                                        child: Text('Nie pamiętasz hasła?')),
+                                  )),
+                            ],
+                          ),
                   ),
                 ),
               ],

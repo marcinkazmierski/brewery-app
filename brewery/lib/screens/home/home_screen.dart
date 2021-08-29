@@ -1,16 +1,10 @@
-import 'package:brewery/screens/home/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:brewery/screens/home/components/body.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<HomeBloc>(context).add(
-      DisplayHomeEvent(), //todo?
-    );
-
     return new WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(

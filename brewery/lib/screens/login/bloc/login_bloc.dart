@@ -15,6 +15,8 @@ abstract class LoginState extends Equatable {
 
 class LoginInitialState extends LoginState {}
 
+class CheckingAuth extends LoginState {}
+
 class LoginLoading extends LoginState {}
 
 class AuthenticationAuthenticated extends LoginState {}
@@ -94,6 +96,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     if (event is AppStarted) {
+      yield CheckingAuth();
       try {
         User user = await this.userRepository.profile();
         yield UserAuthenticatedState(user: user);
