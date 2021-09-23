@@ -141,7 +141,12 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
               color: Colors.black.withOpacity(0.4),
               borderRadius: BorderRadius.circular(30),
             ),
-            child: BackButton(color: Colors.white),
+            child: BackButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                      context, '/home'); //todo, use BLoC
+                },
+                color: Colors.white),
           )),
         ],
       ),

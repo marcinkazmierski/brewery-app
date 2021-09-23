@@ -7,6 +7,8 @@ import 'package:meta/meta.dart';
 abstract class BeerRepository {
   Future<List<Beer>> getBeers();
 
+  Future<Beer> getBeerById(int id);
+
   Future<void> addBeerByCode(String code);
 
   Future<Beer> addReview(Beer beer, String comment, double rate);
@@ -30,6 +32,13 @@ class ApiBeerRepository extends ApiRepository implements BeerRepository {
     });
 
     return beers;
+  }
+
+  @override
+  Future<Beer> getBeerById(int id) async {
+    String authToken = await this.localStorageGateway.getCurrentUserAuthToken();
+    Map decoded = await requestGet('beer', authToken);
+    return Beer.fromJson(decoded["beer"]);
   }
 
   @override

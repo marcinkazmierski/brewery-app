@@ -15,7 +15,6 @@ class BeerCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       child: InkWell(
         onTap: () {
-          print("Container clicked");
           Navigator.pushNamed(context, '/details', arguments: this.beer);
         },
         child: buildBeerCard(context),

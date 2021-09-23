@@ -42,7 +42,7 @@ class _CreateLoginFormState extends State<Body> {
                   .add(DisplayedLoginErrorEvent()));
         }
         if (state is UserAuthenticatedState) {
-          Navigator.pushNamed(context, '/home', arguments: state.user);
+          Navigator.pushNamed(context, '/home');
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(

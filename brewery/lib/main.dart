@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
               providers: [
                 BlocProvider<DetailsBloc>(
                   create: (context) => DetailsBloc(
-                      beerRepository: this.beerRepository, beer: beer),
+                      beerRepository: this.beerRepository)..add(DisplayDetailsEvent(beer: beer)),
                 ),
               ],
               child: DetailsScreen(),

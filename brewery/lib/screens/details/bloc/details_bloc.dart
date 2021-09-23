@@ -18,6 +18,8 @@ abstract class DetailsState extends Equatable {
   String toString() => 'DetailsState { beer: $beer }';
 }
 
+class DetailsInitialState extends DetailsState {}
+
 class DetailsDisplayState extends DetailsState {
   DetailsDisplayState({@required Beer beer}) : super(beer: beer);
 
@@ -88,16 +90,16 @@ class AddNewReviewEvent extends DetailsEvent {
 /// BLOC
 class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   final BeerRepository beerRepository;
-  final Beer beer;
 
-  DetailsBloc({@required this.beerRepository, @required this.beer})
-      : super(DetailsDisplayState(beer: beer)) {
+  DetailsBloc({@required this.beerRepository}) : super(DetailsInitialState()) {
     print(">>>> DetailsBloc START");
   }
 
   @override
   Stream<DetailsState> mapEventToState(DetailsEvent event) async* {
     if (event is DisplayDetailsEvent) {
+      yield DetailsInitialState();
+      // Beer beer = await beerRepository.getBeerById(event.beer.id); // reload
       yield DetailsDisplayState(beer: event.beer);
     } else if (event is AddNewReviewEvent) {
       try {
