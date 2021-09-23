@@ -101,16 +101,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield HomeInitialState();
       try {
         final uri = await getInitialUri();
-        if (uri == null) {
-          print('no initial uri');
-        } else {
-          print('got initial uri: $uri');
-          print(uri.queryParameters);
-          if (uri.queryParameters.containsKey('code')) {
-            print('beer code:' + uri.queryParameters['code']);
-            await beerRepository.addBeerByCode(uri.queryParameters['code']);
-            yield AddedBeerSuccessfulState();
-          }
+        if (uri != null && uri.queryParameters.containsKey('code')) {
+          print("BEER CODE: " + uri.queryParameters['code']);
+          await beerRepository.addBeerByCode(uri.queryParameters['code']);
+          yield AddedBeerSuccessfulState();
         }
       } catch (error) {
         // yield HomeFailureState(error: error.toString());

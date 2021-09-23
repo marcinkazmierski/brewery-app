@@ -18,9 +18,13 @@ class _BeerListFormState extends State<Body> {
 
     barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
         "#ff6666", "Anuluj", true, ScanMode.QR);
-    print(barcodeScanRes);
+
+    final uri = await Uri.parse(barcodeScanRes);
     bool closeModal = false;
-    if (barcodeScanRes != "-1") {
+
+    if (uri != null && uri.queryParameters.containsKey('code')) {
+      print("BEER CODE: " + uri.queryParameters['code']);
+
       showDialog(
           context: context,
           barrierDismissible: false,
@@ -41,7 +45,7 @@ class _BeerListFormState extends State<Body> {
 
       BlocProvider.of<HomeBloc>(context).add(
         AddNewBeerEvent(
-          code: barcodeScanRes,
+          code: uri.queryParameters['code'],
         ),
       );
     }
