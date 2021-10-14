@@ -17,11 +17,15 @@ import 'package:brewery/screens/home/home_screen.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 Future main() async {
   Bloc.observer = SimpleBlocObserver();
   await dotenv.load(fileName: ".env");
   LocalStorageGateway localStorageGateway = new LocalStorageGateway();
+
+  // Initialize Firebase.
+  await Firebase.initializeApp();
 
   runApp(MyApp(
       beerRepository: new ApiBeerRepository(
@@ -71,8 +75,9 @@ class MyApp extends StatelessWidget {
             return MultiBlocProvider(
               providers: [
                 BlocProvider<DetailsBloc>(
-                  create: (context) => DetailsBloc(
-                      beerRepository: this.beerRepository)..add(DisplayDetailsEvent(beer: beer)),
+                  create: (context) =>
+                      DetailsBloc(beerRepository: this.beerRepository)
+                        ..add(DisplayDetailsEvent(beer: beer)),
                 ),
               ],
               child: DetailsScreen(),

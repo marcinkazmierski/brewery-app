@@ -3,6 +3,7 @@ Flutter mobile application.
 
 ## installation/run
 - copy .env.dist to .env
+- generate `android/app/google-services.json` from firebase
 
 ## web version:
 - flutter doctor
