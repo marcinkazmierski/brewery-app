@@ -60,7 +60,9 @@ class _BeerListFormState extends State<Body> {
             content: Text('${state.error}'),
             backgroundColor: Colors.redAccent,
           ));
-          BlocProvider.of<HomeBloc>(context).add(DisplayHomeEvent());
+          Future.delayed(Duration(seconds: 5), () {
+            BlocProvider.of<HomeBloc>(context).add(DisplayHomeEvent());
+          });
         } else if (state is AddedBeerSuccessfulState) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('Dodano pomyślnie nowe piwo do Twojego zbioru'),

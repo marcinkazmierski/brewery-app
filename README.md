@@ -18,7 +18,8 @@ Flutter mobile application.
 
 
 ## TODO
-- firebase logs
 - możliwość edycji oceny,
 - jak już oceniłeś piwo to przycisk powinien być: piwo już oceniłeś
+- naprawić loader jak dodajemy ocenę, jeste teraz biały screen
+- liczba ocen piwa
 -
