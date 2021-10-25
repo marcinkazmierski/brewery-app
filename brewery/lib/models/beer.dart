@@ -8,6 +8,7 @@ class Beer {
   final String description, title, name, icon, backgroundImage, hops, malts;
   final bool active;
   final List<Review> reviews;
+  final Review userBeerReview;
 
   Beer(
       {this.icon,
@@ -21,7 +22,8 @@ class Beer {
       this.hops,
       this.malts,
       this.active,
-      this.reviews});
+      this.reviews,
+      this.userBeerReview});
 
   factory Beer.fromJson(Map<String, dynamic> item) {
     List<Review> reviews = [];
@@ -42,6 +44,9 @@ class Beer {
       malts: item['beerMalts'],
       active: item['beerStatus'] == "unlocked",
       reviews: reviews,
+      userBeerReview: (item["userBeerReview"] != null)
+          ? Review.fromJson(item["userBeerReview"])
+          : null,
     );
   }
 }

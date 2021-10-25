@@ -80,23 +80,33 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
                       children: <Widget>[
                         SvgPicture.asset("assets/icons/star_fill.svg"),
                         SizedBox(height: kDefaultPadding / 4),
-                        RichText(
-                          text: TextSpan(
-                            style: TextStyle(color: Colors.black),
-                            children: [
-                              TextSpan(
-                                text: "  ${beer.rating}/",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w600),
+                        (beer.reviews.length > 0)
+                            ? RichText(
+                                text: TextSpan(
+                                  style: TextStyle(color: Colors.black),
+                                  children: [
+                                    TextSpan(
+                                      text: "  ${beer.rating}/",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    TextSpan(text: "5\n"),
+                                    TextSpan(
+                                      text: "${beer.reviews.length} ocen(y)",
+                                      style: TextStyle(color: kTextLightColor),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : RichText(
+                                text: TextSpan(
+                                  style: TextStyle(color: Colors.black),
+                                  children: [
+                                    TextSpan(text: "brak ocen"),
+                                  ],
+                                ),
                               ),
-                              TextSpan(text: "5\n"),
-                              TextSpan(
-                                text: "666 ocen",
-                                style: TextStyle(color: kTextLightColor),
-                              ),
-                            ],
-                          ),
-                        ),
                       ],
                     ),
                     // Rate this
@@ -104,17 +114,26 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         beer.active
-                            ? ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.redAccent, // background
-                                  onPrimary: Colors.white, // foreground
-                                ),
-                                child: Text("Oceń to piwo!"),
-                                onPressed: () {
-                                  _showRatingDialog(context);
-                                },
-                                //onPressed: _showRatingDialog,
-                              )
+                            ? (beer.userBeerReview != null)
+                                ? ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.redAccent, // background
+                                      onPrimary: Colors.white, // foreground
+                                    ),
+                                    child: Text("To piwo już oceniłeś!"),
+                                    //onPressed: _showRatingDialog,
+                                  )
+                                : ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.redAccent, // background
+                                      onPrimary: Colors.white, // foreground
+                                    ),
+                                    child: Text("Oceń to piwo!"),
+                                    onPressed: () {
+                                      _showRatingDialog(context);
+                                    },
+                                    //onPressed: _showRatingDialog,
+                                  )
                             : ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   primary: Colors.grey, // background
@@ -143,8 +162,7 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
             ),
             child: BackButton(
                 onPressed: () {
-                  Navigator.pushNamed(
-                      context, '/home'); //todo, use BLoC
+                  Navigator.pushNamed(context, '/home'); //todo, use BLoC
                 },
                 color: Colors.white),
           )),

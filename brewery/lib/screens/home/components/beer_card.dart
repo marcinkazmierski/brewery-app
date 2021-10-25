@@ -78,20 +78,31 @@ class BeerCard extends StatelessWidget {
                 style: TextStyle(color: Colors.red, fontSize: 16),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SvgPicture.asset(
-                  "assets/icons/star_fill.svg",
-                  height: 20,
-                ),
-                SizedBox(width: kDefaultPadding / 2),
-                Text(
-                  "${beer.rating}",
-                  style: TextStyle(color: Colors.white),
-                )
-              ],
-            )
+            (beer.reviews.length > 0)
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SvgPicture.asset(
+                        "assets/icons/star_fill.svg",
+                        height: 20,
+                      ),
+                      SizedBox(width: kDefaultPadding / 2),
+                      Text(
+                        "${beer.rating}",
+                        style: TextStyle(color: Colors.white),
+                      )
+                    ],
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(width: kDefaultPadding / 2),
+                      Text(
+                        "brak ocen",
+                        style: TextStyle(color: Colors.white),
+                      )
+                    ],
+                  ),
           ],
         ));
   }
