@@ -27,6 +27,7 @@ class ApiUserRepository extends ApiRepository implements UserRepository {
   @override
   Future<bool> logout() async {
     this.localStorageGateway.setCurrentUserAuthToken("");
+    this.localStorageGateway.setCurrentUserId(-1);
     return true;
   }
 
@@ -50,6 +51,7 @@ class ApiUserRepository extends ApiRepository implements UserRepository {
     Map data = {'email': email, 'password': password};
     Map decoded = await requestPost(data, 'auth/authenticate');
     this.localStorageGateway.setCurrentUserAuthToken(decoded['token']);
+    this.localStorageGateway.setCurrentUserId(decoded['userId']);
     return new User(
         id: decoded['userId'],
         email: decoded['email'],

@@ -13,6 +13,13 @@ class LocalStorageGateway {
     });
   }
 
+  Future<bool> setCurrentUserId(int userId) async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.setInt("userId", userId).then((bool success) {
+      return success;
+    });
+  }
+
   Future<String> getCurrentUserAuthToken() async {
     final SharedPreferences prefs = await _prefs;
     String token = prefs.getString("X-AUTH-TOKEN") ?? "";
@@ -20,5 +27,14 @@ class LocalStorageGateway {
       throw new UnauthorizedException("Current user auth token not exists.");
     }
     return token;
+  }
+
+  Future<int> getCurrentUserId() async {
+    final SharedPreferences prefs = await _prefs;
+    int id = prefs.getInt("userId") ?? -1;
+    if (id < 0) {
+      throw new UnauthorizedException("Current user id not exists.");
+    }
+    return id;
   }
 }
