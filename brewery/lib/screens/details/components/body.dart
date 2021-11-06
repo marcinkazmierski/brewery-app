@@ -123,7 +123,7 @@ class _BeerDetailsFormState extends State<Body> {
                           padding: EdgeInsets.symmetric(
                             horizontal: kDefaultPadding,
                           ),
-                          child: ReviewsList(reviews: state.beer.reviews),
+                          child: ReviewsList(beer: state.beer),
                         ),
                       ],
                     )
