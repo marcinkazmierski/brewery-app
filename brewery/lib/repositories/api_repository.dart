@@ -50,6 +50,28 @@ abstract class ApiRepository {
     }
   }
 
+  Future<Map> requestDelete(Map input, String uri, [String authToken]) async {
+    var body = json.encode(input);
+
+    try {
+      final Response response = await http
+          .delete(Uri.parse(this.apiUrl + uri),
+          headers: {
+            HttpHeaders.contentTypeHeader:
+            "application/json; charset=UTF-8",
+            "X-AUTH-TOKEN": authToken ?? "",
+          },
+          body: body)
+          .timeout(const Duration(seconds: 5));
+
+      return _parseResponse(response);
+    } on TimeoutException catch (_) {
+      throw Exception("A timeout occurred");
+    } on SocketException catch (error) {
+      throw Exception(error.toString());
+    }
+  }
+
   Future<Map> _parseResponse(Response response) async {
     if (response.statusCode == 200) {
       Map decoded = jsonDecode(response.body);

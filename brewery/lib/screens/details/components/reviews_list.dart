@@ -1,13 +1,52 @@
 import 'package:brewery/models/beer.dart';
 import 'package:brewery/models/review.dart';
+import 'package:brewery/screens/details/bloc/details_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:brewery/constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 class ReviewsList extends StatelessWidget {
   final Beer beer;
 
   ReviewsList({this.beer});
+
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.of(context).pop(); // dismiss dialog
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Continue"),
+      onPressed: () {
+        BlocProvider.of<DetailsBloc>(context).add(
+          DeleteReviewEvent(
+            beer: this.beer,
+            review: this.beer.userBeerReview,
+          ),
+        );
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Potwierdzenie operacji"),
+      content: Text("Czy na pewno chcesz usunać swoją recenzję?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +93,7 @@ class ReviewsList extends StatelessWidget {
                   icon: new Icon(Icons.delete_forever, color: Colors.red),
                   tooltip: 'Delete your review',
                   onPressed: () {
-                    // todo
-                    print("TODO");
+                    showAlertDialog(context);
                   },
                 )
               : null,

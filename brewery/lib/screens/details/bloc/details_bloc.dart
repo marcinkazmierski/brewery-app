@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:brewery/models/beer.dart';
+import 'package:brewery/models/review.dart';
 import 'package:brewery/repositories/beer_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
@@ -39,6 +40,20 @@ class AddedReviewSuccessfulState extends DetailsState {
 
   @override
   String toString() => 'AddedReviewSuccessfulState { beer: $beer }';
+}
+
+class DeleteReviewLoadingState extends DetailsState {
+  DeleteReviewLoadingState({@required Beer beer}) : super(beer: beer);
+
+  @override
+  String toString() => 'DeleteReviewLoadingState { beer: $beer }';
+}
+
+class DeletedReviewSuccessfulState extends DetailsState {
+  DeletedReviewSuccessfulState({@required Beer beer}) : super(beer: beer);
+
+  @override
+  String toString() => 'DeletedReviewSuccessfulState { beer: $beer }';
 }
 
 class DetailsFailureState extends DetailsState {
@@ -87,6 +102,19 @@ class AddNewReviewEvent extends DetailsEvent {
       'AddNewReviewEvent { beer: $beer, comment: $comment, rating: $rating }';
 }
 
+class DeleteReviewEvent extends DetailsEvent {
+  final Beer beer;
+  final Review review;
+
+  const DeleteReviewEvent({@required this.beer, @required this.review});
+
+  @override
+  List<Object> get props => [this.beer, this.review];
+
+  @override
+  String toString() => 'DeleteReviewEvent { beer: $beer, comment: $review }';
+}
+
 /// BLOC
 class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   final BeerRepository beerRepository;
@@ -107,6 +135,16 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
         Beer beer = await beerRepository.addReview(
             event.beer, event.comment, event.rating.toDouble());
         yield AddedReviewSuccessfulState(beer: beer);
+      } catch (error) {
+        yield DetailsFailureState(error: error.toString(), beer: event.beer);
+      }
+    } else if (event is DeleteReviewEvent) {
+      print("TODO: delete review");
+
+      try {
+        yield DeleteReviewLoadingState(beer: event.beer);
+        Beer beer = await beerRepository.deleteReview(event.beer, event.review);
+        yield DeletedReviewSuccessfulState(beer: beer);
       } catch (error) {
         yield DetailsFailureState(error: error.toString(), beer: event.beer);
       }

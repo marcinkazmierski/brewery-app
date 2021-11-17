@@ -1,6 +1,7 @@
 import 'package:brewery/exceptions/exception.dart';
 import 'package:brewery/gateways/local_storage_gateway.dart';
 import 'package:brewery/models/beer.dart';
+import 'package:brewery/models/review.dart';
 import 'package:brewery/repositories/api_repository.dart';
 import 'package:meta/meta.dart';
 
@@ -12,6 +13,8 @@ abstract class BeerRepository {
   Future<void> addBeerByCode(String code);
 
   Future<Beer> addReview(Beer beer, String comment, double rate);
+
+  Future<Beer> deleteReview(Beer beer, Review review);
 }
 
 class ApiBeerRepository extends ApiRepository implements BeerRepository {
@@ -58,5 +61,18 @@ class ApiBeerRepository extends ApiRepository implements BeerRepository {
     String authToken = await this.localStorageGateway.getCurrentUserAuthToken();
     Map data = {'beerCode': code};
     await requestPost(data, 'beers', authToken);
+  }
+
+  @override
+  Future<Beer> deleteReview(Beer beer, Review review) async {
+    if (!beer.active) {
+      throw new InvalidBeerStatusException("Beer must by active for you!");
+    }
+    String authToken = await this.localStorageGateway.getCurrentUserAuthToken();
+    Map data = {'reviewId': review.id, 'beerId': beer.id};
+    Map decoded =
+        await requestDelete(data, 'review/' + review.id.toString(), authToken);
+
+    return Beer.fromJson(decoded["beer"]);
   }
 }
