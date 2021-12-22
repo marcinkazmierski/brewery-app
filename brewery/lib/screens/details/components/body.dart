@@ -31,6 +31,13 @@ class _BeerDetailsFormState extends State<Body> {
           ));
           BlocProvider.of<DetailsBloc>(context)
               .add(DisplayDetailsEvent(beer: state.beer));
+        }else if(state is DeletedReviewSuccessfulState){
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Usunięto recenzję pomyślnie!'),
+            backgroundColor: Colors.green,
+          ));
+          BlocProvider.of<DetailsBloc>(context)
+              .add(DisplayDetailsEvent(beer: state.beer));
         }
       },
       child: BlocBuilder<DetailsBloc, DetailsState>(

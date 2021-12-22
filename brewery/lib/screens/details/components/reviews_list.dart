@@ -14,13 +14,13 @@ class ReviewsList extends StatelessWidget {
   showAlertDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = TextButton(
-      child: Text("Cancel"),
+      child: Text("Anuluj"),
       onPressed: () {
         Navigator.of(context).pop(); // dismiss dialog
       },
     );
     Widget continueButton = TextButton(
-      child: Text("Continue"),
+      child: Text("Tak"),
       onPressed: () {
         BlocProvider.of<DetailsBloc>(context).add(
           DeleteReviewEvent(
@@ -28,6 +28,7 @@ class ReviewsList extends StatelessWidget {
             review: this.beer.userBeerReview,
           ),
         );
+        Navigator.of(context).pop(); // dismiss dialog
       },
     );
     // set up the AlertDialog

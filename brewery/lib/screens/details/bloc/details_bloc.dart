@@ -142,6 +142,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       print("TODO: delete review");
 
       try {
+        // TODO: dokończyć widok usuwania, loadingu i message po usunięciu recenzji...
         yield DeleteReviewLoadingState(beer: event.beer);
         Beer beer = await beerRepository.deleteReview(event.beer, event.review);
         yield DeletedReviewSuccessfulState(beer: beer);
