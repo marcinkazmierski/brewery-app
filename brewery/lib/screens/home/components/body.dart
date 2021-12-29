@@ -76,6 +76,10 @@ class _BeerListFormState extends State<Body> {
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
           return Scaffold(
+            bottomSheet: Container(
+                child: Text(kAppVersion,
+                    style: TextStyle(color: Colors.grey, fontSize: 8)),
+                decoration: BoxDecoration(color: Colors.black)),
             body: Stack(
               children: <Widget>[
                 Container(

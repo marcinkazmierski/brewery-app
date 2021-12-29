@@ -176,7 +176,7 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
     final _dialog = RatingDialog(
       title: 'Oceń to piwo!',
       message: 'Wybierz ocenę i dodaj komentarz',
-      initialRating: 1,
+      initialRating: 5,
       commentHint: 'Twój komentarz...',
       image: Container(
         height: 100,

@@ -88,8 +88,7 @@ class ReviewsList extends StatelessWidget {
           title: Text(review.owner.nick),
           subtitle: Text(review.text),
           trailing: (this.beer.userBeerReview != null &&
-                  review.owner.id ==
-                      this.beer.userBeerReview.owner.id) //todo: by review.id
+                  review.id == this.beer.userBeerReview.id)
               ? IconButton(
                   icon: new Icon(Icons.delete_forever, color: Colors.red),
                   tooltip: 'Delete your review',
