@@ -16,6 +16,8 @@ Flutter mobile application.
 ![Main page](screenshots/screenshot_2.png)
 ![Details page](screenshots/screenshot_3.png)
 
+## link referencyjny:
+- np https://zdalny-browar.kazmierski.com.pl/?code=abc
 
 ## TODO
 - możliwość edycji oceny,

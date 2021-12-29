@@ -2,7 +2,6 @@ import 'package:brewery/components/fade_animation.dart';
 import 'package:brewery/screens/home/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:brewery/constants.dart';
-import 'package:uni_links/uni_links.dart';
 import 'beer_carousel.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -60,9 +59,6 @@ class _BeerListFormState extends State<Body> {
             content: Text('${state.error}'),
             backgroundColor: Colors.redAccent,
           ));
-          Future.delayed(Duration(seconds: 5), () {
-            BlocProvider.of<HomeBloc>(context).add(DisplayHomeEvent());
-          });
         } else if (state is AddedBeerSuccessfulState) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('Dodano pomyślnie nowe piwo do Twojego zbioru'),

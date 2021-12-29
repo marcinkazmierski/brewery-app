@@ -90,6 +90,7 @@ class AddNewBeerEvent extends HomeEvent {
 /// BLOC
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   BeerRepository beerRepository;
+  List<Beer> beers;
 
   HomeBloc({@required this.beerRepository}) : super(HomeInitialState()) {
     print(">>>> HomeBloc START");
@@ -118,12 +119,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         yield AddedBeerSuccessfulState();
       } catch (error) {
         yield HomeFailureState(error: error.toString());
+        yield HomeLoadedState(beers: this.beers);
       }
     } else if (event is DisplayHomeEvent) {
       yield HomeLoadingState();
       try {
-        List<Beer> beers = await this.beerRepository.getBeers();
-        yield HomeLoadedState(beers: beers);
+        this.beers = await this.beerRepository.getBeers();
+        yield HomeLoadedState(beers: this.beers);
       } catch (error) {
         yield HomeFailureState(error: error.toString());
       }

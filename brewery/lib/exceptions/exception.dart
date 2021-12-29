@@ -13,3 +13,7 @@ class InvalidBeerStatusException extends ValidateException {
 class UnauthorizedException extends ValidateException {
   UnauthorizedException(String message) : super(message);
 }
+
+class ResponseException extends ValidateException {
+  ResponseException(String message) : super(message);
+}

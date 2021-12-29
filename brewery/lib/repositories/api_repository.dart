@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
+import 'package:brewery/exceptions/exception.dart';
 import 'package:brewery/gateways/local_storage_gateway.dart';
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
@@ -81,7 +82,7 @@ abstract class ApiRepository {
     } else {
       Map decoded = jsonDecode(response.body);
       print(decoded);
-      throw Exception(decoded.containsKey('error')
+      throw ResponseException(decoded.containsKey('error')
           ? decoded['error']['userMessage']
           : "General error");
     }

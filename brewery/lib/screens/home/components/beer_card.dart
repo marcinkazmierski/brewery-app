@@ -68,6 +68,7 @@ class BeerCard extends StatelessWidget {
               padding: EdgeInsets.only(top: kDefaultPadding / 2),
               child: Text(
                 beer.name,
+                textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white, fontSize: 26),
               ),
             ),
@@ -75,6 +76,7 @@ class BeerCard extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
               child: Text(
                 beer.title,
+                textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.red, fontSize: 16),
               ),
             ),
