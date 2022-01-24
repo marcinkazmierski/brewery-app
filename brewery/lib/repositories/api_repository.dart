@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
+import 'package:brewery/constants.dart';
 import 'package:brewery/exceptions/exception.dart';
 import 'package:brewery/gateways/local_storage_gateway.dart';
 import 'package:http/http.dart';
@@ -25,7 +26,7 @@ abstract class ApiRepository {
                 "X-AUTH-TOKEN": authToken ?? "",
               },
               body: body)
-          .timeout(const Duration(seconds: 5));
+          .timeout(const Duration(seconds: kRepositoryTimeout));
 
       return _parseResponse(response);
     } on TimeoutException catch (_) {
@@ -41,7 +42,7 @@ abstract class ApiRepository {
           await http.get(Uri.parse(this.apiUrl + uri), headers: {
         HttpHeaders.contentTypeHeader: "application/json; charset=UTF-8",
         "X-AUTH-TOKEN": authToken ?? "",
-      }).timeout(const Duration(seconds: 5));
+      }).timeout(const Duration(seconds: kRepositoryTimeout));
 
       return _parseResponse(response);
     } on TimeoutException catch (_) {
@@ -63,7 +64,7 @@ abstract class ApiRepository {
             "X-AUTH-TOKEN": authToken ?? "",
           },
           body: body)
-          .timeout(const Duration(seconds: 5));
+          .timeout(const Duration(seconds: kRepositoryTimeout));
 
       return _parseResponse(response);
     } on TimeoutException catch (_) {

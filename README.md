@@ -24,4 +24,11 @@ Flutter mobile application.
 - jak już oceniłeś piwo to przycisk powinien być: piwo już oceniłeś
 - naprawić loader jak dodajemy ocenę, jeste teraz biały screen
 - liczba ocen piwa
--
+- PressDoubleBackToClose dodać nawigacje, czyli przy rejestracji można cofnąć do logowania
+- resetowanie hasła zrobić
+- zrobić menu -> Ustawienia
+
+
+
+## Release AAB file
+- flutter build appbundle --release

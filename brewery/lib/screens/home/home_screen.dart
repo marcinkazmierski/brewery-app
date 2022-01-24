@@ -1,3 +1,4 @@
+import 'package:brewery/components/press_double_back_to_close.dart';
 import 'package:flutter/material.dart';
 import 'package:brewery/screens/home/components/body.dart';
 import 'package:flutter/services.dart';
@@ -5,9 +6,10 @@ import 'package:flutter/services.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new WillPopScope(
-      onWillPop: () async => false,
+    return new PressDoubleBackToClose(
+      message: "Naciśnij ponownie, aby zamknąć",
       child: Scaffold(
+        extendBodyBehindAppBar: true,
         appBar: buildAppBar(context),
         body: Body(),
       ),
@@ -16,9 +18,8 @@ class HomeScreen extends StatelessWidget {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.redAccent,
+      backgroundColor: Colors.transparent,
       elevation: 0,
-      title: Text("Zdalny browar"),
       automaticallyImplyLeading: false,
       actions: <Widget>[
         PopupMenuButton<String>(
@@ -33,7 +34,8 @@ class HomeScreen extends StatelessWidget {
           },
           icon: Icon(Icons.menu),
           itemBuilder: (BuildContext context) {
-            return {'Ustawienia', 'Wyloguj', 'Zamknij'}.map((String choice) {
+            return {/*'Ustawienia',*/ 'Wyloguj', 'Zamknij'}
+                .map((String choice) {
               return PopupMenuItem<String>(
                 value: choice,
                 child: Text(choice),

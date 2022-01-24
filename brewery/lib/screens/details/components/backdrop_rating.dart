@@ -121,7 +121,7 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
                                       onPrimary: Colors.white, // foreground
                                     ),
                                     child: Text("To piwo już oceniłeś!"),
-                                    //onPressed: _showRatingDialog,
+                                    onPressed: () {},
                                   )
                                 : ElevatedButton(
                                     style: ElevatedButton.styleFrom(
@@ -174,8 +174,8 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
   // show the rating dialog
   void _showRatingDialog(BuildContext context) {
     final _dialog = RatingDialog(
-      title: 'Oceń to piwo!',
-      message: 'Wybierz ocenę i dodaj komentarz',
+      title: Text('Oceń to piwo!'),
+      message: Text('Wybierz ocenę i dodaj komentarz'),
       initialRating: 5,
       commentHint: 'Twój komentarz...',
       image: Container(
@@ -184,14 +184,14 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
             image: DecorationImage(
                 fit: BoxFit.fitHeight, image: NetworkImage(beer.icon))),
       ),
-      submitButton: 'Wystaw ocenę!',
+      submitButtonText: 'Wystaw ocenę!',
       onCancelled: () => print('cancelled'),
       onSubmitted: (response) {
         BlocProvider.of<DetailsBloc>(context).add(
           AddNewReviewEvent(
             beer: this.beer,
             comment: response.comment,
-            rating: response.rating,
+            rating: response.rating.toInt(),
           ),
         );
         print('rating: ${response.rating}, comment: ${response.comment}');
