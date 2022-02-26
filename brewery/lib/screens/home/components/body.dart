@@ -5,6 +5,7 @@ import 'package:brewery/constants.dart';
 import 'beer_carousel.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -14,6 +15,12 @@ class Body extends StatefulWidget {
 class _BeerListFormState extends State<Body> {
   Future scanBarcodeNormal() async {
     String barcodeScanRes;
+
+    // Either the permission was already granted before or the user just granted it.
+    if (!await Permission.camera.request().isGranted) {
+      print("Camera permission is denied.");
+      return;
+    }
 
     barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
         "#ff6666", "Anuluj", true, ScanMode.QR);

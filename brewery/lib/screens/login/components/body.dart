@@ -10,8 +10,8 @@ class Body extends StatefulWidget {
 }
 
 class _CreateLoginFormState extends State<Body> {
-  final _loginController = TextEditingController(text: "test"); //todo
-  final _passwordController = TextEditingController(text: "testtest");
+  final _loginController = TextEditingController(); //todo
+  final _passwordController = TextEditingController();
 
   _onLoginButtonPressed() {
     FocusScopeNode currentFocus = FocusScope.of(context);

@@ -1,4 +1,5 @@
 import 'package:brewery/components/fade_animation.dart';
+import 'package:brewery/constants.dart';
 import 'package:brewery/screens/registration/bloc/registration_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,6 +56,10 @@ class _CreateLoginFormState extends State<Body> {
       child: BlocBuilder<RegistrationBloc, RegistrationState>(
         builder: (context, state) {
           return Scaffold(
+            bottomSheet: Container(
+                child: Text(kAppVersion,
+                    style: TextStyle(color: Colors.grey, fontSize: 8)),
+                decoration: BoxDecoration(color: Colors.black)),
             body: Stack(
               children: <Widget>[
                 Container(

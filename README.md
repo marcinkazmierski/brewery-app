@@ -27,8 +27,11 @@ Flutter mobile application.
 - PressDoubleBackToClose dodać nawigacje, czyli przy rejestracji można cofnąć do logowania
 - resetowanie hasła zrobić
 - zrobić menu -> Ustawienia
+- tłumaczenie na EN
+- HomeBloc: cache na beers aby loader wciąż nie chodził tylko odświeżało się w tle
 
 
 
 ## Release AAB file
-- flutter build appbundle --release
+- change version: 1.0.1+3 for new version and new code: version: 1.0.2+4
+- flutter build appbundle --release -> file AAB in build/app/outputs/bundle/release/
