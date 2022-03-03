@@ -16,4 +16,4 @@ const kDefaultShadow = BoxShadow(
   color: Colors.black26,
 );
 
-const String kAppVersion = " version 1.0.8 ";
+const String kAppVersion = " version 1.0.9 ";

@@ -30,6 +30,18 @@ class HomeLoadedState extends HomeState {
   String toString() => 'HomeLoadedState { beers: $beers }';
 }
 
+class HomeCacheLoadedState extends HomeState {
+  final List<Beer> beers;
+
+  HomeCacheLoadedState({this.beers});
+
+  @override
+  List<Object> get props => [beers];
+
+  @override
+  String toString() => 'HomeCacheLoadedState { beers: $beers }';
+}
+
 class DisplayScannerState extends HomeState {}
 
 class AddedBeerSuccessfulState extends HomeState {}
@@ -90,7 +102,7 @@ class AddNewBeerEvent extends HomeEvent {
 /// BLOC
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   BeerRepository beerRepository;
-  List<Beer> beers;
+  List<Beer> beers; //todo: cache
 
   HomeBloc({@required this.beerRepository}) : super(HomeInitialState()) {
     print(">>>> HomeBloc START");
@@ -122,6 +134,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         yield HomeLoadedState(beers: this.beers);
       }
     } else if (event is DisplayHomeEvent) {
+      // if (this.beers != null && this.beers.isNotEmpty) {
+      //   yield HomeCacheLoadedState(beers: this.beers);
+      // } else {
+      //   yield HomeLoadingState();
+      // }
       yield HomeLoadingState();
       try {
         this.beers = await this.beerRepository.getBeers();
