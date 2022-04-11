@@ -1,6 +1,6 @@
 import 'package:brewery/components/fade_animation.dart';
 import 'package:brewery/constants.dart';
-import 'package:brewery/screens/registration/bloc/registration_bloc.dart';
+import 'package:brewery/screens/reset-password/bloc/reset_password_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,7 +11,7 @@ class Body extends StatefulWidget {
 
 class _CreateLoginFormState extends State<Body> {
   final _loginController = TextEditingController();
-  final _nickController = TextEditingController();
+  final _codeController = TextEditingController();
   final _passwordController = TextEditingController();
 
   _onLoginButtonPressed() {
@@ -20,41 +20,37 @@ class _CreateLoginFormState extends State<Body> {
       currentFocus.unfocus();
     }
 
-    //Navigator.pushNamed(context, '/login');
-    BlocProvider.of<RegistrationBloc>(context).add(
-      RegistrationButtonPressedEvent(
-        email: _loginController.text,
-        nick: _nickController.text,
-        password: _passwordController.text,
-      ),
+    //todo: 2 steps: +ResetPasswordWithCodeAndNewPasswordButtonPressedEvent
+    BlocProvider.of<ResetPasswordBloc>(context).add(
+      ResetPasswordButtonPressedEvent(email: _loginController.text),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RegistrationBloc, RegistrationState>(
+    return BlocListener<ResetPasswordBloc, ResetPasswordState>(
       listener: (context, state) {
-        if (state is RegistrationCreateFailureState) {
+        if (state is ResetPasswordCreateFailureState) {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(
                 content: Text('${state.error}'),
                 backgroundColor: Colors.redAccent,
               ))
               .closed
-              .then((value) => BlocProvider.of<RegistrationBloc>(context)
-                  .add(DisplayedRegistrationErrorEvent()));
+              .then((value) => BlocProvider.of<ResetPasswordBloc>(context)
+                  .add(DisplayedResetPasswordErrorEvent()));
         }
-        if (state is RegisteredState) {
+        if (state is PasswordChanged) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             duration: Duration(milliseconds: 6000),
             content: Text(
-                'Zarejestrowano pomyślnie. Sprawdź mail w celu dokończenia procesu!'),
+                'Twoje hasło zmieniono pomyślnie. Zaloguj się do aplikacji wpisując nowe hasło.'),
             backgroundColor: Colors.lightGreen,
           ));
           Navigator.pushNamed(context, '/login');
         }
       },
-      child: BlocBuilder<RegistrationBloc, RegistrationState>(
+      child: BlocBuilder<ResetPasswordBloc, ResetPasswordState>(
         builder: (context, state) {
           return Scaffold(
             bottomSheet: Container(
@@ -98,7 +94,19 @@ class _CreateLoginFormState extends State<Body> {
                               ),
                             )),
                         SizedBox(
-                          height: 45.0,
+                          height: 20.0,
+                        ),
+                        FadeAnimation(
+                            2,
+                            Center(
+                              child: Text(
+                                'Podaj Twój adres e-mail, aby resetować hasło. Następnie na podaną skrzynkę zostanie wysłany tymczasowy kod potrzebny do zakończenia procesu ustawniania nowego hasła dla Twojego konta.',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 14),
+                              ),
+                            )),
+                        SizedBox(
+                          height: 20.0,
                         ),
                         FadeAnimation(
                             2,
@@ -124,60 +132,72 @@ class _CreateLoginFormState extends State<Body> {
                         SizedBox(
                           height: 15.0,
                         ),
-                        FadeAnimation(
-                            2,
-                            TextFormField(
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
-                              controller: _nickController,
-                              key: Key('nickInput'),
-                              decoration: InputDecoration(
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.red),
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.account_circle,
+                        state is ResetCodeSent
+                            ? FadeAnimation(
+                                2,
+                                TextFormField(
+                                  style: TextStyle(
                                     color: Colors.black,
                                   ),
-                                  hintStyle: TextStyle(color: Colors.black54),
-                                  filled: true,
-                                  fillColor: Colors.white.withOpacity(0.5),
-                                  hintText: 'Twój nick'),
-                            )),
-                        SizedBox(
-                          height: 15.0,
-                        ),
-                        FadeAnimation(
-                            2,
-                            TextFormField(
-                              obscureText: true,
-                              enableSuggestions: false,
-                              autocorrect: false,
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
-                              controller: _passwordController,
-                              key: Key('passwordInput'),
-                              decoration: InputDecoration(
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.red),
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.vpn_key,
+                                  controller: _codeController,
+                                  key: Key('codeInput'),
+                                  decoration: InputDecoration(
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.red),
+                                      ),
+                                      prefixIcon: Icon(
+                                        Icons.account_circle,
+                                        color: Colors.black,
+                                      ),
+                                      hintStyle:
+                                          TextStyle(color: Colors.black54),
+                                      filled: true,
+                                      fillColor: Colors.white.withOpacity(0.5),
+                                      hintText: 'Twój kod resetujący z emaila'),
+                                ))
+                            : Container(),
+                        state is ResetCodeSent
+                            ? SizedBox(
+                                height: 15.0,
+                              )
+                            : Container(),
+                        state is ResetCodeSent
+                            ? FadeAnimation(
+                                2,
+                                TextFormField(
+                                  obscureText: true,
+                                  enableSuggestions: false,
+                                  autocorrect: false,
+                                  style: TextStyle(
                                     color: Colors.black,
                                   ),
-                                  hintStyle: TextStyle(color: Colors.black54),
-                                  filled: true,
-                                  fillColor: Colors.white.withOpacity(0.5),
-                                  hintText: 'Twoje hasło'),
-                            )),
-                        SizedBox(
-                          height: 45.0,
-                        ),
+                                  controller: _passwordController,
+                                  key: Key('passwordInput'),
+                                  decoration: InputDecoration(
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.red),
+                                      ),
+                                      prefixIcon: Icon(
+                                        Icons.vpn_key,
+                                        color: Colors.black,
+                                      ),
+                                      hintStyle:
+                                          TextStyle(color: Colors.black54),
+                                      filled: true,
+                                      fillColor: Colors.white.withOpacity(0.5),
+                                      hintText: 'Twoje hasło'),
+                                ))
+                            : Container(),
+                        state is ResetCodeSent
+                            ? SizedBox(
+                                height: 45.0,
+                              )
+                            : Container(),
                         FadeAnimation(
                             2,
-                            state is RegistrationLoading
+                            state is ResetPasswordLoading
                                 ? ElevatedButton(
                                     onPressed: () {},
                                     child: Padding(
@@ -192,7 +212,8 @@ class _CreateLoginFormState extends State<Body> {
                                     onPressed: _onLoginButtonPressed,
                                     child: Padding(
                                         padding: EdgeInsets.all(15.0),
-                                        child: Text('Zarejestruj!')),
+                                        child: Text(
+                                            'Wyślij kod resetujący na podany e-mail!')),
                                     style: ElevatedButton.styleFrom(
                                       primary: Colors.red, // background
                                       onPrimary: Colors.white, // foreground

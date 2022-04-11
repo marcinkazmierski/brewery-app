@@ -12,6 +12,9 @@ abstract class UserRepository {
 
   Future<bool> resetPassword(String email);
 
+  Future<bool> resetPasswordConfirm(
+      String email, String code, String newPassword);
+
   Future<bool> logout();
 
   Future<User> profile();
@@ -61,6 +64,15 @@ class ApiUserRepository extends ApiRepository implements UserRepository {
   @override
   Future<bool> resetPassword(String email) {
     // TODO: implement resetPassword
+    // POST: /reset-password z polem email
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> resetPasswordConfirm(
+      String email, String code, String newPassword) {
+    // TODO: implement
+    // POST reset-password-confirm  z polem email, code, newPassword
     throw UnimplementedError();
   }
 

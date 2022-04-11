@@ -10,7 +10,7 @@ class Body extends StatefulWidget {
 }
 
 class _CreateLoginFormState extends State<Body> {
-  final _loginController = TextEditingController(); //todo
+  final _loginController = TextEditingController();
   final _passwordController = TextEditingController();
 
   _onLoginButtonPressed() {
@@ -200,7 +200,8 @@ class _CreateLoginFormState extends State<Body> {
                                   2,
                                   ElevatedButton(
                                     onPressed: () {
-                                      print('reset-password'); //todo
+                                      Navigator.pushNamed(context,
+                                          '/reset-password'); //todo, use BLoC
                                     },
                                     style: ElevatedButton.styleFrom(
                                         primary:

@@ -12,6 +12,8 @@ import 'package:brewery/screens/login/bloc/login_bloc.dart';
 import 'package:brewery/screens/login/login_screen.dart';
 import 'package:brewery/screens/registration/bloc/registration_bloc.dart';
 import 'package:brewery/screens/registration/registration_screen.dart';
+import 'package:brewery/screens/reset-password/bloc/reset_password_bloc.dart';
+import 'package:brewery/screens/reset-password/reset_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:brewery/screens/home/home_screen.dart';
 import 'package:bloc/bloc.dart';
@@ -67,6 +69,17 @@ class MyApp extends StatelessWidget {
                 ),
               ],
               child: RegistrationScreen(),
+            );
+          },
+          '/reset-password': (context) {
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider<ResetPasswordBloc>(
+                  create: (context) =>
+                      ResetPasswordBloc(userRepository: this.userRepository),
+                ),
+              ],
+              child: ResetPasswordScreen(),
             );
           },
           '/home': (context) => Home(context),
