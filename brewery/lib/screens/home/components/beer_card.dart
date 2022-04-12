@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:brewery/models/beer.dart';
@@ -34,12 +35,19 @@ class BeerCard extends StatelessWidget {
                   opacity: (this.isActive && !beer.active) ? 0.5 : 1,
                   child: Container(
                     margin: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [kDefaultShadow],
-                      image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: NetworkImage(beer.icon),
+                    child: CachedNetworkImage(
+                      placeholder: (context, url) =>
+                          Center(child: const CircularProgressIndicator()),
+                      imageUrl: beer.icon,
+                      imageBuilder: (context, imageProvider) => Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [kDefaultShadow],
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
                       ),
                     ),
                   ),

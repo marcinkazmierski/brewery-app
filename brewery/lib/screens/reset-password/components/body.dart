@@ -14,15 +14,30 @@ class _CreateLoginFormState extends State<Body> {
   final _codeController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  _onLoginButtonPressed() {
+  bool _isObscure = true; //todo bloc
+
+  _onSendCodeButtonPressed() {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (!currentFocus.hasPrimaryFocus) {
       currentFocus.unfocus();
     }
 
-    //todo: 2 steps: +ResetPasswordWithCodeAndNewPasswordButtonPressedEvent
     BlocProvider.of<ResetPasswordBloc>(context).add(
       ResetPasswordButtonPressedEvent(email: _loginController.text),
+    );
+  }
+
+  _onSetNewPasswordButtonPressed() {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+
+    BlocProvider.of<ResetPasswordBloc>(context).add(
+      ResetPasswordWithCodeAndNewPasswordButtonPressedEvent(
+          email: _loginController.text,
+          code: _codeController.text,
+          password: _passwordController.text),
     );
   }
 
@@ -30,15 +45,30 @@ class _CreateLoginFormState extends State<Body> {
   Widget build(BuildContext context) {
     return BlocListener<ResetPasswordBloc, ResetPasswordState>(
       listener: (context, state) {
-        if (state is ResetPasswordCreateFailureState) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(
-                content: Text('${state.error}'),
-                backgroundColor: Colors.redAccent,
-              ))
-              .closed
-              .then((value) => BlocProvider.of<ResetPasswordBloc>(context)
-                  .add(DisplayedResetPasswordErrorEvent()));
+        if (state is ResetPasswordSendCodeFailureState) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('${state.error}'),
+            backgroundColor: Colors.redAccent,
+          ));
+
+          BlocProvider.of<ResetPasswordBloc>(context)
+              .add(DisplayedResetPasswordSendCodeErrorEvent());
+        }
+        if (state is ResetPasswordSetNewPasswordFailureState) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('${state.error}'),
+            backgroundColor: Colors.redAccent,
+          ));
+          BlocProvider.of<ResetPasswordBloc>(context)
+              .add(DisplayedResetPasswordSetNewPasswordErrorEvent());
+        }
+        if (state is ResetCodeSent && state.showToast) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            duration: Duration(milliseconds: 6000),
+            content: Text(
+                'Kod resetujący został wysłany. Sprawdź swoją skrzynkę i wpisz kod oraz nowe hasło w formularzu.'),
+            backgroundColor: Colors.lightGreen,
+          ));
         }
         if (state is PasswordChanged) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -166,7 +196,7 @@ class _CreateLoginFormState extends State<Body> {
                             ? FadeAnimation(
                                 2,
                                 TextFormField(
-                                  obscureText: true,
+                                  obscureText: _isObscure,
                                   enableSuggestions: false,
                                   autocorrect: false,
                                   style: TextStyle(
@@ -183,6 +213,18 @@ class _CreateLoginFormState extends State<Body> {
                                         Icons.vpn_key,
                                         color: Colors.black,
                                       ),
+                                      suffixIcon: IconButton(
+                                          icon: Icon(
+                                            _isObscure
+                                                ? Icons.visibility
+                                                : Icons.visibility_off,
+                                            color: Colors.black,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              _isObscure = !_isObscure;
+                                            });
+                                          }),
                                       hintStyle:
                                           TextStyle(color: Colors.black54),
                                       filled: true,
@@ -208,17 +250,29 @@ class _CreateLoginFormState extends State<Body> {
                                       onPrimary: Colors.white, // foreground
                                     ),
                                   )
-                                : ElevatedButton(
-                                    onPressed: _onLoginButtonPressed,
-                                    child: Padding(
-                                        padding: EdgeInsets.all(15.0),
-                                        child: Text(
-                                            'Wyślij kod resetujący na podany e-mail!')),
-                                    style: ElevatedButton.styleFrom(
-                                      primary: Colors.red, // background
-                                      onPrimary: Colors.white, // foreground
-                                    ),
-                                  )),
+                                : state is ResetPasswordInitialState
+                                    ? ElevatedButton(
+                                        onPressed: _onSendCodeButtonPressed,
+                                        child: Padding(
+                                            padding: EdgeInsets.all(15.0),
+                                            child: Text(
+                                                'Wyślij kod resetujący na podany e-mail!')),
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.red, // background
+                                          onPrimary: Colors.white, // foreground
+                                        ),
+                                      )
+                                    : ElevatedButton(
+                                        onPressed:
+                                            _onSetNewPasswordButtonPressed,
+                                        child: Padding(
+                                            padding: EdgeInsets.all(15.0),
+                                            child: Text('Ustaw nowe hasło')),
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.red, // background
+                                          onPrimary: Colors.white, // foreground
+                                        ),
+                                      )),
                         SizedBox(
                           height: 30.0,
                         ),

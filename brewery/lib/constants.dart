@@ -8,7 +8,7 @@ const kFillStarColor = Color(0xFFFCC419);
 const kDescriptionColor = Colors.black87;
 
 const kDefaultPadding = 20.0;
-const kRepositoryTimeout = 10; //seconds
+const kRepositoryTimeout = 15; //seconds
 
 const kDefaultShadow = BoxShadow(
   offset: Offset(0, 4),
@@ -16,4 +16,4 @@ const kDefaultShadow = BoxShadow(
   color: Colors.black26,
 );
 
-const String kAppVersion = " version 1.0.9 ";
+const String kAppVersion = " version 1.0.11 ";

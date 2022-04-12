@@ -62,18 +62,20 @@ class ApiUserRepository extends ApiRepository implements UserRepository {
   }
 
   @override
-  Future<bool> resetPassword(String email) {
-    // TODO: implement resetPassword
-    // POST: /reset-password z polem email
-    throw UnimplementedError();
+  Future<bool> resetPassword(String email) async {
+    Map data = {'email': email};
+    await requestPost(data, 'auth/reset-password');
+    return true;
   }
 
   @override
   Future<bool> resetPasswordConfirm(
-      String email, String code, String newPassword) {
+      String email, String code, String newPassword) async {
     // TODO: implement
     // POST reset-password-confirm  z polem email, code, newPassword
-    throw UnimplementedError();
+    Map data = {'email': email, 'code': code, 'newPassword': newPassword};
+    await requestPost(data, 'auth/reset-password-confirm');
+    return true;
   }
 
   @override

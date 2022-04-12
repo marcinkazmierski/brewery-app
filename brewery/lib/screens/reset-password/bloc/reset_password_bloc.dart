@@ -16,20 +16,43 @@ class ResetPasswordInitialState extends ResetPasswordState {}
 
 class ResetPasswordLoading extends ResetPasswordState {}
 
-class ResetCodeSent extends ResetPasswordState {}
+class ResetCodeSent extends ResetPasswordState {
+  final bool showToast;
+
+  const ResetCodeSent({this.showToast});
+
+  @override
+  List<Object> get props => [showToast];
+
+  @override
+  String toString() => 'ResetCodeSent { showToast: $showToast }';
+}
 
 class PasswordChanged extends ResetPasswordState {}
 
-class ResetPasswordCreateFailureState extends ResetPasswordState {
+class ResetPasswordSendCodeFailureState extends ResetPasswordState {
   final String error;
 
-  const ResetPasswordCreateFailureState({this.error});
+  const ResetPasswordSendCodeFailureState({this.error});
 
   @override
   List<Object> get props => [error];
 
   @override
-  String toString() => 'ResetPasswordCreateFailureState { error: $error }';
+  String toString() => 'ResetPasswordSendCodeFailureState { error: $error }';
+}
+
+class ResetPasswordSetNewPasswordFailureState extends ResetPasswordState {
+  final String error;
+
+  const ResetPasswordSetNewPasswordFailureState({this.error});
+
+  @override
+  List<Object> get props => [error];
+
+  @override
+  String toString() =>
+      'ResetPasswordSetNewPasswordFailureState { error: $error }';
 }
 
 ///EVENT
@@ -69,7 +92,13 @@ class ResetPasswordWithCodeAndNewPasswordButtonPressedEvent
       'ResetPasswordWithCodeAndNewPasswordButtonPressedEvent { email: $email, code: $code, password: ### }';
 }
 
-class DisplayedResetPasswordErrorEvent extends ResetPasswordEvent {
+class DisplayedResetPasswordSendCodeErrorEvent extends ResetPasswordEvent {
+  @override
+  List<Object> get props => [];
+}
+
+class DisplayedResetPasswordSetNewPasswordErrorEvent
+    extends ResetPasswordEvent {
   @override
   List<Object> get props => [];
 }
@@ -89,22 +118,27 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
       try {
         yield ResetPasswordLoading();
         bool result = await this.userRepository.resetPassword(event.email);
-        yield ResetCodeSent();
+        yield ResetCodeSent(showToast: true);
       } catch (error) {
-        yield ResetPasswordCreateFailureState(error: error.toString());
+        yield ResetPasswordSendCodeFailureState(error: error.toString());
       }
     }
     if (event is ResetPasswordWithCodeAndNewPasswordButtonPressedEvent) {
       try {
         yield ResetPasswordLoading();
-        bool result = await this.userRepository.resetPassword(event.email);
+        bool result = await this
+            .userRepository
+            .resetPasswordConfirm(event.email, event.code, event.password);
         yield PasswordChanged();
       } catch (error) {
-        yield ResetPasswordCreateFailureState(error: error.toString());
+        yield ResetPasswordSetNewPasswordFailureState(error: error.toString());
       }
     }
-    if (event is DisplayedResetPasswordErrorEvent) {
+    if (event is DisplayedResetPasswordSendCodeErrorEvent) {
       yield ResetPasswordInitialState();
+    }
+    if (event is DisplayedResetPasswordSetNewPasswordErrorEvent) {
+      yield ResetCodeSent(showToast: false);
     }
   }
 }

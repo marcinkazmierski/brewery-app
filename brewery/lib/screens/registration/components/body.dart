@@ -13,6 +13,7 @@ class _CreateLoginFormState extends State<Body> {
   final _loginController = TextEditingController();
   final _nickController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _isObscure = true; //todo bloc
 
   _onLoginButtonPressed() {
     FocusScopeNode currentFocus = FocusScope.of(context);
@@ -151,7 +152,7 @@ class _CreateLoginFormState extends State<Body> {
                         FadeAnimation(
                             2,
                             TextFormField(
-                              obscureText: true,
+                              obscureText: _isObscure,
                               enableSuggestions: false,
                               autocorrect: false,
                               style: TextStyle(
@@ -167,6 +168,18 @@ class _CreateLoginFormState extends State<Body> {
                                     Icons.vpn_key,
                                     color: Colors.black,
                                   ),
+                                  suffixIcon: IconButton(
+                                      icon: Icon(
+                                        _isObscure
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        color: Colors.black,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _isObscure = !_isObscure;
+                                        });
+                                      }),
                                   hintStyle: TextStyle(color: Colors.black54),
                                   filled: true,
                                   fillColor: Colors.white.withOpacity(0.5),
