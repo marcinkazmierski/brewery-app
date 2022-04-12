@@ -63,6 +63,9 @@ class ApiUserRepository extends ApiRepository implements UserRepository {
 
   @override
   Future<bool> resetPassword(String email) async {
+    if (email.isEmpty ) {
+      throw new ValidateException("Empty email.");
+    }
     Map data = {'email': email};
     await requestPost(data, 'auth/reset-password');
     return true;
@@ -71,8 +74,9 @@ class ApiUserRepository extends ApiRepository implements UserRepository {
   @override
   Future<bool> resetPasswordConfirm(
       String email, String code, String newPassword) async {
-    // TODO: implement
-    // POST reset-password-confirm  z polem email, code, newPassword
+    if (email.isEmpty || code.isEmpty || newPassword.isEmpty) {
+      throw new ValidateException("Empty email or code or password.");
+    }
     Map data = {'email': email, 'code': code, 'newPassword': newPassword};
     await requestPost(data, 'auth/reset-password-confirm');
     return true;

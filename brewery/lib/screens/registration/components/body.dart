@@ -108,7 +108,9 @@ class _CreateLoginFormState extends State<Body> {
                                 color: Colors.black,
                               ),
                               controller: _loginController,
+                              autofillHints: [AutofillHints.email],
                               key: Key('loginInput'),
+                              autocorrect: false,
                               decoration: InputDecoration(
                                   focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(color: Colors.red),
@@ -133,6 +135,7 @@ class _CreateLoginFormState extends State<Body> {
                               ),
                               controller: _nickController,
                               key: Key('nickInput'),
+                              autocorrect: false,
                               decoration: InputDecoration(
                                   focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(color: Colors.red),

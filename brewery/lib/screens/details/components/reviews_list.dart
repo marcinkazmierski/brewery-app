@@ -76,8 +76,7 @@ class ReviewsList extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: review.rating.toString() + "/",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      style: TextStyle(fontWeight: FontWeight.w600),
                     ),
                     TextSpan(text: "5\n"),
                   ],

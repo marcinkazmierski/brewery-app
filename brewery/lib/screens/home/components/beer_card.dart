@@ -30,29 +30,26 @@ class BeerCard extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: Stack(children: <Widget>[
-                AnimatedOpacity(
-                  duration: Duration(milliseconds: 350),
-                  opacity: (this.isActive && !beer.active) ? 0.5 : 1,
-                  child: Container(
-                    margin: EdgeInsets.all(5),
-                    child: CachedNetworkImage(
-                      placeholder: (context, url) =>
-                          Center(child: const CircularProgressIndicator()),
-                      imageUrl: beer.icon,
-                      imageBuilder: (context, imageProvider) => Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [kDefaultShadow],
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.fill,
-                          ),
+                Container(
+                  margin: EdgeInsets.all(5),
+                  child: CachedNetworkImage(
+                    placeholder: (context, url) =>
+                        Center(child: const CircularProgressIndicator()),
+                    imageUrl: beer.icon,
+                    imageBuilder: (context, imageProvider) => Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [kDefaultShadow],
+                        image: DecorationImage(
+                          opacity: (!beer.active) ? 0.5 : 1,
+                          image: imageProvider,
+                          fit: BoxFit.fill,
                         ),
                       ),
                     ),
                   ),
                 ),
-                (this.isActive && !beer.active)
+                (!beer.active)
                     ? Center(
                         child: Padding(
                         padding:

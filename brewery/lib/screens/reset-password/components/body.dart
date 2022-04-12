@@ -145,6 +145,8 @@ class _CreateLoginFormState extends State<Body> {
                                 color: Colors.black,
                               ),
                               controller: _loginController,
+                              autocorrect: false,
+                              autofillHints: [AutofillHints.email],
                               key: Key('loginInput'),
                               decoration: InputDecoration(
                                   focusedBorder: UnderlineInputBorder(

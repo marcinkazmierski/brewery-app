@@ -97,6 +97,8 @@ class _CreateLoginFormState extends State<Body> {
                               FadeAnimation(
                                   2,
                                   TextFormField(
+                                    autocorrect: false,
+                                    autofillHints: [AutofillHints.email],
                                     style: TextStyle(
                                       color: Colors.black,
                                     ),
