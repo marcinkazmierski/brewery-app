@@ -25,11 +25,9 @@ abstract class UserRepository {
 }
 
 class ApiUserRepository extends ApiRepository implements UserRepository {
-  final String apiUrl;
-  LocalStorageGateway localStorageGateway;
+  ApiUserRepository({required String apiUrl, required LocalStorageGateway localStorageGateway}) : super(apiUrl: apiUrl, localStorageGateway: localStorageGateway);
 
-  ApiUserRepository(
-      {@required this.apiUrl, @required this.localStorageGateway});
+
 
   @override
   Future<bool> logout() async {

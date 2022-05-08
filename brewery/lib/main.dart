@@ -24,20 +24,24 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 Future main() async {
-  Bloc.observer = SimpleBlocObserver();
   await dotenv.load(fileName: ".env");
   LocalStorageGateway localStorageGateway = new LocalStorageGateway();
 
   // Initialize Firebase.
   await Firebase.initializeApp();
+  BlocOverrides.runZoned(
+        () {
+          runApp(MyApp(
+              beerRepository: new ApiBeerRepository(
+                  apiUrl: dotenv.env['API_URL'].toString(),
+                  localStorageGateway: localStorageGateway),
+              userRepository: new ApiUserRepository(
+                  apiUrl: dotenv.env['API_URL'].toString(),
+                  localStorageGateway: localStorageGateway)));
+    },
+    blocObserver: SimpleBlocObserver(),
+  );
 
-  runApp(MyApp(
-      beerRepository: new ApiBeerRepository(
-          apiUrl: dotenv.env['API_URL'].toString(),
-          localStorageGateway: localStorageGateway),
-      userRepository: new ApiUserRepository(
-          apiUrl: dotenv.env['API_URL'].toString(),
-          localStorageGateway: localStorageGateway)));
 }
 
 class MyApp extends StatelessWidget {
@@ -45,9 +49,9 @@ class MyApp extends StatelessWidget {
   UserRepository userRepository;
 
   MyApp(
-      {@required
+      {required
           this.beerRepository,
-      @required
+      required
           this.userRepository}); // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -87,7 +91,7 @@ class MyApp extends StatelessWidget {
           },
           '/home': (context) => Home(context),
           '/details': (context) {
-            final Beer beer = ModalRoute.of(context).settings.arguments as Beer;
+            final Beer beer = ModalRoute.of(context)?.settings.arguments as Beer;
             return MultiBlocProvider(
               providers: [
                 BlocProvider<DetailsBloc>(

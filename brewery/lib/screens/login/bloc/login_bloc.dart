@@ -24,7 +24,7 @@ class AuthenticationAuthenticated extends LoginState {}
 class UserAuthenticatedState extends LoginState {
   final User user;
 
-  UserAuthenticatedState({this.user});
+  UserAuthenticatedState({required this.user});
 
   @override
   List<Object> get props => [user];
@@ -36,7 +36,7 @@ class UserAuthenticatedState extends LoginState {
 class LoginCreateFailureState extends LoginState {
   final String error;
 
-  const LoginCreateFailureState({this.error});
+  const LoginCreateFailureState({required this.error});
 
   @override
   List<Object> get props => [error];
@@ -62,14 +62,17 @@ class LogoutEvent extends LoginEvent {
   @override
   String toString() => 'LogoutEvent {}';
 }
-
+// class Test {
+//   final String x;
+//   Test({required this.x});
+// }
 class LoginButtonPressedEvent extends LoginEvent {
   final String email;
   final String password;
 
   const LoginButtonPressedEvent({
-    @required this.email,
-    @required this.password,
+    required this.email,
+    required this.password,
   });
 
   @override
@@ -89,7 +92,7 @@ class DisplayedLoginErrorEvent extends LoginEvent {
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   UserRepository userRepository;
 
-  LoginBloc({@required this.userRepository}) : super(LoginInitialState()) {
+  LoginBloc({required this.userRepository}) : super(LoginInitialState()) {
     print(">>>> LoginBloc START");
   }
 

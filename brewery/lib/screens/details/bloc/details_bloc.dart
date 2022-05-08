@@ -7,10 +7,17 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 
 ///STATE
-abstract class DetailsState extends Equatable {
+
+abstract class DetailsInitState extends Equatable {
+  const DetailsInitState();
+
+  @override
+  List<Object> get props => [];
+}
+  class DetailsState extends DetailsInitState {
   final Beer beer;
 
-  DetailsState({@required this.beer});
+  DetailsState({required this.beer});
 
   @override
   List<Object> get props => [beer];
@@ -19,38 +26,38 @@ abstract class DetailsState extends Equatable {
   String toString() => 'DetailsState { beer: $beer }';
 }
 
-class DetailsInitialState extends DetailsState {}
+class DetailsInitialState extends DetailsInitState {}
 
 class DetailsDisplayState extends DetailsState {
-  DetailsDisplayState({@required Beer beer}) : super(beer: beer);
+  DetailsDisplayState({required Beer beer}) : super(beer: beer);
 
   @override
   String toString() => 'DetailsDisplayState { beer: $beer }';
 }
 
 class AddReviewLoadingState extends DetailsState {
-  AddReviewLoadingState({@required Beer beer}) : super(beer: beer);
+  AddReviewLoadingState({required Beer beer}) : super(beer: beer);
 
   @override
   String toString() => 'AddReviewLoadingState { beer: $beer }';
 }
 
 class AddedReviewSuccessfulState extends DetailsState {
-  AddedReviewSuccessfulState({@required Beer beer}) : super(beer: beer);
+  AddedReviewSuccessfulState({required Beer beer}) : super(beer: beer);
 
   @override
   String toString() => 'AddedReviewSuccessfulState { beer: $beer }';
 }
 
 class DeleteReviewLoadingState extends DetailsState {
-  DeleteReviewLoadingState({@required Beer beer}) : super(beer: beer);
+  DeleteReviewLoadingState({required Beer beer}) : super(beer: beer);
 
   @override
   String toString() => 'DeleteReviewLoadingState { beer: $beer }';
 }
 
 class DeletedReviewSuccessfulState extends DetailsState {
-  DeletedReviewSuccessfulState({@required Beer beer}) : super(beer: beer);
+  DeletedReviewSuccessfulState({required Beer beer}) : super(beer: beer);
 
   @override
   String toString() => 'DeletedReviewSuccessfulState { beer: $beer }';
@@ -59,7 +66,7 @@ class DeletedReviewSuccessfulState extends DetailsState {
 class DetailsFailureState extends DetailsState {
   final String error;
 
-  DetailsFailureState({@required this.error, @required Beer beer})
+  DetailsFailureState({required this.error, required Beer beer})
       : super(beer: beer);
 
   @override
@@ -77,7 +84,7 @@ abstract class DetailsEvent extends Equatable {
 class DisplayDetailsEvent extends DetailsEvent {
   final Beer beer;
 
-  const DisplayDetailsEvent({@required this.beer});
+  const DisplayDetailsEvent({required this.beer});
 
   @override
   List<Object> get props => [];
@@ -92,7 +99,7 @@ class AddNewReviewEvent extends DetailsEvent {
   final int rating;
 
   const AddNewReviewEvent(
-      {@required this.beer, @required this.comment, @required this.rating});
+      {required this.beer, required this.comment, required this.rating});
 
   @override
   List<Object> get props => [this.beer, this.comment, this.rating];
@@ -106,7 +113,7 @@ class DeleteReviewEvent extends DetailsEvent {
   final Beer beer;
   final Review review;
 
-  const DeleteReviewEvent({@required this.beer, @required this.review});
+  const DeleteReviewEvent({required this.beer, required this.review});
 
   @override
   List<Object> get props => [this.beer, this.review];
@@ -116,15 +123,15 @@ class DeleteReviewEvent extends DetailsEvent {
 }
 
 /// BLOC
-class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
+class DetailsBloc extends Bloc<DetailsEvent, DetailsInitState> {
   final BeerRepository beerRepository;
 
-  DetailsBloc({@required this.beerRepository}) : super(DetailsInitialState()) {
+  DetailsBloc({required this.beerRepository}) : super(DetailsInitialState()) {
     print(">>>> DetailsBloc START");
   }
 
   @override
-  Stream<DetailsState> mapEventToState(DetailsEvent event) async* {
+  Stream<DetailsInitState> mapEventToState(DetailsEvent event) async* {
     if (event is DisplayDetailsEvent) {
       yield DetailsInitialState();
       // Beer beer = await beerRepository.getBeerById(event.beer.id); // reload

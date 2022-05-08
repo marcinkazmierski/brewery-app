@@ -24,7 +24,7 @@ class RegisterGuestLoadingState extends StartState {}
 class GuestAuthenticatedState extends StartState {
   final User user;
 
-  GuestAuthenticatedState({this.user});
+  GuestAuthenticatedState({required this.user});
 
   @override
   List<Object> get props => [user];
@@ -36,7 +36,7 @@ class GuestAuthenticatedState extends StartState {
 class StartFailureState extends StartState {
   final String error;
 
-  const StartFailureState({@required this.error});
+  const StartFailureState({required this.error});
 
   @override
   List<Object> get props => [error];
@@ -58,7 +58,7 @@ class ApplicationStarted extends StartEvent {
 class LoginGuestButtonPressedEvent extends StartEvent {
   final String nick;
 
-  LoginGuestButtonPressedEvent({@required this.nick});
+  LoginGuestButtonPressedEvent({required this.nick});
 
   @override
   List<Object> get props => [this.nick];
@@ -76,7 +76,7 @@ class DisplayedLoginErrorEvent extends StartEvent {
 class StartBloc extends Bloc<StartEvent, StartState> {
   UserRepository userRepository;
 
-  StartBloc({@required this.userRepository}) : super(StartInitialState()) {
+  StartBloc({required this.userRepository}) : super(StartInitialState()) {
     print(">>>> StartBloc START");
   }
 

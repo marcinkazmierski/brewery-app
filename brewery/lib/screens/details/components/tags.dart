@@ -6,8 +6,8 @@ import '../../../constants.dart';
 
 class Tags extends StatelessWidget {
   const Tags({
-    Key key,
-    @required this.beer,
+    Key? key,
+    required this.beer,
   }) : super(key: key);
 
   final Beer beer;

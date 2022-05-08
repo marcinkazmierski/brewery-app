@@ -9,11 +9,11 @@ class Review {
   final String createdAt;
 
   Review(
-      {@required this.id,
-      @required this.owner,
-      @required this.text,
-      @required this.rating,
-      this.createdAt});
+      {required this.id,
+      required this.owner,
+      required this.text,
+      required this.rating,
+        required this.createdAt});
 
   factory Review.fromJson(Map<String, dynamic> json) {
     User owner = User.fromJson(json['reviewOwner']);

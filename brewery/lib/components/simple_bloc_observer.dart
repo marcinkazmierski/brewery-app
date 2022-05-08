@@ -3,7 +3,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 class SimpleBlocObserver extends BlocObserver {
   @override
-  void onEvent(Bloc bloc, Object event) {
+  void onEvent(Bloc bloc, Object? event) {
     print('onEvent $event');
     FirebaseCrashlytics.instance.setCustomKey("onEvent", event.toString());
     super.onEvent(bloc, event);

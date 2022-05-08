@@ -19,7 +19,7 @@ class ResetPasswordLoading extends ResetPasswordState {}
 class ResetCodeSent extends ResetPasswordState {
   final bool showToast;
 
-  const ResetCodeSent({this.showToast});
+  const ResetCodeSent({required this.showToast});
 
   @override
   List<Object> get props => [showToast];
@@ -33,7 +33,7 @@ class PasswordChanged extends ResetPasswordState {}
 class ResetPasswordSendCodeFailureState extends ResetPasswordState {
   final String error;
 
-  const ResetPasswordSendCodeFailureState({this.error});
+  const ResetPasswordSendCodeFailureState({required this.error});
 
   @override
   List<Object> get props => [error];
@@ -45,7 +45,7 @@ class ResetPasswordSendCodeFailureState extends ResetPasswordState {
 class ResetPasswordSetNewPasswordFailureState extends ResetPasswordState {
   final String error;
 
-  const ResetPasswordSetNewPasswordFailureState({this.error});
+  const ResetPasswordSetNewPasswordFailureState({ required this.error});
 
   @override
   List<Object> get props => [error];
@@ -63,7 +63,7 @@ abstract class ResetPasswordEvent extends Equatable {
 class ResetPasswordButtonPressedEvent extends ResetPasswordEvent {
   final String email;
 
-  const ResetPasswordButtonPressedEvent({@required this.email});
+  const ResetPasswordButtonPressedEvent({required this.email});
 
   @override
   List<Object> get props => [this.email];
@@ -79,9 +79,9 @@ class ResetPasswordWithCodeAndNewPasswordButtonPressedEvent
   final String password;
 
   const ResetPasswordWithCodeAndNewPasswordButtonPressedEvent({
-    @required this.email,
-    @required this.code,
-    @required this.password,
+    required this.email,
+    required this.code,
+    required this.password,
   });
 
   @override
@@ -107,7 +107,7 @@ class DisplayedResetPasswordSetNewPasswordErrorEvent
 class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
   UserRepository userRepository;
 
-  ResetPasswordBloc({@required this.userRepository})
+  ResetPasswordBloc({required this.userRepository})
       : super(ResetPasswordInitialState()) {
     print(">>>> ResetPasswordBloc START");
   }

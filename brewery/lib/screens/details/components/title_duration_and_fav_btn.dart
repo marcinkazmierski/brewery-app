@@ -5,8 +5,8 @@ import '../../../constants.dart';
 
 class TitleDurationAndFabBtn extends StatelessWidget {
   const TitleDurationAndFabBtn({
-    Key key,
-    @required this.beer,
+    Key? key,
+    required this.beer,
   }) : super(key: key);
 
   final Beer beer;

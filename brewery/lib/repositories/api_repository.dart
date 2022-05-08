@@ -12,9 +12,9 @@ abstract class ApiRepository {
   final String apiUrl;
   LocalStorageGateway localStorageGateway;
 
-  ApiRepository({@required this.apiUrl, @required this.localStorageGateway});
+  ApiRepository({required this.apiUrl, required this.localStorageGateway});
 
-  Future<Map> requestPost(Map input, String uri, [String authToken]) async {
+  Future<Map> requestPost(Map input, String uri, [String? authToken]) async {
     var body = json.encode(input);
 
     try {
@@ -36,7 +36,7 @@ abstract class ApiRepository {
     }
   }
 
-  Future<Map> requestGet(String uri, [String authToken]) async {
+  Future<Map> requestGet(String uri, [String? authToken]) async {
     try {
       final Response response =
           await http.get(Uri.parse(this.apiUrl + uri), headers: {
@@ -52,7 +52,7 @@ abstract class ApiRepository {
     }
   }
 
-  Future<Map> requestDelete(Map input, String uri, [String authToken]) async {
+  Future<Map> requestDelete(Map input, String uri, [String? authToken]) async {
     var body = json.encode(input);
 
     try {
@@ -79,7 +79,7 @@ abstract class ApiRepository {
       Map decoded = jsonDecode(response.body);
       return decoded;
     } else if (response.statusCode == 204) {
-      return null;
+      return Map();
     } else {
       Map decoded = jsonDecode(response.body);
       print(decoded);

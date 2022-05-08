@@ -21,7 +21,7 @@ class RegistrationLoading extends RegistrationState {}
 class RegistrationCreateFailureState extends RegistrationState {
   final String error;
 
-  const RegistrationCreateFailureState({this.error});
+  const RegistrationCreateFailureState({required this.error});
 
   @override
   List<Object> get props => [error];
@@ -41,9 +41,9 @@ class RegistrationButtonPressedEvent extends RegistrationEvent {
   final String password;
 
   const RegistrationButtonPressedEvent({
-    @required this.email,
-    @required this.nick,
-    @required this.password,
+    required this.email,
+    required this.nick,
+    required this.password,
   });
 
   @override
@@ -63,7 +63,7 @@ class DisplayedRegistrationErrorEvent extends RegistrationEvent {
 class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
   UserRepository userRepository;
 
-  RegistrationBloc({@required this.userRepository})
+  RegistrationBloc({required this.userRepository})
       : super(RegistrationInitialState()) {
     print(">>>> RegistrationBloc START");
   }

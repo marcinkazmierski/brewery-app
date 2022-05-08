@@ -7,18 +7,15 @@ import 'beer_card.dart';
 class BeerCarousel extends StatefulWidget {
   final List<Beer> beers;
 
-  BeerCarousel({this.beers});
+  BeerCarousel({required this.beers});
 
   @override
-  _BeerCarouselState createState() => _BeerCarouselState(beers: this.beers);
+  _BeerCarouselState createState() => _BeerCarouselState();
 }
 
 class _BeerCarouselState extends State<BeerCarousel> {
-  final List<Beer> beers;
-  PageController _pageController;
+  late PageController _pageController;
   int initialPage = 0;
-
-  _BeerCarouselState({this.beers});
 
   @override
   void initState() {
@@ -51,7 +48,7 @@ class _BeerCarouselState extends State<BeerCarousel> {
           },
           controller: _pageController,
           physics: ClampingScrollPhysics(),
-          itemCount: this.beers.length,
+          itemCount: widget.beers.length,
           // we have 3 demo beers
           itemBuilder: (context, index) => buildBeerSlider(index),
         ),
@@ -65,7 +62,7 @@ class _BeerCarouselState extends State<BeerCarousel> {
           double value = 0;
           value = index - initialPage.toDouble();
           if (_pageController.position.haveDimensions) {
-            value = index - _pageController.page;
+            value = index - _pageController.page!;
           }
 
           // We use 0.038 because 180*0.038 = 7 almost and we need to rotate our poster 7 degree
@@ -78,7 +75,7 @@ class _BeerCarouselState extends State<BeerCarousel> {
             child: Transform.rotate(
               angle: math.pi * value,
               child: BeerCard(
-                  beer: this.beers[index], isActive: index == initialPage),
+                  beer: widget.beers[index], isActive: index == initialPage),
             ),
           );
         },

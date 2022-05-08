@@ -5,7 +5,7 @@ import '../../../constants.dart';
 class TagsCard extends StatelessWidget {
   final String tag;
 
-  const TagsCard({Key key, this.tag}) : super(key: key);
+  const TagsCard({Key? key, required this.tag}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

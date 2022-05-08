@@ -8,22 +8,22 @@ class Beer {
   final String description, title, name, icon, backgroundImage, hops, malts;
   final bool active;
   final List<Review> reviews;
-  final Review userBeerReview;
+  final Review? userBeerReview;
 
   Beer(
-      {this.icon,
-      this.backgroundImage,
-      this.title,
-      this.name,
-      this.id,
-      this.rating,
-      this.tags,
-      this.description,
-      this.hops,
-      this.malts,
-      this.active,
-      this.reviews,
-      this.userBeerReview});
+      {required this.icon,
+        required this.backgroundImage,
+        required  this.title,
+        required this.name,
+        required  this.id,
+        required  this.rating,
+        required   this.tags,
+        required   this.description,
+        required   this.hops,
+        required   this.malts,
+        required   this.active,
+        required   this.reviews,
+        required   this.userBeerReview});
 
   factory Beer.fromJson(Map<String, dynamic> item) {
     List<Review> reviews = [];

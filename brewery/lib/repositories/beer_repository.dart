@@ -18,11 +18,11 @@ abstract class BeerRepository {
 }
 
 class ApiBeerRepository extends ApiRepository implements BeerRepository {
-  final String apiUrl;
-  LocalStorageGateway localStorageGateway;
+  ApiBeerRepository({required String apiUrl, required LocalStorageGateway localStorageGateway}) : super(apiUrl: apiUrl, localStorageGateway: localStorageGateway);
 
-  ApiBeerRepository(
-      {@required this.apiUrl, @required this.localStorageGateway});
+
+
+
 
   @override
   Future<List<Beer>> getBeers() async {

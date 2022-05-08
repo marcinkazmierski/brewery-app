@@ -11,9 +11,9 @@ class BackdropAndRating extends StatefulWidget {
   final Beer beer;
 
   const BackdropAndRating({
-    Key key,
-    @required this.size,
-    @required this.beer,
+    Key? key,
+    required this.size,
+    required this.beer,
   }) : super(key: key);
 
   @override
@@ -26,8 +26,8 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
   final Beer beer;
 
   _BackdropAndRatingState({
-    @required this.size,
-    @required this.beer,
+    required this.size,
+    required this.beer,
   });
 
   @override

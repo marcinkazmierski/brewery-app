@@ -7,8 +7,8 @@ class PressDoubleBackToClose extends StatefulWidget {
   final int waitForSecondBackPress;
 
   const PressDoubleBackToClose({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.message = "Press back again to exit",
     this.waitForSecondBackPress = 2,
   }) : super(key: key);
@@ -19,7 +19,7 @@ class PressDoubleBackToClose extends StatefulWidget {
 
 class _DoubleBackState extends State<PressDoubleBackToClose> {
   bool tapped = false;
-  DateTime currentBackPressTime;
+  DateTime? currentBackPressTime;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class _DoubleBackState extends State<PressDoubleBackToClose> {
       onWillPop: () async {
         DateTime now = DateTime.now();
         if (currentBackPressTime == null ||
-            now.difference(currentBackPressTime) >
+            now.difference(currentBackPressTime!) >
                 Duration(seconds: widget.waitForSecondBackPress)) {
           currentBackPressTime = now;
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(

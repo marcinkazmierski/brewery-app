@@ -21,7 +21,7 @@ class HomeLoadingState extends HomeState {}
 class HomeLoadedState extends HomeState {
   final List<Beer> beers;
 
-  HomeLoadedState({this.beers});
+  HomeLoadedState({required this.beers});
 
   @override
   List<Object> get props => [beers];
@@ -33,7 +33,7 @@ class HomeLoadedState extends HomeState {
 class HomeCacheLoadedState extends HomeState {
   final List<Beer> beers;
 
-  HomeCacheLoadedState({this.beers});
+  HomeCacheLoadedState({required this.beers});
 
   @override
   List<Object> get props => [beers];
@@ -49,7 +49,7 @@ class AddedBeerSuccessfulState extends HomeState {}
 class HomeFailureState extends HomeState {
   final String error;
 
-  const HomeFailureState({this.error});
+  const HomeFailureState({required this.error});
 
   @override
   List<Object> get props => [error];
@@ -90,7 +90,7 @@ class DisplayScannerEvent extends HomeEvent {
 class AddNewBeerEvent extends HomeEvent {
   final String code;
 
-  const AddNewBeerEvent({@required this.code});
+  const AddNewBeerEvent({required this.code});
 
   @override
   List<Object> get props => [this.code];
@@ -102,9 +102,9 @@ class AddNewBeerEvent extends HomeEvent {
 /// BLOC
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   BeerRepository beerRepository;
-  List<Beer> beers; //todo: cache
+  List<Beer> beers = []; //todo: cache
 
-  HomeBloc({@required this.beerRepository}) : super(HomeInitialState()) {
+  HomeBloc({required this.beerRepository}) : super(HomeInitialState()) {
     print(">>>> HomeBloc START");
   }
 
@@ -115,8 +115,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       try {
         final uri = await getInitialUri();
         if (uri != null && uri.queryParameters.containsKey('code')) {
-          print("BEER CODE: " + uri.queryParameters['code']);
-          await beerRepository.addBeerByCode(uri.queryParameters['code']);
+          print("BEER CODE: " + uri.queryParameters['code']!);
+          await beerRepository.addBeerByCode(uri.queryParameters['code']!);
           yield AddedBeerSuccessfulState();
         }
       } catch (error) {

@@ -15,7 +15,7 @@ class Body extends StatefulWidget {
 class _BeerDetailsFormState extends State<Body> {
   @override
   Widget build(BuildContext context) {
-    return BlocListener<DetailsBloc, DetailsState>(
+    return BlocListener<DetailsBloc, DetailsInitState>(
       listener: (context, state) {
         if (state is DetailsFailureState) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -40,7 +40,7 @@ class _BeerDetailsFormState extends State<Body> {
               .add(DisplayDetailsEvent(beer: state.beer));
         }
       },
-      child: BlocBuilder<DetailsBloc, DetailsState>(
+      child: BlocBuilder<DetailsBloc, DetailsInitState>(
         builder: (context, state) {
           return Scaffold(
               body: Stack(

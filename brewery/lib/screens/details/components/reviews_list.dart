@@ -9,7 +9,7 @@ import 'package:flutter_svg/svg.dart';
 class ReviewsList extends StatelessWidget {
   final Beer beer;
 
-  ReviewsList({this.beer});
+  ReviewsList({required this.beer});
 
   showAlertDialog(BuildContext context) {
     // set up the buttons
@@ -25,7 +25,7 @@ class ReviewsList extends StatelessWidget {
         BlocProvider.of<DetailsBloc>(context).add(
           DeleteReviewEvent(
             beer: this.beer,
-            review: this.beer.userBeerReview,
+            review: this.beer.userBeerReview!,
           ),
         );
         Navigator.of(context).pop(); // dismiss dialog
@@ -87,7 +87,7 @@ class ReviewsList extends StatelessWidget {
           title: Text(review.owner.nick),
           subtitle: Text(review.text),
           trailing: (this.beer.userBeerReview != null &&
-                  review.id == this.beer.userBeerReview.id)
+                  review.id == this.beer.userBeerReview!.id)
               ? IconButton(
                   icon: new Icon(Icons.delete_forever, color: Colors.red),
                   tooltip: 'Delete your review',

@@ -29,7 +29,7 @@ class _BeerListFormState extends State<Body> {
     bool closeModal = false;
 
     if (uri != null && uri.queryParameters.containsKey('code')) {
-      print("BEER CODE: " + uri.queryParameters['code']);
+      print("BEER CODE: " + uri.queryParameters['code']!);
 
       showDialog(
           context: context,
@@ -51,7 +51,7 @@ class _BeerListFormState extends State<Body> {
 
       BlocProvider.of<HomeBloc>(context).add(
         AddNewBeerEvent(
-          code: uri.queryParameters['code'],
+          code: uri.queryParameters['code']!,
         ),
       );
     }

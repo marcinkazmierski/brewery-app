@@ -5,16 +5,16 @@ class User {
   final int id;
   final String email;
   String nick;
-  int status = 0;
+  int? status = 0;
 
-  List<Beer> beers = [];
+  List<Beer> beers;
 
   User(
-      {@required this.id,
-      @required this.email,
-      @required this.nick,
+      {required this.id,
+      required this.email,
+      required this.nick,
       this.status,
-      this.beers});
+      this.beers = const []});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
