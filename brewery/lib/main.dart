@@ -14,6 +14,8 @@ import 'package:brewery/screens/registration/bloc/registration_bloc.dart';
 import 'package:brewery/screens/registration/registration_screen.dart';
 import 'package:brewery/screens/reset-password/bloc/reset_password_bloc.dart';
 import 'package:brewery/screens/reset-password/reset_password_screen.dart';
+import 'package:brewery/screens/start/bloc/start_bloc.dart';
+import 'package:brewery/screens/start/start_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:brewery/screens/home/home_screen.dart';
 import 'package:bloc/bloc.dart';
@@ -55,9 +57,10 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        initialRoute: '/login',
+        initialRoute: '/start',
         routes: {
-          '/': (context) => Login(context),
+          '/': (context) => Start(context),
+          '/start': (context) => Start(context),
           '/login': (context) => Login(context),
           '/logout': (context) => Logout(context),
           '/registration': (context) {
@@ -97,6 +100,18 @@ class MyApp extends StatelessWidget {
             );
           }
         });
+  }
+
+  MultiBlocProvider Start(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<StartBloc>(
+          create: (context) => StartBloc(userRepository: this.userRepository)
+            ..add(ApplicationStarted()),
+        ),
+      ],
+      child: StartScreen(),
+    );
   }
 
   MultiBlocProvider Login(BuildContext context) {

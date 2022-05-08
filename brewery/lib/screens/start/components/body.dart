@@ -1,6 +1,6 @@
 import 'package:brewery/components/fade_animation.dart';
 import 'package:brewery/constants.dart';
-import 'package:brewery/screens/login/bloc/login_bloc.dart';
+import 'package:brewery/screens/start/bloc/start_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,43 +10,40 @@ class Body extends StatefulWidget {
 }
 
 class _CreateLoginFormState extends State<Body> {
-  final _loginController = TextEditingController();
-  final _passwordController = TextEditingController();
-  bool _isObscure = true; //todo bloc
+  final _nickController = TextEditingController();
 
-  _onLoginButtonPressed() {
+  _onStartButtonPressed() {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (!currentFocus.hasPrimaryFocus) {
       currentFocus.unfocus();
     }
 
-    BlocProvider.of<LoginBloc>(context).add(
-      LoginButtonPressedEvent(
-        email: _loginController.text,
-        password: _passwordController.text,
+    BlocProvider.of<StartBloc>(context).add(
+      LoginGuestButtonPressedEvent(
+        nick: _nickController.text,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginBloc, LoginState>(
+    return BlocListener<StartBloc, StartState>(
       listener: (context, state) {
-        if (state is LoginCreateFailureState) {
+        if (state is StartFailureState) {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(
-                content: Text('${state.error}'),
-                backgroundColor: Colors.redAccent,
-              ))
+            content: Text('${state.error}'),
+            backgroundColor: Colors.redAccent,
+          ))
               .closed
-              .then((value) => BlocProvider.of<LoginBloc>(context)
-                  .add(DisplayedLoginErrorEvent()));
+              .then((value) => BlocProvider.of<StartBloc>(context)
+              .add(DisplayedLoginErrorEvent()));
         }
-        if (state is UserAuthenticatedState) {
+        if (state is GuestAuthenticatedState) {
           Navigator.pushNamed(context, '/home');
         }
       },
-      child: BlocBuilder<LoginBloc, LoginState>(
+      child: BlocBuilder<StartBloc, StartState>(
         builder: (context, state) {
           return Scaffold(
             bottomSheet: Container(
@@ -66,7 +63,7 @@ class _CreateLoginFormState extends State<Body> {
                 Center(
                   child: SingleChildScrollView(
                     padding: EdgeInsets.all(25.0),
-                    child: state is CheckingAuth
+                    child: state is CheckingAuthentication
                         ? CircularProgressIndicator()
                         : Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -102,15 +99,15 @@ class _CreateLoginFormState extends State<Body> {
                                     style: TextStyle(
                                       color: Colors.black,
                                     ),
-                                    controller: _loginController,
-                                    key: Key('loginInput'),
+                                    controller: _nickController,
+                                    key: Key('nickInput'),
                                     decoration: InputDecoration(
                                         focusedBorder: UnderlineInputBorder(
                                           borderSide:
                                               BorderSide(color: Colors.red),
                                         ),
                                         prefixIcon: Icon(
-                                          Icons.alternate_email,
+                                          Icons.account_circle,
                                           color: Colors.black,
                                         ),
                                         hintStyle:
@@ -118,56 +115,14 @@ class _CreateLoginFormState extends State<Body> {
                                         filled: true,
                                         fillColor:
                                             Colors.white.withOpacity(0.5),
-                                        hintText: 'Twój e-mail'),
-                                  )),
-                              SizedBox(
-                                height: 15.0,
-                              ),
-                              FadeAnimation(
-                                  2,
-                                  TextFormField(
-                                    obscureText: _isObscure,
-                                    enableSuggestions: false,
-                                    autocorrect: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                    controller: _passwordController,
-                                    key: Key('passwordInput'),
-                                    decoration: InputDecoration(
-                                        focusedBorder: UnderlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.red),
-                                        ),
-                                        prefixIcon: Icon(
-                                          Icons.vpn_key,
-                                          color: Colors.black,
-                                        ),
-                                        suffixIcon: IconButton(
-                                            icon: Icon(
-                                              _isObscure
-                                                  ? Icons.visibility
-                                                  : Icons.visibility_off,
-                                              color: Colors.black,
-                                            ),
-                                            onPressed: () {
-                                              setState(() {
-                                                _isObscure = !_isObscure;
-                                              });
-                                            }),
-                                        hintStyle:
-                                            TextStyle(color: Colors.black54),
-                                        filled: true,
-                                        fillColor:
-                                            Colors.white.withOpacity(0.5),
-                                        hintText: 'Twoje hasło'),
+                                        hintText: 'Twój nick albo ksywka'),
                                   )),
                               SizedBox(
                                 height: 45.0,
                               ),
                               FadeAnimation(
                                   2,
-                                  state is LoginLoading
+                                  state is RegisterGuestLoadingState
                                       ? ElevatedButton(
                                           onPressed: () {},
                                           child: Padding(
@@ -181,7 +136,7 @@ class _CreateLoginFormState extends State<Body> {
                                           ),
                                         )
                                       : ElevatedButton(
-                                          onPressed: _onLoginButtonPressed,
+                                          onPressed: _onStartButtonPressed,
                                           child: Padding(
                                               padding: EdgeInsets.all(15.0),
                                               child: Text('Zaczynamy!')),
@@ -198,8 +153,8 @@ class _CreateLoginFormState extends State<Body> {
                                   2,
                                   ElevatedButton(
                                     onPressed: () {
-                                      Navigator.pushNamed(context,
-                                          '/registration'); //todo, use BLoC
+                                      Navigator.pushNamed(
+                                          context, '/login'); //todo, use BLoC
                                     },
                                     style: ElevatedButton.styleFrom(
                                         primary:
@@ -208,40 +163,8 @@ class _CreateLoginFormState extends State<Body> {
                                         shadowColor: Colors.transparent),
                                     child: Padding(
                                         padding: EdgeInsets.all(15.0),
-                                        child:
-                                            Text('Jesteś nowy? Stwórz konto')),
-                                  )),
-                              FadeAnimation(
-                                  2,
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(context,
-                                          '/reset-password'); //todo, use BLoC
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        primary:
-                                            Colors.transparent, // background
-                                        onPrimary: Colors.white, // foreground
-                                        shadowColor: Colors.transparent),
-                                    child: Padding(
-                                        padding: EdgeInsets.all(15.0),
-                                        child: Text('Nie pamiętasz hasła?')),
-                                  )),
-                              FadeAnimation(
-                                  2,
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(context,
-                                          '/start'); //todo, use BLoC
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        primary:
-                                        Colors.transparent, // background
-                                        onPrimary: Colors.white, // foreground
-                                        shadowColor: Colors.transparent),
-                                    child: Padding(
-                                        padding: EdgeInsets.all(15.0),
-                                        child: Text('Zacznij jako gość')),
+                                        child: Text(
+                                            'Masz już konto? Zaloguj się')),
                                   )),
                             ],
                           ),
