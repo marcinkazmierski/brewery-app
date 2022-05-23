@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:brewery/exceptions/exception.dart';
 import 'package:brewery/gateways/local_storage_gateway.dart';
 import 'package:brewery/models/user.dart';
@@ -84,10 +85,7 @@ class ApiUserRepository extends ApiRepository implements UserRepository {
     Map decoded = await requestPost(data, 'auth/authenticate/guest');
     this.localStorageGateway.setCurrentUserAuthToken(decoded['token']);
     this.localStorageGateway.setCurrentUserId(decoded['userId']);
-    return new User(
-        id: decoded['userId'],
-        email: decoded['email'],
-        nick: decoded['userNick']);
+    return User.fromJson(decoded);
   }
 
   @override

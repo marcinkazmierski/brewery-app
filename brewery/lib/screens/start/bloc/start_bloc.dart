@@ -4,6 +4,7 @@ import 'package:brewery/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'dart:developer';
 
 ///STATE
 abstract class StartState extends Equatable {
@@ -77,32 +78,37 @@ class StartBloc extends Bloc<StartEvent, StartState> {
   UserRepository userRepository;
 
   StartBloc({required this.userRepository}) : super(StartInitialState()) {
-    print(">>>> StartBloc START");
+    log(">>>> StartBloc START");
+    on<ApplicationStarted>(_onApplicationStarted);
+    on<LoginGuestButtonPressedEvent>(_onLoginGuestButtonPressedEvent);
+    on<DisplayedLoginErrorEvent>(_onDisplayedLoginErrorEvent);
   }
 
-  @override
-  Stream<StartState> mapEventToState(StartEvent event) async* {
-    if (event is ApplicationStarted) {
-      yield CheckingAuthentication();
-      try {
-        User user = await this.userRepository.profile();
-        yield GuestAuthenticatedState(user: user);
-      } catch (error) {
-        print(error.toString());
-        yield StartInitialState();
-      }
+  Future<void> _onApplicationStarted(
+      ApplicationStarted event, Emitter<StartState> emit) async {
+    emit(CheckingAuthentication());
+    try {
+      User user = await this.userRepository.profile();
+      emit(GuestAuthenticatedState(user: user));
+    } catch (error) {
+      print(error.toString());
+      emit(StartInitialState());
     }
-    if (event is LoginGuestButtonPressedEvent) {
-      yield RegisterGuestLoadingState();
-      try {
-        User user = await this.userRepository.loginGuest(event.nick);
-        yield GuestAuthenticatedState(user: user);
-      } catch (error) {
-        yield StartFailureState(error: error.toString());
-      }
+  }
+
+  Future<void> _onLoginGuestButtonPressedEvent(
+      LoginGuestButtonPressedEvent event, Emitter<StartState> emit) async {
+    emit(RegisterGuestLoadingState());
+    try {
+      User user = await this.userRepository.loginGuest(event.nick);
+      emit(GuestAuthenticatedState(user: user));
+    } catch (error) {
+      emit(StartFailureState(error: error.toString()));
     }
-    if (event is DisplayedLoginErrorEvent) {
-      yield StartInitialState();
-    }
+  }
+
+  void _onDisplayedLoginErrorEvent(
+      DisplayedLoginErrorEvent event, Emitter<StartState> emit) {
+    emit(StartInitialState());
   }
 }

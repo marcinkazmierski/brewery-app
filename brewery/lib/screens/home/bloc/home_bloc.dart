@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:brewery/models/beer.dart';
 import 'package:brewery/repositories/beer_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -105,47 +106,53 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   List<Beer> beers = []; //todo: cache
 
   HomeBloc({required this.beerRepository}) : super(HomeInitialState()) {
-    print(">>>> HomeBloc START");
+    log(">>>> HomeBloc START");
+    on<InitHomeEvent>(_onInitHomeEvent);
+    on<DisplayScannerEvent>(_onDisplayScannerEvent);
+    on<AddNewBeerEvent>(_onAddNewBeerEvent);
+    on<DisplayHomeEvent>(_onDisplayHomeEvent);
   }
 
-  @override
-  Stream<HomeState> mapEventToState(HomeEvent event) async* {
-    if (event is InitHomeEvent) {
-      yield HomeInitialState();
-      try {
-        final uri = await getInitialUri();
-        if (uri != null && uri.queryParameters.containsKey('code')) {
-          print("BEER CODE: " + uri.queryParameters['code']!);
-          await beerRepository.addBeerByCode(uri.queryParameters['code']!);
-          yield AddedBeerSuccessfulState();
-        }
-      } catch (error) {
-        // yield HomeFailureState(error: error.toString());
+  Future<void> _onInitHomeEvent(
+      InitHomeEvent event, Emitter<HomeState> emit) async {
+    emit(HomeInitialState());
+    try {
+      final uri = await getInitialUri();
+      if (uri != null && uri.queryParameters.containsKey('code')) {
+        log("BEER CODE: " + uri.queryParameters['code']!);
+        await beerRepository.addBeerByCode(uri.queryParameters['code']!);
+        emit(AddedBeerSuccessfulState());
       }
-    } else if (event is DisplayScannerEvent) {
-      yield DisplayScannerState();
-    } else if (event is AddNewBeerEvent) {
-      String code = event.code;
-      try {
-        await beerRepository.addBeerByCode(code);
-        yield AddedBeerSuccessfulState();
-      } catch (error) {
-        yield HomeFailureState(error: error.toString());
-        yield HomeLoadedState(beers: this.beers);
-      }
-    } else if (event is DisplayHomeEvent) {
-      // if (this.beers != null && this.beers.isNotEmpty) {
-      //   yield HomeCacheLoadedState(beers: this.beers);
-      // } else {
-      //   yield HomeLoadingState();
-      // }
-      yield HomeLoadingState();
-      try {
-        this.beers = await this.beerRepository.getBeers();
-        yield HomeLoadedState(beers: this.beers);
-      } catch (error) {
-        yield HomeFailureState(error: error.toString());
-      }
+    } catch (error) {
+      // yield HomeFailureState(error: error.toString());
+    }
+  }
+
+  void _onDisplayScannerEvent(
+      DisplayScannerEvent event, Emitter<HomeState> emit) {
+    emit(DisplayScannerState());
+  }
+
+  Future<void> _onAddNewBeerEvent(
+      AddNewBeerEvent event, Emitter<HomeState> emit) async {
+    String code = event.code;
+    try {
+      await beerRepository.addBeerByCode(code);
+      emit(AddedBeerSuccessfulState());
+    } catch (error) {
+      emit(HomeFailureState(error: error.toString()));
+      emit(HomeLoadedState(beers: this.beers));
+    }
+  }
+
+  Future<void> _onDisplayHomeEvent(
+      DisplayHomeEvent event, Emitter<HomeState> emit) async {
+    emit(HomeLoadingState());
+    try {
+      this.beers = await this.beerRepository.getBeers();
+      emit(HomeLoadedState(beers: this.beers));
+    } catch (error) {
+      emit(HomeFailureState(error: error.toString()));
     }
   }
 }

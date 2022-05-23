@@ -16,7 +16,7 @@ class User {
       this.status,
       this.beers = const []});
 
-  factory User.fromJson(Map<String, dynamic> json) {
+  factory User.fromJson(Map<dynamic, dynamic> json) {
     return User(
       id: json['userId'],
       email: json['email'] ?? '',
