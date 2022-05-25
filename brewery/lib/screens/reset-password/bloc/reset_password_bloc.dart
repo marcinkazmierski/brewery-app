@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:brewery/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 
 ///STATE
 abstract class ResetPasswordState extends Equatable {
@@ -45,7 +45,7 @@ class ResetPasswordSendCodeFailureState extends ResetPasswordState {
 class ResetPasswordSetNewPasswordFailureState extends ResetPasswordState {
   final String error;
 
-  const ResetPasswordSetNewPasswordFailureState({ required this.error});
+  const ResetPasswordSetNewPasswordFailureState({required this.error});
 
   @override
   List<Object> get props => [error];
@@ -109,36 +109,51 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
 
   ResetPasswordBloc({required this.userRepository})
       : super(ResetPasswordInitialState()) {
-    print(">>>> ResetPasswordBloc START");
+    log(">>>> ResetPasswordBloc START");
+    on<ResetPasswordButtonPressedEvent>(_onResetPasswordButtonPressedEvent);
+    on<ResetPasswordWithCodeAndNewPasswordButtonPressedEvent>(
+        _onResetPasswordWithCodeAndNewPasswordButtonPressedEvent);
+    on<DisplayedResetPasswordSendCodeErrorEvent>(
+        _onDisplayedResetPasswordSendCodeErrorEvent);
+    on<DisplayedResetPasswordSetNewPasswordErrorEvent>(
+        _onDisplayedResetPasswordSetNewPasswordErrorEvent);
   }
 
-  @override
-  Stream<ResetPasswordState> mapEventToState(ResetPasswordEvent event) async* {
-    if (event is ResetPasswordButtonPressedEvent) {
-      try {
-        yield ResetPasswordLoading();
-        bool result = await this.userRepository.resetPassword(event.email);
-        yield ResetCodeSent(showToast: true);
-      } catch (error) {
-        yield ResetPasswordSendCodeFailureState(error: error.toString());
-      }
+  Future<void> _onResetPasswordButtonPressedEvent(
+      ResetPasswordButtonPressedEvent event,
+      Emitter<ResetPasswordState> emit) async {
+    try {
+      emit(ResetPasswordLoading());
+      bool result = await this.userRepository.resetPassword(event.email);
+      emit(ResetCodeSent(showToast: true));
+    } catch (error) {
+      emit(ResetPasswordSendCodeFailureState(error: error.toString()));
     }
-    if (event is ResetPasswordWithCodeAndNewPasswordButtonPressedEvent) {
-      try {
-        yield ResetPasswordLoading();
-        bool result = await this
-            .userRepository
-            .resetPasswordConfirm(event.email, event.code, event.password);
-        yield PasswordChanged();
-      } catch (error) {
-        yield ResetPasswordSetNewPasswordFailureState(error: error.toString());
-      }
+  }
+
+  Future<void> _onResetPasswordWithCodeAndNewPasswordButtonPressedEvent(
+      ResetPasswordWithCodeAndNewPasswordButtonPressedEvent event,
+      Emitter<ResetPasswordState> emit) async {
+    try {
+      emit(ResetPasswordLoading());
+      bool result = await this
+          .userRepository
+          .resetPasswordConfirm(event.email, event.code, event.password);
+      emit(PasswordChanged());
+    } catch (error) {
+      emit(ResetPasswordSetNewPasswordFailureState(error: error.toString()));
     }
-    if (event is DisplayedResetPasswordSendCodeErrorEvent) {
-      yield ResetPasswordInitialState();
-    }
-    if (event is DisplayedResetPasswordSetNewPasswordErrorEvent) {
-      yield ResetCodeSent(showToast: false);
-    }
+  }
+
+  void _onDisplayedResetPasswordSendCodeErrorEvent(
+      DisplayedResetPasswordSendCodeErrorEvent event,
+      Emitter<ResetPasswordState> emit) {
+    emit(ResetPasswordInitialState());
+  }
+
+  void _onDisplayedResetPasswordSetNewPasswordErrorEvent(
+      DisplayedResetPasswordSetNewPasswordErrorEvent event,
+      Emitter<ResetPasswordState> emit) {
+    emit(ResetCodeSent(showToast: false));
   }
 }

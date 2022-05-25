@@ -1,9 +1,9 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:brewery/models/user.dart';
 import 'package:brewery/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 
 ///STATE
 abstract class LoginState extends Equatable {
@@ -62,10 +62,7 @@ class LogoutEvent extends LoginEvent {
   @override
   String toString() => 'LogoutEvent {}';
 }
-// class Test {
-//   final String x;
-//   Test({required this.x});
-// }
+
 class LoginButtonPressedEvent extends LoginEvent {
   final String email;
   final String password;
@@ -93,38 +90,43 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   UserRepository userRepository;
 
   LoginBloc({required this.userRepository}) : super(LoginInitialState()) {
-    print(">>>> LoginBloc START");
+    log(">>>> LoginBloc START");
+    on<AppStarted>(_onAppStarted);
+    on<LogoutEvent>(_onLogoutEvent);
+    on<LoginButtonPressedEvent>(_onLoginButtonPressedEvent);
+    on<DisplayedLoginErrorEvent>(_onDisplayedLoginErrorEvent);
   }
 
-  @override
-  Stream<LoginState> mapEventToState(LoginEvent event) async* {
-    if (event is AppStarted) {
-      yield CheckingAuth();
-      try {
-        User user = await this.userRepository.profile();
-        yield UserAuthenticatedState(user: user);
-      } catch (error) {
-        print(error.toString());
-        yield LoginInitialState();
-      }
+  Future<void> _onAppStarted(AppStarted event, Emitter<LoginState> emit) async {
+    emit(CheckingAuth());
+    try {
+      User user = await this.userRepository.profile();
+      emit(UserAuthenticatedState(user: user));
+    } catch (error) {
+      log(error.toString());
+      emit(LoginInitialState());
     }
-    if (event is LoginButtonPressedEvent) {
-      yield LoginLoading();
-      try {
-        User user =
-            await this.userRepository.login(event.email, event.password);
-        yield UserAuthenticatedState(user: user);
-      } catch (error) {
-        yield LoginCreateFailureState(error: error.toString());
-      }
-    }
-    if (event is DisplayedLoginErrorEvent) {
-      yield LoginInitialState();
-    }
+  }
 
-    if (event is LogoutEvent) {
-      await this.userRepository.logout();
-      yield LoginInitialState();
+  Future<void> _onLogoutEvent(
+      LogoutEvent event, Emitter<LoginState> emit) async {
+    await this.userRepository.logout();
+    emit(LoginInitialState());
+  }
+
+  Future<void> _onLoginButtonPressedEvent(
+      LoginButtonPressedEvent event, Emitter<LoginState> emit) async {
+    emit(LoginLoading());
+    try {
+      User user = await this.userRepository.login(event.email, event.password);
+      emit(UserAuthenticatedState(user: user));
+    } catch (error) {
+      emit(LoginCreateFailureState(error: error.toString()));
     }
+  }
+
+  void _onDisplayedLoginErrorEvent(
+      DisplayedLoginErrorEvent event, Emitter<LoginState> emit) {
+    emit(LoginInitialState());
   }
 }

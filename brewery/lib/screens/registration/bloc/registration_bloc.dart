@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:brewery/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 
 ///STATE
 abstract class RegistrationState extends Equatable {
@@ -65,24 +65,27 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
 
   RegistrationBloc({required this.userRepository})
       : super(RegistrationInitialState()) {
-    print(">>>> RegistrationBloc START");
+    log(">>>> RegistrationBloc START");
+    on<RegistrationButtonPressedEvent>(_onRegistrationButtonPressedEvent);
+    on<DisplayedRegistrationErrorEvent>(_onDisplayedRegistrationErrorEvent);
   }
 
-  @override
-  Stream<RegistrationState> mapEventToState(RegistrationEvent event) async* {
-    if (event is RegistrationButtonPressedEvent) {
-      try {
-        yield RegistrationLoading();
-        bool result = await this
-            .userRepository
-            .register(event.email, event.nick, event.password);
-        yield RegisteredState();
-      } catch (error) {
-        yield RegistrationCreateFailureState(error: error.toString());
-      }
+  Future<void> _onRegistrationButtonPressedEvent(
+      RegistrationButtonPressedEvent event,
+      Emitter<RegistrationState> emit) async {
+    try {
+      emit(RegistrationLoading());
+      bool result = await this
+          .userRepository
+          .register(event.email, event.nick, event.password);
+      emit(RegisteredState());
+    } catch (error) {
+      emit(RegistrationCreateFailureState(error: error.toString()));
     }
-    if (event is DisplayedRegistrationErrorEvent) {
-      yield RegistrationInitialState();
-    }
+  }
+
+  void _onDisplayedRegistrationErrorEvent(
+      DisplayedRegistrationErrorEvent event, Emitter<RegistrationState> emit) {
+    emit(RegistrationInitialState());
   }
 }

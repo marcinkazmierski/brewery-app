@@ -1,10 +1,10 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:brewery/models/beer.dart';
 import 'package:brewery/models/review.dart';
 import 'package:brewery/repositories/beer_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
 
 ///STATE
 
@@ -14,7 +14,8 @@ abstract class DetailsInitState extends Equatable {
   @override
   List<Object> get props => [];
 }
-  class DetailsState extends DetailsInitState {
+
+class DetailsState extends DetailsInitState {
   final Beer beer;
 
   DetailsState({required this.beer});
@@ -127,35 +128,40 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsInitState> {
   final BeerRepository beerRepository;
 
   DetailsBloc({required this.beerRepository}) : super(DetailsInitialState()) {
-    print(">>>> DetailsBloc START");
+    log(">>>> DetailsBloc START");
+    on<DisplayDetailsEvent>(_onDisplayDetailsEvent);
+    on<AddNewReviewEvent>(_onAddNewReviewEvent);
+    on<DeleteReviewEvent>(_onDeleteReviewEvent);
   }
 
-  @override
-  Stream<DetailsInitState> mapEventToState(DetailsEvent event) async* {
-    if (event is DisplayDetailsEvent) {
-      yield DetailsInitialState();
-      // Beer beer = await beerRepository.getBeerById(event.beer.id); // reload
-      yield DetailsDisplayState(beer: event.beer);
-    } else if (event is AddNewReviewEvent) {
-      try {
-        yield AddReviewLoadingState(beer: event.beer);
-        Beer beer = await beerRepository.addReview(
-            event.beer, event.comment, event.rating.toDouble());
-        yield AddedReviewSuccessfulState(beer: beer);
-      } catch (error) {
-        yield DetailsFailureState(error: error.toString(), beer: event.beer);
-      }
-    } else if (event is DeleteReviewEvent) {
-      print("TODO: delete review");
+  void _onDisplayDetailsEvent(
+      DisplayDetailsEvent event, Emitter<DetailsInitState> emit) {
+    emit(DetailsInitialState());
+    emit(DetailsDisplayState(beer: event.beer));
+  }
 
-      try {
-        // TODO: dokończyć widok usuwania, loadingu i message po usunięciu recenzji...
-        yield DeleteReviewLoadingState(beer: event.beer);
-        Beer beer = await beerRepository.deleteReview(event.beer, event.review);
-        yield DeletedReviewSuccessfulState(beer: beer);
-      } catch (error) {
-        yield DetailsFailureState(error: error.toString(), beer: event.beer);
-      }
+  Future<void> _onAddNewReviewEvent(
+      AddNewReviewEvent event, Emitter<DetailsInitState> emit) async {
+    try {
+      emit(AddReviewLoadingState(beer: event.beer));
+      Beer beer = await beerRepository.addReview(
+          event.beer, event.comment, event.rating.toDouble());
+      emit(AddedReviewSuccessfulState(beer: beer));
+    } catch (error) {
+      emit(DetailsFailureState(error: error.toString(), beer: event.beer));
+    }
+  }
+
+  Future<void> _onDeleteReviewEvent(
+      DeleteReviewEvent event, Emitter<DetailsInitState> emit) async {
+    log("TODO: delete review");
+    try {
+      // TODO: dokończyć widok usuwania, loadingu i message po usunięciu recenzji...
+      emit(DeleteReviewLoadingState(beer: event.beer));
+      Beer beer = await beerRepository.deleteReview(event.beer, event.review);
+      emit(DeletedReviewSuccessfulState(beer: beer));
+    } catch (error) {
+      emit(DetailsFailureState(error: error.toString(), beer: event.beer));
     }
   }
 }
