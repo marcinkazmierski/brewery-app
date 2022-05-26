@@ -24,6 +24,10 @@ class User {
     );
   }
 
+  bool isGuest() {
+    return email.isEmpty;
+  }
+
   @override
   String toString() {
     return 'User{id: $id, email: $email, nick: $nick, status: $status, beers: $beers}';

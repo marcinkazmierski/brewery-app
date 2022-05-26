@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:brewery/components/simple_bloc_observer.dart';
 import 'package:brewery/gateways/local_storage_gateway.dart';
 import 'package:brewery/models/beer.dart';
+import 'package:brewery/models/user.dart';
 import 'package:brewery/repositories/beer_repository.dart';
 import 'package:brewery/repositories/user_repository.dart';
 import 'package:brewery/screens/details/details_screen.dart';
@@ -143,10 +144,11 @@ class MyApp extends StatelessWidget {
   }
 
   MultiBlocProvider Home(BuildContext context) {
+    final User user = ModalRoute.of(context)?.settings.arguments as User;
     return MultiBlocProvider(
       providers: [
         BlocProvider<HomeBloc>(
-          create: (context) => HomeBloc(beerRepository: this.beerRepository)
+          create: (context) => HomeBloc(beerRepository: this.beerRepository, user: user)
             ..add(InitHomeEvent()),
         ),
       ],

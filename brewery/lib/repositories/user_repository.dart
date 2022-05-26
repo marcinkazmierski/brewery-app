@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:brewery/exceptions/exception.dart';
 import 'package:brewery/gateways/local_storage_gateway.dart';
 import 'package:brewery/models/user.dart';
 import 'package:brewery/repositories/api_repository.dart';
-import 'package:meta/meta.dart';
 
 abstract class UserRepository {
   Future<User> loginGuest(String nick);
@@ -113,9 +111,6 @@ class ApiUserRepository extends ApiRepository implements UserRepository {
   Future<User> profile() async {
     String authToken = await this.localStorageGateway.getCurrentUserAuthToken();
     Map decoded = await requestGet('user', authToken);
-    return new User(
-        id: decoded['userId'],
-        email: decoded['email'],
-        nick: decoded['userNick']);
+    return User.fromJson(decoded);
   }
 }

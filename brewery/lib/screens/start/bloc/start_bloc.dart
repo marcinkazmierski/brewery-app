@@ -91,7 +91,7 @@ class StartBloc extends Bloc<StartEvent, StartState> {
       User user = await this.userRepository.profile();
       emit(GuestAuthenticatedState(user: user));
     } catch (error) {
-      print(error.toString());
+      log(error.toString());
       emit(StartInitialState());
     }
   }

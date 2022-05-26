@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:brewery/components/fade_animation.dart';
 import 'package:brewery/screens/home/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +20,7 @@ class _BeerListFormState extends State<Body> {
 
     // Either the permission was already granted before or the user just granted it.
     if (!await Permission.camera.request().isGranted) {
-      print("Camera permission is denied.");
+      log("Camera permission is denied.");
       return;
     }
 
@@ -29,7 +31,7 @@ class _BeerListFormState extends State<Body> {
     bool closeModal = false;
 
     if (uri != null && uri.queryParameters.containsKey('code')) {
-      print("BEER CODE: " + uri.queryParameters['code']!);
+      log("BEER CODE: " + uri.queryParameters['code']!);
 
       showDialog(
           context: context,

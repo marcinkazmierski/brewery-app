@@ -24,7 +24,6 @@ class HomeScreen extends StatelessWidget {
       actions: <Widget>[
         PopupMenuButton<String>(
           onSelected: (String value) {
-            print(value);
             if (value == "Wyloguj") {
               Navigator.pushNamed(context, '/logout');
             }

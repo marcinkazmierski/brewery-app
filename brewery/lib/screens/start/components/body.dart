@@ -32,15 +32,15 @@ class _CreateLoginFormState extends State<Body> {
         if (state is StartFailureState) {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(
-            content: Text('${state.error}'),
-            backgroundColor: Colors.redAccent,
-          ))
+                content: Text('${state.error}'),
+                backgroundColor: Colors.redAccent,
+              ))
               .closed
               .then((value) => BlocProvider.of<StartBloc>(context)
-              .add(DisplayedLoginErrorEvent()));
+                  .add(DisplayedLoginErrorEvent()));
         }
         if (state is GuestAuthenticatedState) {
-          Navigator.pushNamed(context, '/home');
+          Navigator.pushNamed(context, '/home', arguments: state.user);
         }
       },
       child: BlocBuilder<StartBloc, StartState>(
@@ -153,8 +153,7 @@ class _CreateLoginFormState extends State<Body> {
                                   2,
                                   ElevatedButton(
                                     onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, '/login'); //todo, use BLoC
+                                      Navigator.pushNamed(context, '/login');
                                     },
                                     style: ElevatedButton.styleFrom(
                                         primary:

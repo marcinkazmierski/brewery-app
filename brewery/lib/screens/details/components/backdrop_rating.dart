@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:brewery/screens/details/bloc/details_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,33 +18,24 @@ class BackdropAndRating extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<BackdropAndRating> createState() =>
-      _BackdropAndRatingState(size: this.size, beer: this.beer);
+  State<BackdropAndRating> createState() => _BackdropAndRatingState();
 }
 
 class _BackdropAndRatingState extends State<BackdropAndRating> {
-  final Size size;
-  final Beer beer;
-
-  _BackdropAndRatingState({
-    required this.size,
-    required this.beer,
-  });
-
   @override
   Widget build(BuildContext context) {
     return Container(
       // 40% of our total height
-      height: size.height * 0.4,
+      height: widget.size.height * 0.4,
       child: Stack(
         children: <Widget>[
           Container(
-            height: size.height * 0.4 - 50,
+            height: widget.size.height * 0.4 - 50,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50)),
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: NetworkImage(beer.backgroundImage),
+                image: NetworkImage(widget.beer.backgroundImage),
               ),
             ),
           ),
@@ -53,7 +45,7 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
             right: 0,
             child: Container(
               // it will cover 90% of our total width
-              width: size.width * 0.9,
+              width: widget.size.width * 0.9,
               height: 100,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -80,20 +72,21 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
                       children: <Widget>[
                         SvgPicture.asset("assets/icons/star_fill.svg"),
                         SizedBox(height: kDefaultPadding / 4),
-                        (beer.reviews.length > 0)
+                        (widget.beer.reviews.length > 0)
                             ? RichText(
                                 text: TextSpan(
                                   style: TextStyle(color: Colors.black),
                                   children: [
                                     TextSpan(
-                                      text: "  ${beer.rating}/",
+                                      text: "  ${widget.beer.rating}/",
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600),
                                     ),
                                     TextSpan(text: "5\n"),
                                     TextSpan(
-                                      text: "${beer.reviews.length} ocen(y)",
+                                      text:
+                                          "${widget.beer.reviews.length} ocen(y)",
                                       style: TextStyle(color: kTextLightColor),
                                     ),
                                   ],
@@ -113,8 +106,8 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        beer.active
-                            ? (beer.userBeerReview != null)
+                        widget.beer.active
+                            ? (widget.beer.userBeerReview != null)
                                 ? ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       primary: Colors.redAccent, // background
@@ -162,7 +155,7 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
             ),
             child: BackButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/home'); //todo, use BLoC
+                  Navigator.pop(context);
                 },
                 color: Colors.white),
           )),
@@ -182,19 +175,19 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
         height: 100,
         decoration: BoxDecoration(
             image: DecorationImage(
-                fit: BoxFit.fitHeight, image: NetworkImage(beer.icon))),
+                fit: BoxFit.fitHeight, image: NetworkImage(widget.beer.icon))),
       ),
       submitButtonText: 'Wystaw ocenę!',
-      onCancelled: () => print('cancelled'),
+      onCancelled: () => log('RatingDialog cancelled'),
       onSubmitted: (response) {
         BlocProvider.of<DetailsBloc>(context).add(
           AddNewReviewEvent(
-            beer: this.beer,
+            beer: widget.beer,
             comment: response.comment,
             rating: response.rating.toInt(),
           ),
         );
-        print('rating: ${response.rating}, comment: ${response.comment}');
+        log('rating: ${response.rating}, comment: ${response.comment}');
         // TODO: add your own logic
         if (response.rating < 3.0) {
         } else {}

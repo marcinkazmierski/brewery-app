@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:convert';
 import 'package:brewery/constants.dart';
@@ -82,7 +83,7 @@ abstract class ApiRepository {
       return Map();
     } else {
       Map decoded = jsonDecode(response.body);
-      print(decoded);
+      log(decoded.toString());
       throw ResponseException(decoded.containsKey('error')
           ? decoded['error']['userMessage']
           : "General error");

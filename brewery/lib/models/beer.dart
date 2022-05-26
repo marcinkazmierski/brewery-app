@@ -12,18 +12,18 @@ class Beer {
 
   Beer(
       {required this.icon,
-        required this.backgroundImage,
-        required  this.title,
-        required this.name,
-        required  this.id,
-        required  this.rating,
-        required   this.tags,
-        required   this.description,
-        required   this.hops,
-        required   this.malts,
-        required   this.active,
-        required   this.reviews,
-        required   this.userBeerReview});
+      required this.backgroundImage,
+      required this.title,
+      required this.name,
+      required this.id,
+      required this.rating,
+      required this.tags,
+      required this.description,
+      required this.hops,
+      required this.malts,
+      required this.active,
+      required this.reviews,
+      required this.userBeerReview});
 
   factory Beer.fromJson(Map<String, dynamic> item) {
     List<Review> reviews = [];
@@ -48,5 +48,10 @@ class Beer {
           ? Review.fromJson(item["userBeerReview"])
           : null,
     );
+  }
+
+  @override
+  String toString() {
+    return "$id, $name";
   }
 }

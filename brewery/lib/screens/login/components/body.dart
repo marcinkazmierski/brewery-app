@@ -43,7 +43,7 @@ class _CreateLoginFormState extends State<Body> {
                   .add(DisplayedLoginErrorEvent()));
         }
         if (state is UserAuthenticatedState) {
-          Navigator.pushNamed(context, '/home');
+          Navigator.pushNamed(context, '/home', arguments: state.user);
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
@@ -231,12 +231,12 @@ class _CreateLoginFormState extends State<Body> {
                                   2,
                                   ElevatedButton(
                                     onPressed: () {
-                                      Navigator.pushNamed(context,
-                                          '/start'); //todo, use BLoC
+                                      Navigator.pushNamed(
+                                          context, '/start'); //todo, use BLoC
                                     },
                                     style: ElevatedButton.styleFrom(
                                         primary:
-                                        Colors.transparent, // background
+                                            Colors.transparent, // background
                                         onPrimary: Colors.white, // foreground
                                         shadowColor: Colors.transparent),
                                     child: Padding(

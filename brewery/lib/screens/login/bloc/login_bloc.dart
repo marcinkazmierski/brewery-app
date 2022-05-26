@@ -97,15 +97,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<DisplayedLoginErrorEvent>(_onDisplayedLoginErrorEvent);
   }
 
-  Future<void> _onAppStarted(AppStarted event, Emitter<LoginState> emit) async {
-    emit(CheckingAuth());
-    try {
-      User user = await this.userRepository.profile();
-      emit(UserAuthenticatedState(user: user));
-    } catch (error) {
-      log(error.toString());
-      emit(LoginInitialState());
-    }
+  void _onAppStarted(AppStarted event, Emitter<LoginState> emit) {
+    emit(LoginInitialState());
   }
 
   Future<void> _onLogoutEvent(
