@@ -4,8 +4,13 @@ import 'package:flutter/material.dart';
 class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Body(),
+    return WillPopScope(
+      onWillPop: () async {
+        return false; //todo
+      },
+      child: Scaffold(
+        body: Body(),
+      ),
     );
   }
 }

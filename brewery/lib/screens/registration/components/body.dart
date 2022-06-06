@@ -222,7 +222,7 @@ class _CreateLoginFormState extends State<Body> {
                             ElevatedButton(
                               onPressed: () {
                                 Navigator.pushNamed(
-                                    context, '/login'); //todo, use BLoC
+                                    context, '/login');
                               },
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.transparent, // background

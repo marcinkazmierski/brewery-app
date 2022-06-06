@@ -1,9 +1,8 @@
 import 'dart:async';
-
 import 'package:brewery/components/simple_bloc_observer.dart';
 import 'package:brewery/gateways/local_storage_gateway.dart';
 import 'package:brewery/models/beer.dart';
-import 'package:brewery/models/user.dart';
+import 'dart:developer';
 import 'package:brewery/repositories/beer_repository.dart';
 import 'package:brewery/repositories/user_repository.dart';
 import 'package:brewery/screens/details/details_screen.dart';
@@ -19,7 +18,6 @@ import 'package:brewery/screens/start/bloc/start_bloc.dart';
 import 'package:brewery/screens/start/start_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:brewery/screens/home/home_screen.dart';
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -31,18 +29,17 @@ Future main() async {
   // Initialize Firebase.
   await Firebase.initializeApp();
   BlocOverrides.runZoned(
-        () {
-          runApp(MyApp(
-              beerRepository: new ApiBeerRepository(
-                  apiUrl: dotenv.env['API_URL'].toString(),
-                  localStorageGateway: localStorageGateway),
-              userRepository: new ApiUserRepository(
-                  apiUrl: dotenv.env['API_URL'].toString(),
-                  localStorageGateway: localStorageGateway)));
+    () {
+      runApp(MyApp(
+          beerRepository: new ApiBeerRepository(
+              apiUrl: dotenv.env['API_URL'].toString(),
+              localStorageGateway: localStorageGateway),
+          userRepository: new ApiUserRepository(
+              apiUrl: dotenv.env['API_URL'].toString(),
+              localStorageGateway: localStorageGateway)));
     },
     blocObserver: SimpleBlocObserver(),
   );
-
 }
 
 class MyApp extends StatelessWidget {
@@ -50,10 +47,8 @@ class MyApp extends StatelessWidget {
   UserRepository userRepository;
 
   MyApp(
-      {required
-          this.beerRepository,
-      required
-          this.userRepository}); // This widget is the root of your application.
+      {required this.beerRepository,
+      required this.userRepository}); // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -92,7 +87,8 @@ class MyApp extends StatelessWidget {
           },
           '/home': (context) => Home(context),
           '/details': (context) {
-            final Beer beer = ModalRoute.of(context)?.settings.arguments as Beer;
+            final Beer beer =
+                ModalRoute.of(context)?.settings.arguments as Beer;
             return MultiBlocProvider(
               providers: [
                 BlocProvider<DetailsBloc>(
@@ -144,11 +140,16 @@ class MyApp extends StatelessWidget {
   }
 
   MultiBlocProvider Home(BuildContext context) {
-    final User user = ModalRoute.of(context)?.settings.arguments as User;
+    final Beer? beer = ModalRoute.of(context)?.settings.arguments as Beer?;
+    if (beer != null) {
+      log(beer.title); //todo,odświeżyć to piwo na liście piw, wykorzystać Application::beers i przekazać w konstruktorze do, HomeBloc
+    } else {
+      log("brak przekazanego piwa do odświeżenia");
+    }
     return MultiBlocProvider(
       providers: [
         BlocProvider<HomeBloc>(
-          create: (context) => HomeBloc(beerRepository: this.beerRepository, user: user)
+          create: (context) => HomeBloc(beerRepository: this.beerRepository)
             ..add(InitHomeEvent()),
         ),
       ],

@@ -4,10 +4,7 @@ import 'package:brewery/models/beer.dart';
 import 'package:brewery/repositories/beer_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
 import 'package:uni_links/uni_links.dart';
-
-import '../../../models/user.dart';
 
 ///STATE
 abstract class HomeState extends Equatable {
@@ -105,11 +102,9 @@ class AddNewBeerEvent extends HomeEvent {
 /// BLOC
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   BeerRepository beerRepository;
-  final User user;
   List<Beer> beers = []; //todo: cache
 
-  HomeBloc({required this.beerRepository, required this.user})
-      : super(HomeInitialState()) {
+  HomeBloc({required this.beerRepository}) : super(HomeInitialState()) {
     log(">>>> HomeBloc START");
     on<InitHomeEvent>(_onInitHomeEvent);
     on<DisplayScannerEvent>(_onDisplayScannerEvent);

@@ -43,7 +43,7 @@ class _CreateLoginFormState extends State<Body> {
                   .add(DisplayedLoginErrorEvent()));
         }
         if (state is UserAuthenticatedState) {
-          Navigator.pushNamed(context, '/home', arguments: state.user);
+          Navigator.pushNamed(context, '/home');
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
@@ -198,8 +198,8 @@ class _CreateLoginFormState extends State<Body> {
                                   2,
                                   ElevatedButton(
                                     onPressed: () {
-                                      Navigator.pushNamed(context,
-                                          '/registration'); //todo, use BLoC
+                                      Navigator.pushNamed(
+                                          context, '/registration');
                                     },
                                     style: ElevatedButton.styleFrom(
                                         primary:
@@ -215,8 +215,8 @@ class _CreateLoginFormState extends State<Body> {
                                   2,
                                   ElevatedButton(
                                     onPressed: () {
-                                      Navigator.pushNamed(context,
-                                          '/reset-password'); //todo, use BLoC
+                                      Navigator.pushNamed(
+                                          context, '/reset-password');
                                     },
                                     style: ElevatedButton.styleFrom(
                                         primary:
@@ -231,8 +231,7 @@ class _CreateLoginFormState extends State<Body> {
                                   2,
                                   ElevatedButton(
                                     onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, '/start'); //todo, use BLoC
+                                      Navigator.pushNamed(context, '/start');
                                     },
                                     style: ElevatedButton.styleFrom(
                                         primary:

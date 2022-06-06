@@ -155,7 +155,7 @@ class _BackdropAndRatingState extends State<BackdropAndRating> {
             ),
             child: BackButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/home', arguments: widget.beer);
                 },
                 color: Colors.white),
           )),
