@@ -20,14 +20,16 @@ class HomeLoadingState extends HomeState {}
 
 class HomeLoadedState extends HomeState {
   final List<Beer> beers;
+  final Beer? activeBeer;
 
-  HomeLoadedState({required this.beers});
-
-  @override
-  List<Object> get props => [beers];
+  HomeLoadedState({required this.beers, this.activeBeer});
 
   @override
-  String toString() => 'HomeLoadedState { beers: $beers }';
+  List<Object> get props => [beers, activeBeer!];
+
+  @override
+  String toString() =>
+      'HomeLoadedState { beers: $beers, activeBeer: $activeBeer }';
 }
 
 class HomeCacheLoadedState extends HomeState {
@@ -63,20 +65,16 @@ abstract class HomeEvent extends Equatable {
   const HomeEvent();
 }
 
-class InitHomeEvent extends HomeEvent {
-  @override
-  List<Object> get props => [];
-
-  @override
-  String toString() => 'InitHomeEvent {}';
-}
-
 class DisplayHomeEvent extends HomeEvent {
-  @override
-  List<Object> get props => [];
+  final Beer? activeBeer;
+
+  const DisplayHomeEvent({this.activeBeer});
 
   @override
-  String toString() => 'DisplayHomeEvent {}';
+  List<Object> get props => [this.activeBeer!];
+
+  @override
+  String toString() => 'DisplayHomeEvent { activeBeer: $activeBeer }';
 }
 
 class DisplayScannerEvent extends HomeEvent {
@@ -84,7 +82,7 @@ class DisplayScannerEvent extends HomeEvent {
   List<Object> get props => [];
 
   @override
-  String toString() => 'DisplayScannerEvent { }';
+  String toString() => 'DisplayScannerEvent {}';
 }
 
 class AddNewBeerEvent extends HomeEvent {
@@ -106,25 +104,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   HomeBloc({required this.beerRepository}) : super(HomeInitialState()) {
     log(">>>> HomeBloc START");
-    on<InitHomeEvent>(_onInitHomeEvent);
     on<DisplayScannerEvent>(_onDisplayScannerEvent);
     on<AddNewBeerEvent>(_onAddNewBeerEvent);
     on<DisplayHomeEvent>(_onDisplayHomeEvent);
-  }
-
-  Future<void> _onInitHomeEvent(
-      InitHomeEvent event, Emitter<HomeState> emit) async {
-    emit(HomeInitialState());
-    try {
-      final uri = await getInitialUri();
-      if (uri != null && uri.queryParameters.containsKey('code')) {
-        log("BEER CODE: " + uri.queryParameters['code']!);
-        await beerRepository.addBeerByCode(uri.queryParameters['code']!);
-        emit(AddedBeerSuccessfulState());
-      }
-    } catch (error) {
-      // yield HomeFailureState(error: error.toString());
-    }
   }
 
   void _onDisplayScannerEvent(
@@ -148,8 +130,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       DisplayHomeEvent event, Emitter<HomeState> emit) async {
     emit(HomeLoadingState());
     try {
+      final uri = await getInitialUri();
+      if (uri != null && uri.queryParameters.containsKey('code')) {
+        log("BEER CODE: " + uri.queryParameters['code']!);
+        await beerRepository.addBeerByCode(uri.queryParameters['code']!);
+        emit(AddedBeerSuccessfulState());
+      }
+    } catch (error) {
+      // yield HomeFailureState(error: error.toString());
+    }
+    try {
       this.beers = await this.beerRepository.getBeers();
-      emit(HomeLoadedState(beers: this.beers));
+      emit(HomeLoadedState(beers: this.beers, activeBeer: event.activeBeer));
     } catch (error) {
       emit(HomeFailureState(error: error.toString()));
     }

@@ -113,7 +113,7 @@ class _BeerListFormState extends State<Body> {
                                   )),
                               SizedBox(height: kDefaultPadding),
                               FadeAnimation(
-                                  2, BeerCarousel(beers: state.beers)),
+                                  2, BeerCarousel(beers: state.beers, activeBeer: state.activeBeer,)),
                             ],
                           )
                         : CircularProgressIndicator(),

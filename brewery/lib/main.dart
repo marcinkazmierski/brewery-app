@@ -141,16 +141,12 @@ class MyApp extends StatelessWidget {
 
   MultiBlocProvider Home(BuildContext context) {
     final Beer? beer = ModalRoute.of(context)?.settings.arguments as Beer?;
-    if (beer != null) {
-      log(beer.title); //todo,odświeżyć to piwo na liście piw, wykorzystać Application::beers i przekazać w konstruktorze do, HomeBloc
-    } else {
-      log("brak przekazanego piwa do odświeżenia");
-    }
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<HomeBloc>(
           create: (context) => HomeBloc(beerRepository: this.beerRepository)
-            ..add(InitHomeEvent()),
+            ..add(DisplayHomeEvent(activeBeer: beer)),
         ),
       ],
       child: HomeScreen(),

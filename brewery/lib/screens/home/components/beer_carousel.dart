@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:brewery/models/beer.dart';
@@ -6,8 +8,9 @@ import 'beer_card.dart';
 
 class BeerCarousel extends StatefulWidget {
   final List<Beer> beers;
+  final Beer? activeBeer;
 
-  BeerCarousel({required this.beers});
+  BeerCarousel({required this.beers, this.activeBeer});
 
   @override
   _BeerCarouselState createState() => _BeerCarouselState();
@@ -20,10 +23,19 @@ class _BeerCarouselState extends State<BeerCarousel> {
   @override
   void initState() {
     super.initState();
+    if (widget.activeBeer != null) {
+      var index = 0;
+      for (var i = 0; i < widget.beers.length; i++) {
+        if (widget.activeBeer!.id == widget.beers[i].id) {
+          break;
+        }
+        index++;
+      }
+      initialPage = index;
+    }
     _pageController = PageController(
       // so that we can have small portion shown on left and right side
       viewportFraction: 0.8,
-      // by default our beer poster
       initialPage: initialPage,
     );
   }
