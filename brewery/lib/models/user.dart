@@ -21,6 +21,7 @@ class User {
       id: json['userId'],
       email: json['email'] ?? '',
       nick: json['userNick'],
+      status: json['email'] != null ? 1 : 0,
     );
   }
 

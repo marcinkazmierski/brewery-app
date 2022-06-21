@@ -1,3 +1,4 @@
+import 'package:brewery/common/application.dart';
 import 'package:brewery/components/press_double_back_to_close.dart';
 import 'package:flutter/material.dart';
 import 'package:brewery/screens/registration/components/body.dart';
@@ -8,7 +9,7 @@ class RegistrationScreen extends StatelessWidget {
     return new PressDoubleBackToClose(
       message: "Naciśnij ponownie, aby zamknąć",
       child: Scaffold(
-        body: Body(),
+        body: Body(currentUser: Application.currentUser),
       ),
     );
   }

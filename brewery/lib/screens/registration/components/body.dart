@@ -1,10 +1,15 @@
 import 'package:brewery/components/fade_animation.dart';
 import 'package:brewery/constants.dart';
+import 'package:brewery/models/user.dart';
 import 'package:brewery/screens/registration/bloc/registration_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Body extends StatefulWidget {
+  User? currentUser;
+
+  Body({this.currentUser});
+
   @override
   State<Body> createState() => _CreateLoginFormState();
 }
@@ -21,7 +26,6 @@ class _CreateLoginFormState extends State<Body> {
       currentFocus.unfocus();
     }
 
-    //Navigator.pushNamed(context, '/login');
     BlocProvider.of<RegistrationBloc>(context).add(
       RegistrationButtonPressedEvent(
         email: _loginController.text,
@@ -29,6 +33,15 @@ class _CreateLoginFormState extends State<Body> {
         password: _passwordController.text,
       ),
     );
+  }
+
+  @override
+  void initState() {
+    setState(() {
+      if (widget.currentUser != null) {
+        _nickController.text = widget.currentUser!.nick;
+      }
+    });
   }
 
   @override
@@ -104,6 +117,34 @@ class _CreateLoginFormState extends State<Body> {
                         FadeAnimation(
                             2,
                             TextFormField(
+                              enabled: widget.currentUser == null,
+                              style: TextStyle(
+                                color: widget.currentUser == null
+                                    ? Colors.black
+                                    : Colors.black45,
+                              ),
+                              controller: _nickController,
+                              key: Key('nickInput'),
+                              autocorrect: false,
+                              decoration: InputDecoration(
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.red),
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.account_circle,
+                                    color: Colors.black,
+                                  ),
+                                  hintStyle: TextStyle(color: Colors.black54),
+                                  filled: true,
+                                  fillColor: Colors.white.withOpacity(0.5),
+                                  hintText: 'Twój nick'),
+                            )),
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                        FadeAnimation(
+                            2,
+                            TextFormField(
                               style: TextStyle(
                                 color: Colors.black,
                               ),
@@ -123,31 +164,6 @@ class _CreateLoginFormState extends State<Body> {
                                   filled: true,
                                   fillColor: Colors.white.withOpacity(0.5),
                                   hintText: 'Twój e-mail'),
-                            )),
-                        SizedBox(
-                          height: 15.0,
-                        ),
-                        FadeAnimation(
-                            2,
-                            TextFormField(
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
-                              controller: _nickController,
-                              key: Key('nickInput'),
-                              autocorrect: false,
-                              decoration: InputDecoration(
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.red),
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.account_circle,
-                                    color: Colors.black,
-                                  ),
-                                  hintStyle: TextStyle(color: Colors.black54),
-                                  filled: true,
-                                  fillColor: Colors.white.withOpacity(0.5),
-                                  hintText: 'Twój nick'),
                             )),
                         SizedBox(
                           height: 15.0,
@@ -221,8 +237,7 @@ class _CreateLoginFormState extends State<Body> {
                             2,
                             ElevatedButton(
                               onPressed: () {
-                                Navigator.pushNamed(
-                                    context, '/login');
+                                Navigator.pushNamed(context, '/login');
                               },
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.transparent, // background

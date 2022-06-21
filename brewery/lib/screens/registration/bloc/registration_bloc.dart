@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:brewery/models/user.dart';
 import 'package:brewery/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
@@ -75,9 +76,21 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       Emitter<RegistrationState> emit) async {
     try {
       emit(RegistrationLoading());
-      bool result = await this
-          .userRepository
-          .register(event.email, event.nick, event.password);
+      User? user;
+      try {
+        user = await this.userRepository.profile();
+      } catch (error) {
+      }
+      if (user != null) {
+        bool result = await this
+            .userRepository
+            .registerGuest(event.email, event.password);
+      } else {
+        bool result = await this
+            .userRepository
+            .register(event.email, event.nick, event.password);
+      }
+
       emit(RegisteredState());
     } catch (error) {
       emit(RegistrationCreateFailureState(error: error.toString()));
