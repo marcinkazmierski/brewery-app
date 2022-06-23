@@ -16,6 +16,8 @@ abstract class LoginState extends Equatable {
 
 class LoginInitialState extends LoginState {}
 
+class LoggedOutState extends LoginState {}
+
 class CheckingAuth extends LoginState {}
 
 class LoginLoading extends LoginState {}
@@ -105,7 +107,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Future<void> _onLogoutEvent(
       LogoutEvent event, Emitter<LoginState> emit) async {
     await this.userRepository.logout();
-    emit(LoginInitialState());
+    emit(LoggedOutState());
   }
 
   Future<void> _onLoginButtonPressedEvent(

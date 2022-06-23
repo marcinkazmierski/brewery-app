@@ -101,7 +101,6 @@ class _BeerListFormState extends State<Body> {
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: <Widget>[
-                              SizedBox(height: kDefaultPadding),
                               FadeAnimation(
                                   2,
                                   Center(
@@ -113,7 +112,11 @@ class _BeerListFormState extends State<Body> {
                                   )),
                               SizedBox(height: kDefaultPadding),
                               FadeAnimation(
-                                  2, BeerCarousel(beers: state.beers, activeBeer: state.activeBeer,)),
+                                  2,
+                                  BeerCarousel(
+                                    beers: state.beers,
+                                    activeBeer: state.activeBeer,
+                                  )),
                             ],
                           )
                         : CircularProgressIndicator(),

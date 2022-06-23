@@ -27,7 +27,6 @@ class ApiUserRepository extends ApiRepository implements UserRepository {
   ApiUserRepository({required String apiUrl, required LocalStorageGateway localStorageGateway}) : super(apiUrl: apiUrl, localStorageGateway: localStorageGateway);
 
 
-
   @override
   Future<bool> logout() async {
     this.localStorageGateway.setCurrentUserAuthToken("");

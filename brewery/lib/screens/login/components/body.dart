@@ -45,6 +45,9 @@ class _CreateLoginFormState extends State<Body> {
         if (state is UserAuthenticatedState) {
           Navigator.pushNamed(context, '/home');
         }
+        if(state is LoggedOutState){
+          Navigator.pushNamed(context, '/start');
+        }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
@@ -194,23 +197,7 @@ class _CreateLoginFormState extends State<Body> {
                               SizedBox(
                                 height: 30.0,
                               ),
-                              FadeAnimation(
-                                  2,
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, '/registration');
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        primary:
-                                            Colors.transparent, // background
-                                        onPrimary: Colors.white, // foreground
-                                        shadowColor: Colors.transparent),
-                                    child: Padding(
-                                        padding: EdgeInsets.all(15.0),
-                                        child:
-                                            Text('Jesteś nowy? Stwórz konto')),
-                                  )),
+
                               FadeAnimation(
                                   2,
                                   ElevatedButton(

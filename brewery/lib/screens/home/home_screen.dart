@@ -1,3 +1,4 @@
+import 'package:brewery/common/constants.dart';
 import 'package:brewery/components/press_double_back_to_close.dart';
 import 'package:flutter/material.dart';
 import 'package:brewery/screens/home/components/body.dart';
@@ -33,17 +34,16 @@ class HomeScreen extends StatelessWidget {
             if (value == 3) {
               Navigator.pushNamed(context, '/registration');
             }
+            if (value == 4) {
+              Navigator.pushNamed(context, '/about');
+            }
             if (value == 99) {
               SystemNavigator.pop();
             }
           },
           icon: Icon(Icons.menu),
           itemBuilder: (BuildContext context) => [
-            PopupMenuItem(
-              child: Text('Wyloguj'),
-              value: 1,
-            ),
-            Application.currentUser?.status == 1
+            Application.currentUser?.status == UserStatusConstants.ACTIVE
                 ? PopupMenuItem(
                     child: Text('Profil'),
                     value: 2,
@@ -55,6 +55,10 @@ class HomeScreen extends StatelessWidget {
             PopupMenuItem(
               child: Text('O Zdalnym Browarze'),
               value: 4,
+            ),
+            PopupMenuItem(
+              child: Text('Wyloguj'),
+              value: 1,
             ),
             PopupMenuItem(
               child: Text('Zamknij'),

@@ -1,15 +1,11 @@
+import 'package:brewery/common/constants.dart';
 import 'package:brewery/components/fade_animation.dart';
 import 'package:brewery/constants.dart';
-import 'package:brewery/models/user.dart';
 import 'package:brewery/screens/registration/bloc/registration_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Body extends StatefulWidget {
-  User? currentUser;
-
-  Body({this.currentUser});
-
   @override
   State<Body> createState() => _CreateLoginFormState();
 }
@@ -36,15 +32,6 @@ class _CreateLoginFormState extends State<Body> {
   }
 
   @override
-  void initState() {
-    setState(() {
-      if (widget.currentUser != null) {
-        _nickController.text = widget.currentUser!.nick;
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
@@ -55,8 +42,22 @@ class _CreateLoginFormState extends State<Body> {
                 backgroundColor: Colors.redAccent,
               ))
               .closed
-              .then((value) => BlocProvider.of<RegistrationBloc>(context)
-                  .add(DisplayedRegistrationErrorEvent()));
+              .then((value) {
+            if (state.reload) {
+              BlocProvider.of<RegistrationBloc>(context)
+                  .add(DisplayRegistrationPageEvent());
+            }
+          });
+        }
+        if (state is DisplayRegistrationPageState) {
+          _nickController.text = state.user.nick;
+        }
+        if (state is AlreadyRegisteredState) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Twoje konto jest już zarejestrowane :)'),
+            backgroundColor: Colors.lightGreen,
+          ));
+          Navigator.pushNamed(context, '/home');
         }
         if (state is RegisteredState) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -65,7 +66,7 @@ class _CreateLoginFormState extends State<Body> {
                 'Zarejestrowano pomyślnie. Sprawdź mail w celu dokończenia procesu!'),
             backgroundColor: Colors.lightGreen,
           ));
-          Navigator.pushNamed(context, '/login');
+          Navigator.pushNamed(context, '/home');
         }
       },
       child: BlocBuilder<RegistrationBloc, RegistrationState>(
@@ -112,104 +113,144 @@ class _CreateLoginFormState extends State<Body> {
                               ),
                             )),
                         SizedBox(
-                          height: 45.0,
+                          height: 20.0,
                         ),
                         FadeAnimation(
                             2,
-                            TextFormField(
-                              enabled: widget.currentUser == null,
-                              style: TextStyle(
-                                color: widget.currentUser == null
-                                    ? Colors.black
-                                    : Colors.black45,
+                            Center(
+                              child: Text(
+                                'Rejestracja konta',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
                               ),
-                              controller: _nickController,
-                              key: Key('nickInput'),
-                              autocorrect: false,
-                              decoration: InputDecoration(
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.red),
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.account_circle,
-                                    color: Colors.black,
-                                  ),
-                                  hintStyle: TextStyle(color: Colors.black54),
-                                  filled: true,
-                                  fillColor: Colors.white.withOpacity(0.5),
-                                  hintText: 'Twój nick'),
                             )),
                         SizedBox(
-                          height: 15.0,
+                          height: 20.0,
                         ),
-                        FadeAnimation(
-                            2,
-                            TextFormField(
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
-                              controller: _loginController,
-                              autofillHints: [AutofillHints.email],
-                              key: Key('loginInput'),
-                              autocorrect: false,
-                              decoration: InputDecoration(
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.red),
+                        state is DisplayRegistrationPageState
+                            ? FadeAnimation(
+                                2,
+                                TextFormField(
+                                  enabled: false,
+                                  style: TextStyle(
+                                    color: Colors.black45,
                                   ),
-                                  prefixIcon: Icon(
-                                    Icons.alternate_email,
-                                    color: Colors.black,
-                                  ),
-                                  hintStyle: TextStyle(color: Colors.black54),
-                                  filled: true,
-                                  fillColor: Colors.white.withOpacity(0.5),
-                                  hintText: 'Twój e-mail'),
-                            )),
-                        SizedBox(
-                          height: 15.0,
-                        ),
-                        FadeAnimation(
-                            2,
-                            TextFormField(
-                              obscureText: _isObscure,
-                              enableSuggestions: false,
-                              autocorrect: false,
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
-                              controller: _passwordController,
-                              key: Key('passwordInput'),
-                              decoration: InputDecoration(
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.red),
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.vpn_key,
-                                    color: Colors.black,
-                                  ),
-                                  suffixIcon: IconButton(
-                                      icon: Icon(
-                                        _isObscure
-                                            ? Icons.visibility
-                                            : Icons.visibility_off,
+                                  controller: _nickController,
+                                  key: Key('nickInput'),
+                                  autocorrect: false,
+                                  decoration: InputDecoration(
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.red),
+                                      ),
+                                      prefixIcon: Icon(
+                                        Icons.account_circle,
                                         color: Colors.black,
                                       ),
-                                      onPressed: () {
-                                        setState(() {
-                                          _isObscure = !_isObscure;
-                                        });
-                                      }),
-                                  hintStyle: TextStyle(color: Colors.black54),
-                                  filled: true,
-                                  fillColor: Colors.white.withOpacity(0.5),
-                                  hintText: 'Twoje hasło'),
-                            )),
+                                      hintStyle:
+                                          TextStyle(color: Colors.black54),
+                                      filled: true,
+                                      fillColor: Colors.white.withOpacity(0.5),
+                                      hintText: 'Twój nick'),
+                                ),
+                              )
+                            : Container(),
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                        state is DisplayRegistrationPageState
+                            ? FadeAnimation(
+                                2,
+                                state.user.status ==
+                                        UserStatusConstants
+                                            .GUEST_WAIT_FOR_CONFIRMATION
+                                    ? Center(
+                                        child: Text(
+                                          'Twoje konto jest w trakcie rejestracji. Dokończ proces klikając w link w mailu.',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14),
+                                        ),
+                                      )
+                                    : TextFormField(
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                        controller: _loginController,
+                                        autofillHints: [AutofillHints.email],
+                                        key: Key('loginInput'),
+                                        autocorrect: false,
+                                        decoration: InputDecoration(
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide:
+                                                  BorderSide(color: Colors.red),
+                                            ),
+                                            prefixIcon: Icon(
+                                              Icons.alternate_email,
+                                              color: Colors.black,
+                                            ),
+                                            hintStyle: TextStyle(
+                                                color: Colors.black54),
+                                            filled: true,
+                                            fillColor:
+                                                Colors.white.withOpacity(0.5),
+                                            hintText: 'Twój e-mail'),
+                                      ))
+                            : Container(),
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                        state is DisplayRegistrationPageState &&
+                                state.user.status == UserStatusConstants.GUEST
+                            ? FadeAnimation(
+                                2,
+                                TextFormField(
+                                  obscureText: _isObscure,
+                                  enableSuggestions: false,
+                                  autocorrect: false,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  controller: _passwordController,
+                                  key: Key('passwordInput'),
+                                  decoration: InputDecoration(
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.red),
+                                      ),
+                                      prefixIcon: Icon(
+                                        Icons.vpn_key,
+                                        color: Colors.black,
+                                      ),
+                                      suffixIcon: IconButton(
+                                          icon: Icon(
+                                            _isObscure
+                                                ? Icons.visibility
+                                                : Icons.visibility_off,
+                                            color: Colors.black,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              _isObscure = !_isObscure;
+                                            });
+                                          }),
+                                      hintStyle:
+                                          TextStyle(color: Colors.black54),
+                                      filled: true,
+                                      fillColor: Colors.white.withOpacity(0.5),
+                                      hintText: 'Twoje hasło'),
+                                ))
+                            : Container(),
                         SizedBox(
                           height: 45.0,
                         ),
                         FadeAnimation(
                             2,
-                            state is RegistrationLoading
+                            state is RegistrationLoading ||
+                                    (state is DisplayRegistrationPageState &&
+                                        state.user.status ==
+                                            UserStatusConstants
+                                                .GUEST_WAIT_FOR_CONFIRMATION)
                                 ? ElevatedButton(
                                     onPressed: () {},
                                     child: Padding(
@@ -233,24 +274,24 @@ class _CreateLoginFormState extends State<Body> {
                         SizedBox(
                           height: 30.0,
                         ),
-                        FadeAnimation(
-                            2,
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/login');
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.transparent, // background
-                                  onPrimary: Colors.white, // foreground
-                                  shadowColor: Colors.transparent),
-                              child: Padding(
-                                  padding: EdgeInsets.all(15.0),
-                                  child: Text('Masz już konto? Zaloguj się')),
-                            )),
                       ],
                     ),
                   ),
                 ),
+                SafeArea(
+                    child: Container(
+                  margin: EdgeInsets.only(
+                      left: kDefaultPadding, top: kDefaultPadding),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: BackButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/home');
+                      },
+                      color: Colors.white),
+                )),
               ],
             ),
           );

@@ -5,6 +5,7 @@ import 'package:brewery/models/beer.dart';
 import 'dart:developer';
 import 'package:brewery/repositories/beer_repository.dart';
 import 'package:brewery/repositories/user_repository.dart';
+import 'package:brewery/screens/about/about_screen.dart';
 import 'package:brewery/screens/details/details_screen.dart';
 import 'package:brewery/screens/home/bloc/home_bloc.dart';
 import 'package:brewery/screens/details/bloc/details_bloc.dart';
@@ -68,7 +69,7 @@ class MyApp extends StatelessWidget {
               providers: [
                 BlocProvider<RegistrationBloc>(
                   create: (context) =>
-                      RegistrationBloc(userRepository: this.userRepository),
+                      RegistrationBloc(userRepository: this.userRepository)..add(DisplayRegistrationPageEvent()),
                 ),
               ],
               child: RegistrationScreen(),
@@ -99,7 +100,8 @@ class MyApp extends StatelessWidget {
               ],
               child: DetailsScreen(),
             );
-          }
+          },
+          '/about': (context) => AboutScreen(),
         });
   }
 

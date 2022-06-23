@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:brewery/common/constants.dart';
 import 'package:brewery/models/user.dart';
 import 'package:brewery/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -17,18 +18,35 @@ class RegistrationInitialState extends RegistrationState {}
 
 class RegisteredState extends RegistrationState {}
 
+class AlreadyRegisteredState extends RegistrationState {}
+
+class DisplayRegistrationPageState extends RegistrationState {
+  final User user;
+
+  DisplayRegistrationPageState({required this.user});
+
+  @override
+  List<Object> get props => [user];
+
+  @override
+  String toString() => 'DisplayRegistrationPageState { user: $user }';
+}
+
 class RegistrationLoading extends RegistrationState {}
 
 class RegistrationCreateFailureState extends RegistrationState {
   final String error;
+  final bool reload;
 
-  const RegistrationCreateFailureState({required this.error});
+  const RegistrationCreateFailureState(
+      {required this.error, required this.reload});
 
   @override
-  List<Object> get props => [error];
+  List<Object> get props => [error, reload];
 
   @override
-  String toString() => 'RegistrationCreateFailureState { error: $error }';
+  String toString() =>
+      'RegistrationCreateFailureState { error: $error, reload: $reload }';
 }
 
 ///EVENT
@@ -55,7 +73,7 @@ class RegistrationButtonPressedEvent extends RegistrationEvent {
       'RegistrationButtonPressedEvent { email: $email, nick: $nick, password: ### }';
 }
 
-class DisplayedRegistrationErrorEvent extends RegistrationEvent {
+class DisplayRegistrationPageEvent extends RegistrationEvent {
   @override
   List<Object> get props => [];
 }
@@ -68,7 +86,24 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       : super(RegistrationInitialState()) {
     log(">>>> RegistrationBloc START");
     on<RegistrationButtonPressedEvent>(_onRegistrationButtonPressedEvent);
-    on<DisplayedRegistrationErrorEvent>(_onDisplayedRegistrationErrorEvent);
+    on<DisplayRegistrationPageEvent>(_onDisplayRegistrationPageEvent);
+  }
+
+  Future<void> _onDisplayRegistrationPageEvent(
+      DisplayRegistrationPageEvent event,
+      Emitter<RegistrationState> emit) async {
+    try {
+      emit(RegistrationLoading());
+      User user = await this.userRepository.profile();
+      if (user.status == UserStatusConstants.ACTIVE) {
+        emit(AlreadyRegisteredState());
+      } else {
+        emit(DisplayRegistrationPageState(user: user));
+      }
+    } catch (error) {
+      emit(RegistrationCreateFailureState(
+          error: error.toString(), reload: false));
+    }
   }
 
   Future<void> _onRegistrationButtonPressedEvent(
@@ -76,29 +111,16 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       Emitter<RegistrationState> emit) async {
     try {
       emit(RegistrationLoading());
-      User? user;
-      try {
-        user = await this.userRepository.profile();
-      } catch (error) {
-      }
-      if (user != null) {
-        bool result = await this
-            .userRepository
-            .registerGuest(event.email, event.password);
+      User user = await this.userRepository.profile();
+      if (user.status == UserStatusConstants.ACTIVE) {
+        emit(AlreadyRegisteredState());
       } else {
-        bool result = await this
-            .userRepository
-            .register(event.email, event.nick, event.password);
+        await this.userRepository.registerGuest(event.email, event.password);
+        emit(RegisteredState());
       }
-
-      emit(RegisteredState());
     } catch (error) {
-      emit(RegistrationCreateFailureState(error: error.toString()));
+      emit(RegistrationCreateFailureState(
+          error: error.toString(), reload: true));
     }
-  }
-
-  void _onDisplayedRegistrationErrorEvent(
-      DisplayedRegistrationErrorEvent event, Emitter<RegistrationState> emit) {
-    emit(RegistrationInitialState());
   }
 }
