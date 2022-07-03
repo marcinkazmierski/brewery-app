@@ -1,8 +1,10 @@
 import 'package:brewery/common/constants.dart';
 import 'package:brewery/components/press_double_back_to_close.dart';
+import 'package:brewery/screens/home/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:brewery/screens/home/components/body.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../common/application.dart';
 
@@ -40,9 +42,16 @@ class HomeScreen extends StatelessWidget {
             if (value == 99) {
               SystemNavigator.pop();
             }
+            if (value == 0) {
+              BlocProvider.of<HomeBloc>(context).add(DisplayHomeEvent());
+            }
           },
           icon: Icon(Icons.menu),
           itemBuilder: (BuildContext context) => [
+            PopupMenuItem(
+              child: Text('Odśwież listę piw'),
+              value: 0,
+            ),
             Application.currentUser?.status == UserStatusConstants.ACTIVE
                 ? PopupMenuItem(
                     child: Text('Profil'),

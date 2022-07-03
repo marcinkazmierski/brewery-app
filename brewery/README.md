@@ -18,9 +18,9 @@ samples, guidance on mobile development, and a full API reference.
 
 ## Documentations
 - https://bloclibrary.dev/#/coreconcepts?id=bloc (https://pub.dev/packages/flutter_bloc)
+- https://firebase.google.com/docs/cloud-messaging/flutter/client
 
 ## TODO:
-- push notifications
-- odświeżanie piwa po wystawieniu/edycji usunięciu oceny, na liście
+- push notifications 
 - odświeżanie całej listy tak jak na fb gdy user przeciągnie mocno w dół główny ekran
 - rejstracja profilu gościa, czyli dodanie do menu takiej opcji + jakieś powiadomienie/przypomnienie o tym

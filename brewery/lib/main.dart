@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:brewery/components/simple_bloc_observer.dart';
 import 'package:brewery/gateways/local_storage_gateway.dart';
+import 'package:brewery/gateways/notifications_gateway.dart';
 import 'package:brewery/models/beer.dart';
-import 'dart:developer';
 import 'package:brewery/repositories/beer_repository.dart';
 import 'package:brewery/repositories/user_repository.dart';
 import 'package:brewery/screens/about/about_screen.dart';
@@ -27,10 +27,11 @@ Future main() async {
   await dotenv.load(fileName: ".env");
   LocalStorageGateway localStorageGateway = new LocalStorageGateway();
 
-  // Initialize Firebase.
-  await Firebase.initializeApp();
   BlocOverrides.runZoned(
-    () {
+    () async {
+      // Initialize Firebase.
+      await Firebase.initializeApp();
+      NotificationsGateway()..init();
       runApp(MyApp(
           beerRepository: new ApiBeerRepository(
               apiUrl: dotenv.env['API_URL'].toString(),
@@ -47,9 +48,11 @@ class MyApp extends StatelessWidget {
   BeerRepository beerRepository;
   UserRepository userRepository;
 
-  MyApp(
-      {required this.beerRepository,
-      required this.userRepository}); // This widget is the root of your application.
+  MyApp({
+    required this.beerRepository,
+    required this.userRepository,
+  });
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -69,7 +72,8 @@ class MyApp extends StatelessWidget {
               providers: [
                 BlocProvider<RegistrationBloc>(
                   create: (context) =>
-                      RegistrationBloc(userRepository: this.userRepository)..add(DisplayRegistrationPageEvent()),
+                      RegistrationBloc(userRepository: this.userRepository)
+                        ..add(DisplayRegistrationPageEvent()),
                 ),
               ],
               child: RegistrationScreen(),
