@@ -3,7 +3,6 @@ import 'package:brewery/gateways/local_storage_gateway.dart';
 import 'package:brewery/models/beer.dart';
 import 'package:brewery/models/review.dart';
 import 'package:brewery/repositories/api_repository.dart';
-import 'package:meta/meta.dart';
 
 abstract class BeerRepository {
   Future<List<Beer>> getBeers();
@@ -19,10 +18,6 @@ abstract class BeerRepository {
 
 class ApiBeerRepository extends ApiRepository implements BeerRepository {
   ApiBeerRepository({required String apiUrl, required LocalStorageGateway localStorageGateway}) : super(apiUrl: apiUrl, localStorageGateway: localStorageGateway);
-
-
-
-
 
   @override
   Future<List<Beer>> getBeers() async {
