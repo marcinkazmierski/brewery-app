@@ -8,8 +8,15 @@ class DetailsScreen extends StatelessWidget {
       onWillPop: () async {
         return false; //todo
       },
-      child: Scaffold(
-        body: Body(),
+      child: Container(
+        decoration: new BoxDecoration(
+            color: Colors.white,
+            image: new DecorationImage(
+                colorFilter: new ColorFilter.mode(
+                    Colors.white.withOpacity(0.1), BlendMode.dstATop),
+                fit: BoxFit.cover,
+                image: AssetImage("assets/images/bg3.jpg"))),
+        child: Body(),
       ),
     );
   }

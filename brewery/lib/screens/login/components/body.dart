@@ -45,195 +45,172 @@ class _CreateLoginFormState extends State<Body> {
         if (state is UserAuthenticatedState) {
           Navigator.pushNamed(context, '/home');
         }
-        if(state is LoggedOutState){
+        if (state is LoggedOutState) {
           Navigator.pushNamed(context, '/start');
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
           return Scaffold(
+            backgroundColor: Colors.transparent,
             bottomSheet: Container(
                 child: Text(kAppVersion,
                     style: TextStyle(color: Colors.grey, fontSize: 8)),
                 decoration: BoxDecoration(color: Colors.black)),
-            body: Stack(
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          colorFilter: new ColorFilter.mode(
-                              Colors.black.withOpacity(0.5), BlendMode.darken),
-                          fit: BoxFit.cover,
-                          image: AssetImage("assets/images/bg3.jpg"))),
-                ),
-                Center(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.all(25.0),
-                    child: state is CheckingAuth
-                        ? CircularProgressIndicator()
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: <Widget>[
-                              FadeAnimation(
-                                  2,
-                                  CircleAvatar(
-                                    radius: 100.0,
-                                    backgroundColor: Colors.transparent,
-                                    foregroundColor: Colors.white,
-                                    child: Icon(Icons.wifi, size: 220),
-                                  )),
-                              SizedBox(
-                                height: 30.0,
-                              ),
-                              FadeAnimation(
-                                  2,
-                                  Center(
-                                    child: Text(
-                                      'Zdalny browar',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 46),
-                                    ),
-                                  )),
-                              SizedBox(
-                                height: 45.0,
-                              ),
-                              FadeAnimation(
-                                  2,
-                                  TextFormField(
-                                    autocorrect: false,
-                                    autofillHints: [AutofillHints.email],
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                    controller: _loginController,
-                                    key: Key('loginInput'),
-                                    decoration: InputDecoration(
-                                        focusedBorder: UnderlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.red),
-                                        ),
-                                        prefixIcon: Icon(
-                                          Icons.alternate_email,
-                                          color: Colors.black,
-                                        ),
-                                        hintStyle:
-                                            TextStyle(color: Colors.black54),
-                                        filled: true,
-                                        fillColor:
-                                            Colors.white.withOpacity(0.5),
-                                        hintText: 'Twój e-mail'),
-                                  )),
-                              SizedBox(
-                                height: 15.0,
-                              ),
-                              FadeAnimation(
-                                  2,
-                                  TextFormField(
-                                    obscureText: _isObscure,
-                                    enableSuggestions: false,
-                                    autocorrect: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                    controller: _passwordController,
-                                    key: Key('passwordInput'),
-                                    decoration: InputDecoration(
-                                        focusedBorder: UnderlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.red),
-                                        ),
-                                        prefixIcon: Icon(
-                                          Icons.vpn_key,
-                                          color: Colors.black,
-                                        ),
-                                        suffixIcon: IconButton(
-                                            icon: Icon(
-                                              _isObscure
-                                                  ? Icons.visibility
-                                                  : Icons.visibility_off,
-                                              color: Colors.black,
-                                            ),
-                                            onPressed: () {
-                                              setState(() {
-                                                _isObscure = !_isObscure;
-                                              });
-                                            }),
-                                        hintStyle:
-                                            TextStyle(color: Colors.black54),
-                                        filled: true,
-                                        fillColor:
-                                            Colors.white.withOpacity(0.5),
-                                        hintText: 'Twoje hasło'),
-                                  )),
-                              SizedBox(
-                                height: 45.0,
-                              ),
-                              FadeAnimation(
-                                  2,
-                                  state is LoginLoading
-                                      ? ElevatedButton(
-                                          onPressed: () {},
-                                          child: Padding(
-                                              padding: EdgeInsets.all(5.0),
-                                              child:
-                                                  CircularProgressIndicator()),
-                                          style: ElevatedButton.styleFrom(
-                                            primary: Colors.red, // background
-                                            onPrimary:
-                                                Colors.white, // foreground
-                                          ),
-                                        )
-                                      : ElevatedButton(
-                                          onPressed: _onLoginButtonPressed,
-                                          child: Padding(
-                                              padding: EdgeInsets.all(15.0),
-                                              child: Text('Zaczynamy!')),
-                                          style: ElevatedButton.styleFrom(
-                                            primary: Colors.red, // background
-                                            onPrimary:
-                                                Colors.white, // foreground
-                                          ),
-                                        )),
-                              SizedBox(
-                                height: 30.0,
-                              ),
-
-                              FadeAnimation(
-                                  2,
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, '/reset-password');
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        primary:
-                                            Colors.transparent, // background
-                                        onPrimary: Colors.white, // foreground
-                                        shadowColor: Colors.transparent),
-                                    child: Padding(
-                                        padding: EdgeInsets.all(15.0),
-                                        child: Text('Nie pamiętasz hasła?')),
-                                  )),
-                              FadeAnimation(
-                                  2,
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(context, '/start');
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        primary:
-                                            Colors.transparent, // background
-                                        onPrimary: Colors.white, // foreground
-                                        shadowColor: Colors.transparent),
-                                    child: Padding(
-                                        padding: EdgeInsets.all(15.0),
-                                        child: Text('Zacznij jako gość')),
-                                  )),
-                            ],
+            body: Center(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(25.0),
+                child: state is CheckingAuth
+                    ? CircularProgressIndicator()
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          FadeAnimation(
+                              2,
+                              CircleAvatar(
+                                radius: 100.0,
+                                backgroundColor: Colors.transparent,
+                                foregroundColor: Colors.white,
+                                child: Icon(Icons.wifi, size: 220),
+                              )),
+                          SizedBox(
+                            height: 30.0,
                           ),
-                  ),
-                ),
-              ],
+                          FadeAnimation(
+                              2,
+                              Center(
+                                child: Text(
+                                  'Zdalny browar',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 46),
+                                ),
+                              )),
+                          SizedBox(
+                            height: 45.0,
+                          ),
+                          FadeAnimation(
+                              2,
+                              TextFormField(
+                                autocorrect: false,
+                                autofillHints: [AutofillHints.email],
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                                controller: _loginController,
+                                key: Key('loginInput'),
+                                decoration: InputDecoration(
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.red),
+                                    ),
+                                    prefixIcon: Icon(
+                                      Icons.alternate_email,
+                                      color: Colors.black,
+                                    ),
+                                    hintStyle: TextStyle(color: Colors.black54),
+                                    filled: true,
+                                    fillColor: Colors.white.withOpacity(0.5),
+                                    hintText: 'Twój e-mail'),
+                              )),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          FadeAnimation(
+                              2,
+                              TextFormField(
+                                obscureText: _isObscure,
+                                enableSuggestions: false,
+                                autocorrect: false,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                                controller: _passwordController,
+                                key: Key('passwordInput'),
+                                decoration: InputDecoration(
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.red),
+                                    ),
+                                    prefixIcon: Icon(
+                                      Icons.vpn_key,
+                                      color: Colors.black,
+                                    ),
+                                    suffixIcon: IconButton(
+                                        icon: Icon(
+                                          _isObscure
+                                              ? Icons.visibility
+                                              : Icons.visibility_off,
+                                          color: Colors.black,
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            _isObscure = !_isObscure;
+                                          });
+                                        }),
+                                    hintStyle: TextStyle(color: Colors.black54),
+                                    filled: true,
+                                    fillColor: Colors.white.withOpacity(0.5),
+                                    hintText: 'Twoje hasło'),
+                              )),
+                          SizedBox(
+                            height: 45.0,
+                          ),
+                          FadeAnimation(
+                              2,
+                              state is LoginLoading
+                                  ? ElevatedButton(
+                                      onPressed: () {},
+                                      child: Padding(
+                                          padding: EdgeInsets.all(5.0),
+                                          child: CircularProgressIndicator()),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.red, // background
+                                        onPrimary: Colors.white, // foreground
+                                      ),
+                                    )
+                                  : ElevatedButton(
+                                      onPressed: _onLoginButtonPressed,
+                                      child: Padding(
+                                          padding: EdgeInsets.all(15.0),
+                                          child: Text('Zaczynamy!')),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.red, // background
+                                        onPrimary: Colors.white, // foreground
+                                      ),
+                                    )),
+                          SizedBox(
+                            height: 30.0,
+                          ),
+                          FadeAnimation(
+                              2,
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/reset-password');
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colors.transparent, // background
+                                    onPrimary: Colors.white, // foreground
+                                    shadowColor: Colors.transparent),
+                                child: Padding(
+                                    padding: EdgeInsets.all(15.0),
+                                    child: Text('Nie pamiętasz hasła?')),
+                              )),
+                          FadeAnimation(
+                              2,
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(context, '/start');
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colors.transparent, // background
+                                    onPrimary: Colors.white, // foreground
+                                    shadowColor: Colors.transparent),
+                                child: Padding(
+                                    padding: EdgeInsets.all(15.0),
+                                    child: Text('Zacznij jako gość')),
+                              )),
+                        ],
+                      ),
+              ),
             ),
           );
         },

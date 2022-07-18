@@ -43,17 +43,8 @@ class _BeerDetailsFormState extends State<Body> {
       child: BlocBuilder<DetailsBloc, DetailsInitState>(
         builder: (context, state) {
           return Scaffold(
-              body: Stack(
-            children: <Widget>[
-              Container(
-                decoration: new BoxDecoration(
-                    image: new DecorationImage(
-                        colorFilter: new ColorFilter.mode(
-                            Colors.white.withOpacity(0.1), BlendMode.dstATop),
-                        fit: BoxFit.cover,
-                        image: AssetImage("assets/images/bg3.jpg"))),
-              ),
-              Center(
+              backgroundColor: Colors.transparent,
+              body: Center(
                 child: SingleChildScrollView(
                   child: state is DetailsDisplayState
                       ? Column(
@@ -146,9 +137,7 @@ class _BeerDetailsFormState extends State<Body> {
                         )
                       : CircularProgressIndicator(),
                 ),
-              ),
-            ],
-          ));
+              ));
         },
       ),
     );

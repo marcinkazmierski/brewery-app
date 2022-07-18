@@ -16,7 +16,71 @@ class AboutScreen extends StatelessWidget {
                     image: AssetImage("assets/images/bg3.jpg"))),
           ),
           Center(
-            child: Text("//todo"),
+            child: Container(
+              padding: EdgeInsets.all(10),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Center(
+                      child: Text(
+                        "Zdalny Browar",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 32),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Card(
+                      child: ListTile(
+                        contentPadding: EdgeInsets.all(10),
+                        trailing: Icon(Icons.check, color: Colors.green),
+                        title: Padding(
+                          padding: const EdgeInsets.only(bottom: 15.0),
+                          child: Text("Początek"),
+                        ),
+                        subtitle: Text(
+                            "Historia piwowarstwa domowego w Kamionkach sięga 2020 roku."),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                        contentPadding: EdgeInsets.all(10),
+                        trailing: Icon(Icons.check, color: Colors.green),
+                        title: Padding(
+                          padding: const EdgeInsets.only(bottom: 15.0),
+                          child: Text("Proces"),
+                        ),
+                        subtitle: Text(
+                            "To tutaj warzone jest piwo z procesem zacierania!"),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                        contentPadding: EdgeInsets.all(10),
+                        trailing: Icon(Icons.check, color: Colors.green),
+                        title: Padding(
+                          padding: const EdgeInsets.only(bottom: 15.0),
+                          child: Text("Receptura"),
+                        ),
+                        subtitle: Text("Tylko sprawdzone przepisy :)"),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                        contentPadding: EdgeInsets.all(10),
+                        trailing: Icon(Icons.check, color: Colors.green),
+                        title: Padding(
+                          padding: const EdgeInsets.only(bottom: 15.0),
+                          child: Text("Kody QR"),
+                        ),
+                        subtitle: Text(
+                            "Odkrywaj piwa skanując kody QR na etykietach. Dzięki temu możesz oceniać i komentować piwka!"),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
           SafeArea(
               child: Container(

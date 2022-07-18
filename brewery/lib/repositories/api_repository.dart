@@ -6,7 +6,6 @@ import 'package:brewery/constants.dart';
 import 'package:brewery/exceptions/exception.dart';
 import 'package:brewery/gateways/local_storage_gateway.dart';
 import 'package:http/http.dart';
-import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 
 abstract class ApiRepository {
@@ -59,12 +58,12 @@ abstract class ApiRepository {
     try {
       final Response response = await http
           .delete(Uri.parse(this.apiUrl + uri),
-          headers: {
-            HttpHeaders.contentTypeHeader:
-            "application/json; charset=UTF-8",
-            "X-AUTH-TOKEN": authToken ?? "",
-          },
-          body: body)
+              headers: {
+                HttpHeaders.contentTypeHeader:
+                    "application/json; charset=UTF-8",
+                "X-AUTH-TOKEN": authToken ?? "",
+              },
+              body: body)
           .timeout(const Duration(seconds: kRepositoryTimeout));
 
       return _parseResponse(response);

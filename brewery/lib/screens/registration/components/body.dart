@@ -42,12 +42,11 @@ class _CreateLoginFormState extends State<Body> {
                 backgroundColor: Colors.redAccent,
               ))
               .closed
-              .then((value) {
-            if (state.reload) {
-              BlocProvider.of<RegistrationBloc>(context)
-                  .add(DisplayRegistrationPageEvent());
-            }
-          });
+              .then((value) {});
+          if (state.reload) {
+            BlocProvider.of<RegistrationBloc>(context)
+                .add(DisplayRegistrationPageEvent());
+          }
         }
         if (state is DisplayRegistrationPageState) {
           _nickController.text = state.user.nick;
@@ -72,20 +71,13 @@ class _CreateLoginFormState extends State<Body> {
       child: BlocBuilder<RegistrationBloc, RegistrationState>(
         builder: (context, state) {
           return Scaffold(
+            backgroundColor: Colors.transparent,
             bottomSheet: Container(
                 child: Text(kAppVersion,
                     style: TextStyle(color: Colors.grey, fontSize: 8)),
                 decoration: BoxDecoration(color: Colors.black)),
             body: Stack(
               children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          colorFilter: new ColorFilter.mode(
-                              Colors.black.withOpacity(0.5), BlendMode.darken),
-                          fit: BoxFit.cover,
-                          image: AssetImage("assets/images/bg3.jpg"))),
-                ),
                 Center(
                   child: SingleChildScrollView(
                     padding: EdgeInsets.all(25.0),

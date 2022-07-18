@@ -24,8 +24,10 @@ abstract class UserRepository {
 }
 
 class ApiUserRepository extends ApiRepository implements UserRepository {
-  ApiUserRepository({required String apiUrl, required LocalStorageGateway localStorageGateway}) : super(apiUrl: apiUrl, localStorageGateway: localStorageGateway);
-
+  ApiUserRepository(
+      {required String apiUrl,
+      required LocalStorageGateway localStorageGateway})
+      : super(apiUrl: apiUrl, localStorageGateway: localStorageGateway);
 
   @override
   Future<bool> logout() async {
@@ -37,8 +39,7 @@ class ApiUserRepository extends ApiRepository implements UserRepository {
   @override
   Future<bool> register(String email, String nick, String password) async {
     if (email.isEmpty || nick.isEmpty || password.isEmpty) {
-      throw new ValidateException(
-          "Invalid login, nick or password. Try again!");
+      throw new ValidateException("Hasło lub email lub nick jest puste!");
     }
 
     Map data = {'email': email, 'nick': nick, 'password': password};
@@ -49,8 +50,7 @@ class ApiUserRepository extends ApiRepository implements UserRepository {
   @override
   Future<bool> registerGuest(String email, String password) async {
     if (email.isEmpty || password.isEmpty) {
-      throw new ValidateException(
-          "Invalid login, nick or password. Try again!");
+      throw new ValidateException("Hasło lub login jest puste!");
     }
     String authToken = await this.localStorageGateway.getCurrentUserAuthToken();
     Map data = {'email': email, 'password': password};
@@ -61,7 +61,7 @@ class ApiUserRepository extends ApiRepository implements UserRepository {
   @override
   Future<User> login(String email, String password) async {
     if (email.isEmpty || password.isEmpty) {
-      throw new ValidateException("Invalid login or password. Try again!");
+      throw new ValidateException("Hasło lub login jest puste!");
     }
     Map data = {'email': email, 'password': password};
     Map decoded = await requestPost(data, 'auth/authenticate');
@@ -76,7 +76,7 @@ class ApiUserRepository extends ApiRepository implements UserRepository {
   @override
   Future<User> loginGuest(String nick) async {
     if (nick.isEmpty) {
-      throw new ValidateException("Invalid nick!");
+      throw new ValidateException("Podaj nick!");
     }
     Map data = {'nick': nick};
     Map decoded = await requestPost(data, 'auth/authenticate/guest');
@@ -88,7 +88,7 @@ class ApiUserRepository extends ApiRepository implements UserRepository {
   @override
   Future<bool> resetPassword(String email) async {
     if (email.isEmpty) {
-      throw new ValidateException("Empty email.");
+      throw new ValidateException("Podaj email.");
     }
     Map data = {'email': email};
     await requestPost(data, 'auth/reset-password');
@@ -99,7 +99,7 @@ class ApiUserRepository extends ApiRepository implements UserRepository {
   Future<bool> resetPasswordConfirm(
       String email, String code, String newPassword) async {
     if (email.isEmpty || code.isEmpty || newPassword.isEmpty) {
-      throw new ValidateException("Empty email or code or password.");
+      throw new ValidateException("Hasło lub kod lub login jest puste!");
     }
     Map data = {'email': email, 'code': code, 'newPassword': newPassword};
     await requestPost(data, 'auth/reset-password-confirm');

@@ -13,69 +13,16 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return new PressDoubleBackToClose(
       message: "Naciśnij ponownie, aby zamknąć",
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: buildAppBar(context),
-        body: Body(),
+      child: Container(
+        constraints: const BoxConstraints.expand(),
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                colorFilter: new ColorFilter.mode(
+                    Colors.black.withOpacity(0.5), BlendMode.darken),
+                fit: BoxFit.cover,
+                image: AssetImage("assets/images/bg3.jpg"))),
+        child: Body(),
       ),
-    );
-  }
-
-  AppBar buildAppBar(BuildContext context) {
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      automaticallyImplyLeading: false,
-      actions: <Widget>[
-        PopupMenuButton<int>(
-          onSelected: (int value) {
-            if (value == 1) {
-              //todo: use constatnts or enum: https://api.flutter.dev/flutter/material/PopupMenuButton-class.html
-              Navigator.pushNamed(context, '/logout');
-            }
-            if (value == 3) {
-              Navigator.pushNamed(context, '/registration');
-            }
-            if (value == 4) {
-              Navigator.pushNamed(context, '/about');
-            }
-            if (value == 99) {
-              SystemNavigator.pop();
-            }
-            if (value == 0) {
-              BlocProvider.of<HomeBloc>(context).add(DisplayHomeEvent());
-            }
-          },
-          icon: Icon(Icons.menu),
-          itemBuilder: (BuildContext context) => [
-            PopupMenuItem(
-              child: Text('Odśwież listę piw'),
-              value: 0,
-            ),
-            Application.currentUser?.status == UserStatusConstants.ACTIVE
-                ? PopupMenuItem(
-                    child: Text('Profil'),
-                    value: 2,
-                  )
-                : PopupMenuItem(
-                    child: Text('Zarejestruj konto'),
-                    value: 3,
-                  ),
-            PopupMenuItem(
-              child: Text('O Zdalnym Browarze'),
-              value: 4,
-            ),
-            PopupMenuItem(
-              child: Text('Wyloguj'),
-              value: 1,
-            ),
-            PopupMenuItem(
-              child: Text('Zamknij'),
-              value: 99,
-            )
-          ],
-        ),
-      ],
     );
   }
 }
