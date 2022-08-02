@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:brewery/components/simple_bloc_observer.dart';
+import 'package:brewery/constants.dart';
 import 'package:brewery/gateways/local_storage_gateway.dart';
 import 'package:brewery/gateways/notifications_gateway.dart';
 import 'package:brewery/models/beer.dart';
@@ -22,6 +23,7 @@ import 'package:brewery/screens/home/home_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 Future main() async {
   await dotenv.load(fileName: ".env");
@@ -31,14 +33,29 @@ Future main() async {
     () async {
       // Initialize Firebase.
       await Firebase.initializeApp();
+
+      // Initialize Notifications.
       NotificationsGateway()..init();
-      runApp(MyApp(
-          beerRepository: new ApiBeerRepository(
-              apiUrl: dotenv.env['API_URL'].toString(),
-              localStorageGateway: localStorageGateway),
-          userRepository: new ApiUserRepository(
-              apiUrl: dotenv.env['API_URL'].toString(),
-              localStorageGateway: localStorageGateway)));
+
+      // Initialize Sentry.
+      await SentryFlutter.init(
+            (options) {
+          options.dsn = dotenv.env['SENTRY_DSN'].toString();
+          options.release = kAppVersion;
+          // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+          // We recommend adjusting this value in production.
+          options.tracesSampleRate = 1.0;
+        },
+        appRunner: () =>    runApp(MyApp(
+            beerRepository: new ApiBeerRepository(
+                apiUrl: dotenv.env['API_URL'].toString(),
+                localStorageGateway: localStorageGateway),
+            userRepository: new ApiUserRepository(
+                apiUrl: dotenv.env['API_URL'].toString(),
+                localStorageGateway: localStorageGateway))),
+      );
+
+
     },
     blocObserver: SimpleBlocObserver(),
   );

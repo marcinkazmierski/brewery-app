@@ -7,6 +7,8 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'dart:developer';
 
+import 'package:sentry_flutter/sentry_flutter.dart';
+
 ///STATE
 abstract class StartState extends Equatable {
   const StartState();
@@ -104,6 +106,7 @@ class StartBloc extends Bloc<StartEvent, StartState> {
     try {
       User user = await this.userRepository.loginGuest(event.nick);
       Application.currentUser = user;
+      Sentry.captureMessage("New Guest: $user");
       emit(GuestAuthenticatedState(user: user));
     } catch (error) {
       emit(StartFailureState(error: error.toString()));

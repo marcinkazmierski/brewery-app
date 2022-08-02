@@ -7,6 +7,7 @@ import 'package:brewery/exceptions/exception.dart';
 import 'package:brewery/gateways/local_storage_gateway.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 abstract class ApiRepository {
   final String apiUrl;
@@ -76,16 +77,33 @@ abstract class ApiRepository {
 
   Future<Map> _parseResponse(Response response) async {
     if (response.statusCode == 200) {
-      Map decoded = jsonDecode(response.body);
-      return decoded;
+      try {
+        Map decoded = jsonDecode(response.body);
+        return decoded;
+      } on FormatException catch (error) {
+        log('The provided string is not valid JSON');
+
+        Sentry.captureException(error,
+            hint: 'The provided string is not valid JSON');
+      }
+      throw ResponseException("Wystąpił błąd z połączeniem z serwerem (1)");
     } else if (response.statusCode == 204) {
       return Map();
     } else {
-      Map decoded = jsonDecode(response.body);
-      log(decoded.toString());
+      Map decoded = {};
+      try {
+        decoded = jsonDecode(response.body);
+        log(decoded.toString());
+        Sentry.captureException(decoded.toString(),
+            hint: 'API response onError');
+      } catch (error) {
+        log(error.toString());
+        Sentry.captureException(error, hint: 'Server onError');
+        throw ResponseException("Wystąpił błąd z połączeniem z serwerem (2)");
+      }
       throw ResponseException(decoded.containsKey('error')
           ? decoded['error']['userMessage']
-          : "General error");
+          : "Wystąpił błąd z połączeniem z serwerem (3)");
     }
   }
 }

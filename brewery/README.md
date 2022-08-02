@@ -15,12 +15,15 @@ For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+## Release
+- firstly set .env params!
+- appbundle: flutter build appbundle --release 
+or
+- build APK: flutter build apk --release >> build\app\outputs\flutter-apk\app-release.apk
 
 ## Documentations
 - https://bloclibrary.dev/#/coreconcepts?id=bloc (https://pub.dev/packages/flutter_bloc)
 - https://firebase.google.com/docs/cloud-messaging/flutter/client
 
 ## TODO:
-- push notifications 
 - odświeżanie całej listy tak jak na fb gdy user przeciągnie mocno w dół główny ekran
-- rejstracja profilu gościa, czyli dodanie do menu takiej opcji + jakieś powiadomienie/przypomnienie o tym

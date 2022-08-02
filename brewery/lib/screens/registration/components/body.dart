@@ -117,6 +117,18 @@ class _CreateLoginFormState extends State<Body> {
                               ),
                             )),
                         SizedBox(
+                          height: 10.0,
+                        ),
+                        FadeAnimation(
+                            2,
+                            Center(
+                              child: Text(
+                                'Zarejestruj konto aby w pełni korzystać z możliwości aplikacji. Twoje powiązania z kontem będą trwale zapisane w naszej bazie!',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 14),
+                              ),
+                            )),
+                        SizedBox(
                           height: 20.0,
                         ),
                         state is DisplayRegistrationPageState

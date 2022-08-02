@@ -1,29 +1,25 @@
 import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class SimpleBlocObserver extends BlocObserver {
   @override
   void onEvent(Bloc bloc, Object? event) {
     log('onEvent $event');
-    FirebaseCrashlytics.instance.setCustomKey("onEvent", event.toString());
     super.onEvent(bloc, event);
   }
 
   @override
   onTransition(Bloc bloc, Transition transition) {
     log('onTransition $transition');
-    FirebaseCrashlytics.instance
-        .setCustomKey("onTransition", transition.toString());
     super.onTransition(bloc, transition);
   }
 
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
     log('onError $error');
-    FirebaseCrashlytics.instance
-        .recordError(error, stackTrace, reason: "SimpleBlocObserver onError");
+    Sentry.captureException(error,
+        stackTrace: stackTrace, hint: 'SimpleBlocObserver onError');
     super.onError(bloc, error, stackTrace);
   }
 }
