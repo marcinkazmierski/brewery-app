@@ -1,7 +1,24 @@
 import 'package:brewery/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
-class AboutScreen extends StatelessWidget {
+class AboutScreen extends StatefulWidget {
+  @override
+  State<AboutScreen> createState() => _AboutScreenState();
+}
+
+class _AboutScreenState extends State<AboutScreen> {
+  String appVersion = "";
+
+  @override
+  void initState() {
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      setState(() {
+        appVersion = packageInfo.version;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,6 +46,8 @@ class AboutScreen extends StatelessWidget {
                             fontWeight: FontWeight.bold, fontSize: 32),
                       ),
                     ),
+                    SizedBox(height: 16),
+                    Text("Wersja aplikacji: $appVersion"),
                     SizedBox(height: 16),
                     Card(
                       child: ListTile(

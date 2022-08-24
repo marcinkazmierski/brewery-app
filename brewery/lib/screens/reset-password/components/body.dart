@@ -84,10 +84,6 @@ class _CreateLoginFormState extends State<Body> {
         builder: (context, state) {
           return Scaffold(
             backgroundColor: Colors.transparent,
-            bottomSheet: Container(
-                child: Text(kAppVersion,
-                    style: TextStyle(color: Colors.grey, fontSize: 8)),
-                decoration: BoxDecoration(color: Colors.black)),
             body: Stack(
               children: <Widget>[
                 Center(

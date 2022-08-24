@@ -145,10 +145,6 @@ class _BeerListFormState extends State<Body> {
             backgroundColor: Colors.transparent,
             extendBodyBehindAppBar: true,
             appBar: buildAppBar(context),
-            bottomSheet: Container(
-                child: Text(kAppVersion,
-                    style: TextStyle(color: Colors.grey, fontSize: 8)),
-                decoration: BoxDecoration(color: Colors.black)),
             body: Center(
               child: SingleChildScrollView(
                 child: state is HomeLoadedState

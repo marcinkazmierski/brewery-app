@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:brewery/common/application.dart';
+import 'package:brewery/gateways/notifications_gateway.dart';
 import 'package:brewery/models/user.dart';
 import 'package:brewery/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -93,6 +94,7 @@ class StartBloc extends Bloc<StartEvent, StartState> {
     try {
       User user = await this.userRepository.profile();
       Application.currentUser = user;
+      NotificationsGateway(userRepository: userRepository)..init();
       emit(GuestAuthenticatedState(user: user));
     } catch (error) {
       log(error.toString());
@@ -107,6 +109,7 @@ class StartBloc extends Bloc<StartEvent, StartState> {
       User user = await this.userRepository.loginGuest(event.nick);
       Application.currentUser = user;
       Sentry.captureMessage("New Guest: $user");
+      NotificationsGateway(userRepository: userRepository)..init();
       emit(GuestAuthenticatedState(user: user));
     } catch (error) {
       emit(StartFailureState(error: error.toString()));

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:brewery/common/application.dart';
+import 'package:brewery/gateways/notifications_gateway.dart';
 import 'package:brewery/models/user.dart';
 import 'package:brewery/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -116,6 +117,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     try {
       User user = await this.userRepository.login(event.email, event.password);
       Application.currentUser = user;
+      NotificationsGateway(userRepository: userRepository)..init();
       emit(UserAuthenticatedState(user: user));
     } catch (error) {
       emit(LoginCreateFailureState(error: error.toString()));

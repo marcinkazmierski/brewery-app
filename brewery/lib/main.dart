@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:brewery/components/simple_bloc_observer.dart';
 import 'package:brewery/constants.dart';
 import 'package:brewery/gateways/local_storage_gateway.dart';
-import 'package:brewery/gateways/notifications_gateway.dart';
 import 'package:brewery/models/beer.dart';
 import 'package:brewery/repositories/beer_repository.dart';
 import 'package:brewery/repositories/user_repository.dart';
@@ -34,19 +33,15 @@ Future main() async {
       // Initialize Firebase.
       await Firebase.initializeApp();
 
-      // Initialize Notifications.
-      NotificationsGateway()..init();
-
       // Initialize Sentry.
       await SentryFlutter.init(
-            (options) {
+        (options) {
           options.dsn = dotenv.env['SENTRY_DSN'].toString();
-          options.release = kAppVersion;
           // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
           // We recommend adjusting this value in production.
           options.tracesSampleRate = 1.0;
         },
-        appRunner: () =>    runApp(MyApp(
+        appRunner: () => runApp(MyApp(
             beerRepository: new ApiBeerRepository(
                 apiUrl: dotenv.env['API_URL'].toString(),
                 localStorageGateway: localStorageGateway),
@@ -54,8 +49,6 @@ Future main() async {
                 apiUrl: dotenv.env['API_URL'].toString(),
                 localStorageGateway: localStorageGateway))),
       );
-
-
     },
     blocObserver: SimpleBlocObserver(),
   );

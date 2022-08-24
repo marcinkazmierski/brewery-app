@@ -21,6 +21,8 @@ abstract class UserRepository {
   Future<bool> logout();
 
   Future<User> profile();
+
+  Future<bool> storeNotificationToken(String token);
 }
 
 class ApiUserRepository extends ApiRepository implements UserRepository {
@@ -111,5 +113,18 @@ class ApiUserRepository extends ApiRepository implements UserRepository {
     String authToken = await this.localStorageGateway.getCurrentUserAuthToken();
     Map decoded = await requestGet('user', authToken);
     return User.fromJson(decoded);
+  }
+
+  @override
+  Future<bool> storeNotificationToken(String token) async {
+    if (token.isEmpty) {
+      throw new ValidateException("Empty token.");
+    }
+    String authToken = await this.localStorageGateway.getCurrentUserAuthToken();
+    Map data = {'notificationToken': token};
+    Map decoded =
+        await requestPost(data, 'user/store-notification-token', authToken);
+    print(decoded);
+    return true;
   }
 }
