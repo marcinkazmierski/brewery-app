@@ -1,5 +1,6 @@
 import 'package:brewery/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class AboutScreen extends StatefulWidget {
@@ -9,6 +10,7 @@ class AboutScreen extends StatefulWidget {
 
 class _AboutScreenState extends State<AboutScreen> {
   String appVersion = "";
+  String authorEmail = "zdalny-browar@kazmierski.com.pl";
 
   @override
   void initState() {
@@ -94,6 +96,28 @@ class _AboutScreenState extends State<AboutScreen> {
                         ),
                         subtitle: Text(
                             "Odkrywaj piwa skanując kody QR na etykietach. Dzięki temu możesz oceniać i komentować piwka!"),
+                      ),
+                    ),
+                    GestureDetector(
+                      onLongPress: () {
+                        Clipboard.setData(new ClipboardData(text: authorEmail));
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Skopiowano email do schowka!'),
+                          backgroundColor: Colors.green,
+                          duration: Duration(milliseconds: 1500),
+                        ));
+                      },
+                      child: Card(
+                        child: ListTile(
+                          contentPadding: EdgeInsets.all(10),
+                          trailing:
+                              Icon(Icons.mail_outline, color: Colors.redAccent),
+                          title: Padding(
+                            padding: const EdgeInsets.only(bottom: 15.0),
+                            child: Text("Kontakt z twórcą aplikacji"),
+                          ),
+                          subtitle: Text(authorEmail),
+                        ),
                       ),
                     ),
                   ],

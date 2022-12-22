@@ -11,25 +11,23 @@ class FadeAnimation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Specify your tween
-    final _tween = MultiTween<AniProps>()
-      ..add(AniProps.opacity, Tween(begin: 0.0, end: 1.0),
-          Duration(milliseconds: 500))
-      ..add(AniProps.translateY, Tween(begin: -30.0, end: 0.0),
-          Duration(milliseconds: 500));
+    final tween = MovieTween()
+      ..tween(AniProps.opacity, Tween(begin: 0.0, end: 1.0),
+          duration: const Duration(milliseconds: 500), curve: Curves.easeIn)
+      ..tween(AniProps.translateY, Tween(begin: -30.0, end: 0.0),
+          duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
 
-    return PlayAnimation<MultiTweenValues<AniProps>>(
-      delay: Duration(milliseconds: (500 * delay).round()),
-      tween: _tween,
-      // Pass in tween
-      duration: _tween.duration,
-      // Obtain duration
-      child: this.child,
-      builder: (context, child, value) => Opacity(
-        opacity: value.get(AniProps.opacity),
-        child: Transform.translate(
-            offset: Offset(0, value.get(AniProps.translateY)), child: child),
-      ),
-    );
+    return CustomAnimationBuilder(
+        delay: Duration(milliseconds: (500 * delay).round()),
+        duration: tween.duration,
+        tween: tween,
+        child: this.child,
+        builder: (BuildContext context, Movie value, Widget? child) {
+          return Opacity(
+              opacity: value.get(AniProps.opacity),
+              child: Transform.translate(
+                  offset: Offset(0.0, value.get(AniProps.translateY)),
+                  child: child));
+        });
   }
 }

@@ -22,7 +22,7 @@ class HomeLoadedState extends HomeState {
   final List<Beer> beers;
   final Beer? activeBeer;
 
-  HomeLoadedState({required this.beers, this.activeBeer});
+  HomeLoadedState({required this.beers, this.activeBeer = null});
 
   @override
   List<Object> get props => [beers, activeBeer!];
@@ -101,6 +101,7 @@ class AddNewBeerEvent extends HomeEvent {
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   BeerRepository beerRepository;
   List<Beer> beers = []; //todo: cache
+  String lastBeerCode = "";
 
   HomeBloc({required this.beerRepository}) : super(HomeInitialState()) {
     log(">>>> HomeBloc START");
@@ -131,10 +132,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(HomeLoadingState());
     try {
       final uri = await getInitialUri();
-      if (uri != null && uri.queryParameters.containsKey('code')) {
+      if (uri != null &&
+          uri.queryParameters.containsKey('code') &&
+          this.lastBeerCode != uri.queryParameters['code']!) {
         log("BEER CODE: " + uri.queryParameters['code']!);
         await beerRepository.addBeerByCode(uri.queryParameters['code']!);
+        this.lastBeerCode = uri.queryParameters['code']!;
         emit(AddedBeerSuccessfulState());
+        return;
       }
     } catch (error) {
       // yield HomeFailureState(error: error.toString());
