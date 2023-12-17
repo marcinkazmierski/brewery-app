@@ -83,8 +83,11 @@ abstract class ApiRepository {
       } on FormatException catch (error) {
         log('The provided string is not valid JSON');
 
-        Sentry.captureException(error,
-            hint: 'The provided string is not valid JSON');
+        Sentry.captureException(
+          error,
+          hint:
+              Hint.withMap({'error': 'The provided string is not valid JSON'}),
+        );
       }
       throw ResponseException("Wystąpił błąd z połączeniem z serwerem (1)");
     } else if (response.statusCode == 204) {
@@ -94,11 +97,16 @@ abstract class ApiRepository {
       try {
         decoded = jsonDecode(response.body);
         log(decoded.toString());
-        Sentry.captureException(decoded.toString(),
-            hint: 'API response onError');
+        Sentry.captureException(
+          decoded.toString(),
+          hint: Hint.withMap({'error': 'API response onError'}),
+        );
       } catch (error) {
         log(error.toString());
-        Sentry.captureException(error, hint: 'Server onError');
+        Sentry.captureException(
+          error,
+          hint: Hint.withMap({'error': 'Server onError'}),
+        );
         throw ResponseException("Wystąpił błąd z połączeniem z serwerem (2)");
       }
       throw ResponseException(decoded.containsKey('error')

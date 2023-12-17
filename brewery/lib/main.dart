@@ -23,36 +23,37 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'firebase_options.dart';
 
-Future main() async {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   LocalStorageGateway localStorageGateway = new LocalStorageGateway();
 
-  BlocOverrides.runZoned(
-    () async {
-      // Initialize Firebase.
-      await Firebase.initializeApp();
+  Bloc.observer = SimpleBlocObserver();
+  // Initialize Firebase.
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-      // Initialize Sentry.
-      await SentryFlutter.init(
+  // Initialize Sentry.
+  await SentryFlutter.init(
         (options) {
-          options.dsn = dotenv.env['SENTRY_DSN'].toString();
-          // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-          // We recommend adjusting this value in production.
-          options.tracesSampleRate = 1.0;
-        },
-        appRunner: () => runApp(MyApp(
-            beerRepository: new ApiBeerRepository(
-                apiUrl: dotenv.env['API_URL'].toString(),
-                localStorageGateway: localStorageGateway),
-            userRepository: new ApiUserRepository(
-                apiUrl: dotenv.env['API_URL'].toString(),
-                localStorageGateway: localStorageGateway))),
-      );
+      options.dsn = dotenv.env['SENTRY_DSN'].toString();
+      // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+      // We recommend adjusting this value in production.
+      options.tracesSampleRate = 1.0;
     },
-    blocObserver: SimpleBlocObserver(),
+    appRunner: () => runApp(MyApp(
+        beerRepository: ApiBeerRepository(
+            apiUrl: dotenv.env['API_URL'].toString(),
+            localStorageGateway: localStorageGateway),
+        userRepository:   ApiUserRepository(
+            apiUrl: dotenv.env['API_URL'].toString(),
+            localStorageGateway: localStorageGateway))),
   );
 }
+
 
 class MyApp extends StatelessWidget {
   BeerRepository beerRepository;
@@ -82,8 +83,8 @@ class MyApp extends StatelessWidget {
               providers: [
                 BlocProvider<RegistrationBloc>(
                   create: (context) =>
-                      RegistrationBloc(userRepository: this.userRepository)
-                        ..add(DisplayRegistrationPageEvent()),
+                  RegistrationBloc(userRepository: this.userRepository)
+                    ..add(DisplayRegistrationPageEvent()),
                 ),
               ],
               child: RegistrationScreen(),
@@ -103,13 +104,13 @@ class MyApp extends StatelessWidget {
           '/home': (context) => Home(context),
           '/details': (context) {
             final Beer beer =
-                ModalRoute.of(context)?.settings.arguments as Beer;
+            ModalRoute.of(context)?.settings.arguments as Beer;
             return MultiBlocProvider(
               providers: [
                 BlocProvider<DetailsBloc>(
                   create: (context) =>
-                      DetailsBloc(beerRepository: this.beerRepository)
-                        ..add(DisplayDetailsEvent(beer: beer)),
+                  DetailsBloc(beerRepository: this.beerRepository)
+                    ..add(DisplayDetailsEvent(beer: beer)),
                 ),
               ],
               child: DetailsScreen(),
@@ -136,7 +137,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<LoginBloc>(
           create: (context) =>
-              LoginBloc(userRepository: this.userRepository)..add(AppStarted()),
+          LoginBloc(userRepository: this.userRepository)..add(AppStarted()),
         ),
       ],
       child: LoginScreen(),
