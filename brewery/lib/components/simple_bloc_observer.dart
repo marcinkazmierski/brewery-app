@@ -18,8 +18,11 @@ class SimpleBlocObserver extends BlocObserver {
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
     log('onError $error');
-    Sentry.captureException(error,
-        stackTrace: stackTrace, hint: 'SimpleBlocObserver onError');
+    Sentry.captureException(
+      error,
+      stackTrace: stackTrace,
+      hint: Hint.withMap({'error': 'SimpleBlocObserver onError'}),
+    );
     super.onError(bloc, error, stackTrace);
   }
 }
