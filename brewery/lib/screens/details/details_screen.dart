@@ -4,18 +4,19 @@ import 'package:flutter/material.dart';
 class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return false; //todo
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (didPop) {
+        // @todo:     Navigator.pushNamed(context, '/home', arguments: widget.beer);
       },
       child: Container(
-        decoration: new BoxDecoration(
+        decoration: BoxDecoration(
             color: Colors.white,
-            image: new DecorationImage(
-                colorFilter: new ColorFilter.mode(
+            image: DecorationImage(
+                colorFilter: ColorFilter.mode(
                     Colors.white.withOpacity(0.1), BlendMode.dstATop),
                 fit: BoxFit.cover,
-                image: AssetImage("assets/images/bg3.jpg"))),
+                image: const AssetImage("assets/images/bg3.jpg"))),
         child: Body(),
       ),
     );
