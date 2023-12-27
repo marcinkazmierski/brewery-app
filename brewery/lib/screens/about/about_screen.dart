@@ -14,6 +14,7 @@ class _AboutScreenState extends State<AboutScreen> {
 
   @override
   void initState() {
+    super.initState();
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
       setState(() {
         appVersion = packageInfo.version;
@@ -27,71 +28,71 @@ class _AboutScreenState extends State<AboutScreen> {
       body: Stack(
         children: <Widget>[
           Container(
-            decoration: new BoxDecoration(
-                image: new DecorationImage(
-                    colorFilter: new ColorFilter.mode(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    colorFilter: ColorFilter.mode(
                         Colors.white.withOpacity(0.2), BlendMode.dstATop),
                     fit: BoxFit.cover,
-                    image: AssetImage("assets/images/bg3.jpg"))),
+                    image: const AssetImage("assets/images/bg3.jpg"))),
           ),
           Center(
             child: Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Center(
+                    const Center(
                       child: Text(
                         "Zdalny Browar",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 32),
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Text("Wersja aplikacji: $appVersion"),
-                    SizedBox(height: 16),
-                    Card(
+                    const SizedBox(height: 16),
+                    const Card(
                       child: ListTile(
                         contentPadding: EdgeInsets.all(10),
                         trailing: Icon(Icons.check, color: Colors.green),
                         title: Padding(
-                          padding: const EdgeInsets.only(bottom: 15.0),
+                          padding: EdgeInsets.only(bottom: 15.0),
                           child: Text("Początek"),
                         ),
                         subtitle: Text(
                             "Historia piwowarstwa domowego w Kamionkach sięga 2020 roku."),
                       ),
                     ),
-                    Card(
+                    const Card(
                       child: ListTile(
                         contentPadding: EdgeInsets.all(10),
                         trailing: Icon(Icons.check, color: Colors.green),
                         title: Padding(
-                          padding: const EdgeInsets.only(bottom: 15.0),
+                          padding: EdgeInsets.only(bottom: 15.0),
                           child: Text("Proces"),
                         ),
                         subtitle: Text(
                             "To tutaj warzone jest piwo z procesem zacierania!"),
                       ),
                     ),
-                    Card(
+                    const Card(
                       child: ListTile(
                         contentPadding: EdgeInsets.all(10),
                         trailing: Icon(Icons.check, color: Colors.green),
                         title: Padding(
-                          padding: const EdgeInsets.only(bottom: 15.0),
+                          padding: EdgeInsets.only(bottom: 15.0),
                           child: Text("Receptura"),
                         ),
                         subtitle: Text("Tylko sprawdzone przepisy :)"),
                       ),
                     ),
-                    Card(
+                    const Card(
                       child: ListTile(
                         contentPadding: EdgeInsets.all(10),
                         trailing: Icon(Icons.check, color: Colors.green),
                         title: Padding(
-                          padding: const EdgeInsets.only(bottom: 15.0),
+                          padding: EdgeInsets.only(bottom: 15.0),
                           child: Text("Kody QR"),
                         ),
                         subtitle: Text(
@@ -100,8 +101,9 @@ class _AboutScreenState extends State<AboutScreen> {
                     ),
                     GestureDetector(
                       onLongPress: () {
-                        Clipboard.setData(new ClipboardData(text: authorEmail));
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        Clipboard.setData(ClipboardData(text: authorEmail));
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
                           content: Text('Skopiowano email do schowka!'),
                           backgroundColor: Colors.green,
                           duration: Duration(milliseconds: 1500),
@@ -110,10 +112,10 @@ class _AboutScreenState extends State<AboutScreen> {
                       child: Card(
                         child: ListTile(
                           contentPadding: EdgeInsets.all(10),
-                          trailing:
-                              Icon(Icons.mail_outline, color: Colors.redAccent),
-                          title: Padding(
-                            padding: const EdgeInsets.only(bottom: 15.0),
+                          trailing: const Icon(Icons.mail_outline,
+                              color: Colors.redAccent),
+                          title: const Padding(
+                            padding: EdgeInsets.only(bottom: 15.0),
                             child: Text("Kontakt z twórcą aplikacji"),
                           ),
                           subtitle: Text(authorEmail),
@@ -127,8 +129,8 @@ class _AboutScreenState extends State<AboutScreen> {
           ),
           SafeArea(
               child: Container(
-            margin:
-                EdgeInsets.only(left: kDefaultPadding, top: kDefaultPadding),
+            margin: const EdgeInsets.only(
+                left: kDefaultPadding, top: kDefaultPadding),
             decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.4),
               borderRadius: BorderRadius.circular(30),

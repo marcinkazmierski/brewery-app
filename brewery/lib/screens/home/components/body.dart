@@ -30,10 +30,10 @@ class _BeerListFormState extends State<Body> {
     barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
         "#ff6666", "Anuluj", true, ScanMode.QR);
 
-    final uri = await Uri.parse(barcodeScanRes);
+    final uri = Uri.parse(barcodeScanRes);
     bool closeModal = false;
 
-    if (uri != null && uri.queryParameters.containsKey('code')) {
+    if (uri.queryParameters.containsKey('code')) {
       log("BEER CODE: " + uri.queryParameters['code']!);
 
       showDialog(

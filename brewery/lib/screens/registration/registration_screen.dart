@@ -8,10 +8,10 @@ class RegistrationScreen extends StatelessWidget {
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
           image: DecorationImage(
-              colorFilter: new ColorFilter.mode(
+              colorFilter: ColorFilter.mode(
                   Colors.black.withOpacity(0.5), BlendMode.darken),
               fit: BoxFit.cover,
-              image: AssetImage("assets/images/bg3.jpg"))),
+              image: const AssetImage("assets/images/bg3.jpg"))),
       child: Body(),
     );
   }
