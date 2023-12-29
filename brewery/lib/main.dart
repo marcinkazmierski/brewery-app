@@ -67,8 +67,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Zdalny Browar',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
+          useMaterial3: true,
+          primarySwatch: Colors.red,
         ),
         initialRoute: '/start',
         routes: {
