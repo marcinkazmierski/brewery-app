@@ -1,5 +1,4 @@
 import 'package:brewery/components/fade_animation.dart';
-import 'package:brewery/constants.dart';
 import 'package:brewery/screens/reset-password/bloc/reset_password_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

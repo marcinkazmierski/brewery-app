@@ -36,6 +36,7 @@ class _BeerListFormState extends State<Body> {
     if (uri.queryParameters.containsKey('code')) {
       log("BEER CODE: " + uri.queryParameters['code']!);
 
+      //todo: refactor:
       showDialog(
           context: context,
           barrierDismissible: false,
