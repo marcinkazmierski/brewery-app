@@ -1,10 +1,11 @@
 import 'package:brewery/components/fade_animation.dart';
-import 'package:brewery/constants.dart';
 import 'package:brewery/screens/login/bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Body extends StatefulWidget {
+  const Body({super.key});
+
   @override
   State<Body> createState() => _CreateLoginFormState();
 }
@@ -12,7 +13,7 @@ class Body extends StatefulWidget {
 class _CreateLoginFormState extends State<Body> {
   final _loginController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _isObscure = true; //todo bloc
+  bool _isObscure = true;
 
   _onLoginButtonPressed() {
     FocusScopeNode currentFocus = FocusScope.of(context);
@@ -35,7 +36,7 @@ class _CreateLoginFormState extends State<Body> {
         if (state is LoginCreateFailureState) {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(
-                content: Text('${state.error}'),
+                content: Text(state.error),
                 backgroundColor: Colors.redAccent,
               ))
               .closed
@@ -55,59 +56,60 @@ class _CreateLoginFormState extends State<Body> {
             backgroundColor: Colors.transparent,
             body: Center(
               child: SingleChildScrollView(
-                padding: EdgeInsets.all(25.0),
+                padding: const EdgeInsets.all(25.0),
                 child: state is CheckingAuth
-                    ? CircularProgressIndicator()
+                    ? const CircularProgressIndicator()
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           FadeAnimation(
                               2,
-                              CircleAvatar(
+                              const CircleAvatar(
                                 radius: 100.0,
                                 backgroundColor: Colors.transparent,
                                 foregroundColor: Colors.white,
                                 child: Icon(Icons.wifi, size: 220),
                               )),
-                          SizedBox(
+                          const SizedBox(
                             height: 30.0,
                           ),
                           FadeAnimation(
                               2,
-                              Center(
+                              const Center(
                                 child: Text(
                                   'Zdalny browar',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 46),
                                 ),
                               )),
-                          SizedBox(
+                          const SizedBox(
                             height: 45.0,
                           ),
                           FadeAnimation(
                               2,
                               TextFormField(
                                 autocorrect: false,
-                                autofillHints: [AutofillHints.email],
-                                style: TextStyle(
+                                autofillHints: const [AutofillHints.email],
+                                style: const TextStyle(
                                   color: Colors.black,
                                 ),
                                 controller: _loginController,
-                                key: Key('loginInput'),
+                                key: const Key('loginInput'),
                                 decoration: InputDecoration(
-                                    focusedBorder: UnderlineInputBorder(
+                                    focusedBorder: const UnderlineInputBorder(
                                       borderSide: BorderSide(color: Colors.red),
                                     ),
-                                    prefixIcon: Icon(
+                                    prefixIcon: const Icon(
                                       Icons.alternate_email,
                                       color: Colors.black,
                                     ),
-                                    hintStyle: TextStyle(color: Colors.black54),
+                                    hintStyle:
+                                        const TextStyle(color: Colors.black54),
                                     filled: true,
                                     fillColor: Colors.white.withOpacity(0.5),
                                     hintText: 'Twój e-mail'),
                               )),
-                          SizedBox(
+                          const SizedBox(
                             height: 15.0,
                           ),
                           FadeAnimation(
@@ -116,16 +118,16 @@ class _CreateLoginFormState extends State<Body> {
                                 obscureText: _isObscure,
                                 enableSuggestions: false,
                                 autocorrect: false,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.black,
                                 ),
                                 controller: _passwordController,
-                                key: Key('passwordInput'),
+                                key: const Key('passwordInput'),
                                 decoration: InputDecoration(
-                                    focusedBorder: UnderlineInputBorder(
+                                    focusedBorder: const UnderlineInputBorder(
                                       borderSide: BorderSide(color: Colors.red),
                                     ),
-                                    prefixIcon: Icon(
+                                    prefixIcon: const Icon(
                                       Icons.vpn_key,
                                       color: Colors.black,
                                     ),
@@ -141,12 +143,13 @@ class _CreateLoginFormState extends State<Body> {
                                             _isObscure = !_isObscure;
                                           });
                                         }),
-                                    hintStyle: TextStyle(color: Colors.black54),
+                                    hintStyle:
+                                        const TextStyle(color: Colors.black54),
                                     filled: true,
                                     fillColor: Colors.white.withOpacity(0.5),
                                     hintText: 'Twoje hasło'),
                               )),
-                          SizedBox(
+                          const SizedBox(
                             height: 45.0,
                           ),
                           FadeAnimation(
@@ -154,25 +157,29 @@ class _CreateLoginFormState extends State<Body> {
                               state is LoginLoading
                                   ? ElevatedButton(
                                       onPressed: () {},
-                                      child: Padding(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            Colors.red, // background
+                                        foregroundColor:
+                                            Colors.white, // foreground
+                                      ),
+                                      child: const Padding(
                                           padding: EdgeInsets.all(5.0),
                                           child: CircularProgressIndicator()),
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Colors.red, // background
-                                        onPrimary: Colors.white, // foreground
-                                      ),
                                     )
                                   : ElevatedButton(
                                       onPressed: _onLoginButtonPressed,
-                                      child: Padding(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            Colors.red, // background
+                                        foregroundColor:
+                                            Colors.white, // foreground
+                                      ),
+                                      child: const Padding(
                                           padding: EdgeInsets.all(15.0),
                                           child: Text('Zaczynamy!')),
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Colors.red, // background
-                                        onPrimary: Colors.white, // foreground
-                                      ),
                                     )),
-                          SizedBox(
+                          const SizedBox(
                             height: 30.0,
                           ),
                           FadeAnimation(
@@ -183,10 +190,11 @@ class _CreateLoginFormState extends State<Body> {
                                       context, '/reset-password');
                                 },
                                 style: ElevatedButton.styleFrom(
-                                    primary: Colors.transparent, // background
-                                    onPrimary: Colors.white, // foreground
+                                    backgroundColor:
+                                        Colors.transparent, // background
+                                    foregroundColor: Colors.white, // foreground
                                     shadowColor: Colors.transparent),
-                                child: Padding(
+                                child: const Padding(
                                     padding: EdgeInsets.all(15.0),
                                     child: Text('Nie pamiętasz hasła?')),
                               )),
@@ -197,10 +205,11 @@ class _CreateLoginFormState extends State<Body> {
                                   Navigator.pushNamed(context, '/start');
                                 },
                                 style: ElevatedButton.styleFrom(
-                                    primary: Colors.transparent, // background
-                                    onPrimary: Colors.white, // foreground
+                                    backgroundColor:
+                                        Colors.transparent, // background
+                                    foregroundColor: Colors.white, // foreground
                                     shadowColor: Colors.transparent),
-                                child: Padding(
+                                child: const Padding(
                                     padding: EdgeInsets.all(15.0),
                                     child: Text('Zacznij jako gość')),
                               )),

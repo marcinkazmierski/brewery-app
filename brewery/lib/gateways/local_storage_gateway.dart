@@ -1,10 +1,9 @@
 import 'dart:async';
-
 import 'package:brewery/exceptions/exception.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorageGateway {
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Future<bool> setCurrentUserAuthToken(String token) async {
     final SharedPreferences prefs = await _prefs;
@@ -24,7 +23,7 @@ class LocalStorageGateway {
     final SharedPreferences prefs = await _prefs;
     String token = prefs.getString("X-AUTH-TOKEN") ?? "";
     if (token.isEmpty) {
-      throw new UnauthorizedException("Current user auth token not exists.");
+      throw UnauthorizedException("Current user auth token not exists.");
     }
     return token;
   }
@@ -33,7 +32,7 @@ class LocalStorageGateway {
     final SharedPreferences prefs = await _prefs;
     int id = prefs.getInt("userId") ?? -1;
     if (id < 0) {
-      throw new UnauthorizedException("Current user id not exists.");
+      throw UnauthorizedException("Current user id not exists.");
     }
     return id;
   }

@@ -1,5 +1,4 @@
 import 'package:brewery/models/user.dart';
-import 'package:flutter/cupertino.dart';
 
 class Review {
   final int id;

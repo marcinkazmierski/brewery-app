@@ -20,7 +20,7 @@ abstract class ApiRepository {
 
     try {
       final Response response = await http
-          .post(Uri.parse(this.apiUrl + uri),
+          .post(Uri.parse(apiUrl + uri),
               headers: {
                 HttpHeaders.contentTypeHeader:
                     "application/json; charset=UTF-8",
@@ -40,7 +40,7 @@ abstract class ApiRepository {
   Future<Map> requestGet(String uri, [String? authToken]) async {
     try {
       final Response response =
-          await http.get(Uri.parse(this.apiUrl + uri), headers: {
+          await http.get(Uri.parse(apiUrl + uri), headers: {
         HttpHeaders.contentTypeHeader: "application/json; charset=UTF-8",
         "X-AUTH-TOKEN": authToken ?? "",
       }).timeout(const Duration(seconds: kRepositoryTimeout));
@@ -58,7 +58,7 @@ abstract class ApiRepository {
 
     try {
       final Response response = await http
-          .delete(Uri.parse(this.apiUrl + uri),
+          .delete(Uri.parse(apiUrl + uri),
               headers: {
                 HttpHeaders.contentTypeHeader:
                     "application/json; charset=UTF-8",
@@ -91,7 +91,7 @@ abstract class ApiRepository {
       }
       throw ResponseException("Wystąpił błąd z połączeniem z serwerem (1)");
     } else if (response.statusCode == 204) {
-      return Map();
+      return {};
     } else {
       Map decoded = {};
       try {

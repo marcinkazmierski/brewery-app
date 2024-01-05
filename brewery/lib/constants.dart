@@ -8,7 +8,7 @@ const kFillStarColor = Color(0xFFFCC419);
 const kDescriptionColor = Colors.black87;
 
 const kDefaultPadding = 20.0;
-const kRepositoryTimeout = 15; //seconds
+const kRepositoryTimeout = 20; //seconds
 
 const kDefaultShadow = BoxShadow(
   offset: Offset(0, 4),

@@ -1,5 +1,4 @@
 import 'package:brewery/exceptions/exception.dart';
-import 'package:brewery/gateways/local_storage_gateway.dart';
 import 'package:brewery/models/beer.dart';
 import 'package:brewery/models/review.dart';
 import 'package:brewery/repositories/api_repository.dart';
@@ -17,11 +16,11 @@ abstract class BeerRepository {
 }
 
 class ApiBeerRepository extends ApiRepository implements BeerRepository {
-  ApiBeerRepository({required String apiUrl, required LocalStorageGateway localStorageGateway}) : super(apiUrl: apiUrl, localStorageGateway: localStorageGateway);
+  ApiBeerRepository({required super.apiUrl, required super.localStorageGateway});
 
   @override
   Future<List<Beer>> getBeers() async {
-    String authToken = await this.localStorageGateway.getCurrentUserAuthToken();
+    String authToken = await localStorageGateway.getCurrentUserAuthToken();
     Map decoded = await requestGet('beers', authToken);
 
     List<Beer> beers = [];
@@ -34,7 +33,7 @@ class ApiBeerRepository extends ApiRepository implements BeerRepository {
 
   @override
   Future<Beer> getBeerById(int id) async {
-    String authToken = await this.localStorageGateway.getCurrentUserAuthToken();
+    String authToken = await localStorageGateway.getCurrentUserAuthToken();
     Map decoded = await requestGet('beer', authToken);
     return Beer.fromJson(decoded["beer"]);
   }
@@ -42,9 +41,9 @@ class ApiBeerRepository extends ApiRepository implements BeerRepository {
   @override
   Future<Beer> addReview(Beer beer, String comment, double rate) async {
     if (!beer.active) {
-      throw new InvalidBeerStatusException("Beer must by active for you!");
+      throw InvalidBeerStatusException("Beer must by active for you!");
     }
-    String authToken = await this.localStorageGateway.getCurrentUserAuthToken();
+    String authToken = await localStorageGateway.getCurrentUserAuthToken();
     Map data = {'reviewRating': rate, 'reviewText': comment, 'beerId': beer.id};
     Map decoded = await requestPost(data, 'review/add', authToken);
 
@@ -53,7 +52,7 @@ class ApiBeerRepository extends ApiRepository implements BeerRepository {
 
   @override
   Future<void> addBeerByCode(String code) async {
-    String authToken = await this.localStorageGateway.getCurrentUserAuthToken();
+    String authToken = await localStorageGateway.getCurrentUserAuthToken();
     Map data = {'beerCode': code};
     await requestPost(data, 'beers', authToken);
   }
@@ -61,12 +60,12 @@ class ApiBeerRepository extends ApiRepository implements BeerRepository {
   @override
   Future<Beer> deleteReview(Beer beer, Review review) async {
     if (!beer.active) {
-      throw new InvalidBeerStatusException("Beer must by active for you!");
+      throw InvalidBeerStatusException("Beer must by active for you!");
     }
-    String authToken = await this.localStorageGateway.getCurrentUserAuthToken();
+    String authToken = await localStorageGateway.getCurrentUserAuthToken();
     Map data = {'reviewId': review.id, 'beerId': beer.id};
     Map decoded =
-        await requestDelete(data, 'review/' + review.id.toString(), authToken);
+        await requestDelete(data, 'review/${review.id}', authToken);
 
     return Beer.fromJson(decoded["beer"]);
   }
