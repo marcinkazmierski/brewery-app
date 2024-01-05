@@ -93,7 +93,7 @@ class _BeerListFormState extends State<Body> {
               value: PopupMenuOptions.reloadHome,
               child: Text('Odśwież listę piw'),
             ),
-            Application.currentUser?.status == UserStatusConstants.ACTIVE
+            Application.currentUser?.status == UserStatusConstants.active
                 ? const PopupMenuItem(
                     value: PopupMenuOptions.profile,
                     child: Text('Profil'),

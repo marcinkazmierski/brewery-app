@@ -95,7 +95,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     try {
       emit(RegistrationLoading());
       User user = await userRepository.profile();
-      if (user.status == UserStatusConstants.ACTIVE) {
+      if (user.status == UserStatusConstants.active) {
         emit(AlreadyRegisteredState());
       } else {
         emit(DisplayRegistrationPageState(user: user));
@@ -112,7 +112,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     try {
       emit(RegistrationLoading());
       User user = await userRepository.profile();
-      if (user.status == UserStatusConstants.ACTIVE) {
+      if (user.status == UserStatusConstants.active) {
         emit(AlreadyRegisteredState());
       } else {
         await userRepository.registerGuest(event.email, event.password);
