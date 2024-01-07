@@ -2,6 +2,7 @@
 
 Awesome brewery app.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
+## TODO:
+- mailto using https://pub.dev/packages/url_launcher
+- add shimmer effect https://pub.dev/packages/shimmer
+- database isar: https://pub.dev/packages/isar for user and beers, reviews
