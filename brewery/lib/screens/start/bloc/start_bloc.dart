@@ -92,7 +92,7 @@ class StartBloc extends Bloc<StartEvent, StartState> {
       ApplicationStarted event, Emitter<StartState> emit) async {
     emit(CheckingAuthentication());
     try {
-      User user = await this.userRepository.profile();
+      User user = await userRepository.profile();
       Application.currentUser = user;
       NotificationsGateway(userRepository: userRepository).init();
       emit(GuestAuthenticatedState(user: user));
