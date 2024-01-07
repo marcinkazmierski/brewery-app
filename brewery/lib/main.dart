@@ -58,6 +58,7 @@ class MyApp extends StatelessWidget {
   UserRepository userRepository;
 
   MyApp({
+    super.key,
     required this.beerRepository,
     required this.userRepository,
   });

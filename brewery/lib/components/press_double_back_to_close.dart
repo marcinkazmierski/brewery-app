@@ -7,11 +7,11 @@ class PressDoubleBackToClose extends StatefulWidget {
   final int waitForSecondBackPress;
 
   const PressDoubleBackToClose({
-    Key? key,
+    super.key,
     required this.child,
     this.message = "Press back again to exit",
     this.waitForSecondBackPress = 2,
-  }) : super(key: key);
+  });
 
   @override
   _DoubleBackState createState() => _DoubleBackState();

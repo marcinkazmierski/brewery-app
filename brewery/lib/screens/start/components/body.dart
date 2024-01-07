@@ -1,10 +1,11 @@
 import 'package:brewery/components/fade_animation.dart';
-import 'package:brewery/constants.dart';
 import 'package:brewery/screens/start/bloc/start_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Body extends StatefulWidget {
+  const Body({super.key});
+
   @override
   State<Body> createState() => _CreateLoginFormState();
 }
@@ -32,7 +33,7 @@ class _CreateLoginFormState extends State<Body> {
         if (state is StartFailureState) {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(
-                content: Text('${state.error}'),
+                content: Text(state.error),
                 backgroundColor: Colors.redAccent,
               ))
               .closed
@@ -49,13 +50,13 @@ class _CreateLoginFormState extends State<Body> {
             backgroundColor: Colors.transparent,
             body: Center(
               child: SingleChildScrollView(
-                padding: EdgeInsets.all(25.0),
+                padding: const EdgeInsets.all(25.0),
                 child: state is CheckingAuthentication
-                    ? CircularProgressIndicator()
+                    ? const CircularProgressIndicator()
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          FadeAnimation(
+                          const FadeAnimation(
                               2,
                               CircleAvatar(
                                 radius: 100.0,
@@ -63,10 +64,10 @@ class _CreateLoginFormState extends State<Body> {
                                 foregroundColor: Colors.white,
                                 child: Icon(Icons.wifi, size: 220),
                               )),
-                          SizedBox(
+                          const SizedBox(
                             height: 30.0,
                           ),
-                          FadeAnimation(
+                          const FadeAnimation(
                               2,
                               Center(
                                 child: Text(
@@ -75,33 +76,34 @@ class _CreateLoginFormState extends State<Body> {
                                       color: Colors.white, fontSize: 46),
                                 ),
                               )),
-                          SizedBox(
+                          const SizedBox(
                             height: 45.0,
                           ),
                           FadeAnimation(
                               2,
                               TextFormField(
                                 autocorrect: false,
-                                autofillHints: [AutofillHints.email],
-                                style: TextStyle(
+                                autofillHints: const [AutofillHints.email],
+                                style: const TextStyle(
                                   color: Colors.black,
                                 ),
                                 controller: _nickController,
-                                key: Key('nickInput'),
+                                key: const Key('nickInput'),
                                 decoration: InputDecoration(
-                                    focusedBorder: UnderlineInputBorder(
+                                    focusedBorder: const UnderlineInputBorder(
                                       borderSide: BorderSide(color: Colors.red),
                                     ),
-                                    prefixIcon: Icon(
+                                    prefixIcon: const Icon(
                                       Icons.account_circle,
                                       color: Colors.black,
                                     ),
-                                    hintStyle: TextStyle(color: Colors.black54),
+                                    hintStyle:
+                                        const TextStyle(color: Colors.black54),
                                     filled: true,
                                     fillColor: Colors.white.withOpacity(0.5),
                                     hintText: 'Twój nick albo ksywka'),
                               )),
-                          SizedBox(
+                          const SizedBox(
                             height: 45.0,
                           ),
                           FadeAnimation(
@@ -109,25 +111,29 @@ class _CreateLoginFormState extends State<Body> {
                               state is RegisterGuestLoadingState
                                   ? ElevatedButton(
                                       onPressed: () {},
-                                      child: Padding(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            Colors.red, // background
+                                        foregroundColor:
+                                            Colors.white, // foreground
+                                      ),
+                                      child: const Padding(
                                           padding: EdgeInsets.all(5.0),
                                           child: CircularProgressIndicator()),
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Colors.red, // background
-                                        onPrimary: Colors.white, // foreground
-                                      ),
                                     )
                                   : ElevatedButton(
                                       onPressed: _onStartButtonPressed,
-                                      child: Padding(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            Colors.red, // background
+                                        foregroundColor:
+                                            Colors.white, // foreground
+                                      ),
+                                      child: const Padding(
                                           padding: EdgeInsets.all(15.0),
                                           child: Text('Zaczynamy!')),
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Colors.red, // background
-                                        onPrimary: Colors.white, // foreground
-                                      ),
                                     )),
-                          SizedBox(
+                          const SizedBox(
                             height: 30.0,
                           ),
                           FadeAnimation(
@@ -137,10 +143,11 @@ class _CreateLoginFormState extends State<Body> {
                                   Navigator.pushNamed(context, '/login');
                                 },
                                 style: ElevatedButton.styleFrom(
-                                    primary: Colors.transparent, // background
-                                    onPrimary: Colors.white, // foreground
+                                    backgroundColor:
+                                        Colors.transparent, // background
+                                    foregroundColor: Colors.white, // foreground
                                     shadowColor: Colors.transparent),
-                                child: Padding(
+                                child: const Padding(
                                     padding: EdgeInsets.all(15.0),
                                     child: Text('Masz już konto? Zaloguj się')),
                               )),
