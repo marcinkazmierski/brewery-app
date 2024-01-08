@@ -3,6 +3,7 @@ import 'package:brewery/common/application.dart';
 import 'package:brewery/common/constants.dart';
 import 'package:brewery/components/fade_animation.dart';
 import 'package:brewery/screens/home/bloc/home_bloc.dart';
+import 'package:brewery/screens/home/components/beer_card_shimmer.dart';
 import 'package:brewery/screens/home/popup_menu_options.dart';
 import 'package:flutter/material.dart';
 import 'package:brewery/constants.dart';
@@ -147,30 +148,26 @@ class _BeerListFormState extends State<Body> {
             appBar: buildAppBar(context),
             body: Center(
               child: SingleChildScrollView(
-                child: state is HomeLoadedState
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          FadeAnimation(
-                              2,
-                              const Center(
-                                child: Text(
-                                  'Wybierz piwo:',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 40),
-                                ),
-                              )),
-                          const SizedBox(height: kDefaultPadding),
-                          FadeAnimation(
-                              2,
-                              BeerCarousel(
-                                beers: state.beers,
-                                activeBeer: state.activeBeer,
-                              )),
-                        ],
-                      )
-                    : const CircularProgressIndicator(),
-              ),
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  const FadeAnimation(
+                      2,
+                      Center(
+                        child: Text(
+                          'Wybierz piwo:',
+                          style: TextStyle(color: Colors.white, fontSize: 40),
+                        ),
+                      )),
+                  const SizedBox(height: kDefaultPadding),
+                  state is HomeLoadedState
+                      ? BeerCarousel(
+                          beers: state.beers,
+                          activeBeer: state.activeBeer,
+                        )
+                      : const BeerCardShimmer(),
+                ],
+              )),
             ),
             floatingActionButton: FloatingActionButton(
               backgroundColor: Colors.red,

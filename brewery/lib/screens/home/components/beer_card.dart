@@ -8,8 +8,7 @@ class BeerCard extends StatelessWidget {
   final Beer beer;
   final bool isActive;
 
-  const BeerCard({Key? key, required this.beer, required this.isActive})
-      : super(key: key);
+  const BeerCard({super.key, required this.beer, required this.isActive});
 
   @override
   Widget build(BuildContext context) {
