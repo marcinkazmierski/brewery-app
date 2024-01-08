@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class AboutScreen extends StatefulWidget {
+  const AboutScreen({super.key});
+
   @override
   State<AboutScreen> createState() => _AboutScreenState();
 }
@@ -111,7 +113,7 @@ class _AboutScreenState extends State<AboutScreen> {
                       },
                       child: Card(
                         child: ListTile(
-                          contentPadding: EdgeInsets.all(10),
+                          contentPadding: const EdgeInsets.all(10),
                           trailing: const Icon(Icons.mail_outline,
                               color: Colors.redAccent),
                           title: const Padding(
