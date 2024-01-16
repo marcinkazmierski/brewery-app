@@ -39,7 +39,7 @@ class BeerCard extends StatelessWidget {
                     imageBuilder: (context, imageProvider) => Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
-                        boxShadow: [kDefaultShadow],
+                        boxShadow: const [kDefaultShadow],
                         image: DecorationImage(
                           opacity: (!beer.active) ? 0.5 : 1,
                           image: imageProvider,
@@ -53,9 +53,9 @@ class BeerCard extends StatelessWidget {
                     ? Center(
                         child: Padding(
                         padding:
-                            EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                            const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                         child: Container(
-                          padding: EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
                             color: Colors.redAccent,
                             borderRadius: BorderRadius.circular(4),
@@ -70,19 +70,19 @@ class BeerCard extends StatelessWidget {
               ]),
             ),
             Padding(
-              padding: EdgeInsets.only(top: kDefaultPadding / 2),
+              padding: const EdgeInsets.only(top: kDefaultPadding / 2),
               child: Text(
                 beer.name,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 26),
+                style: const TextStyle(color: Colors.white, fontSize: 26),
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
+              padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
               child: Text(
                 beer.title,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.red, fontSize: 16),
+                style: const TextStyle(color: Colors.red, fontSize: 16),
               ),
             ),
             (beer.reviews.isNotEmpty)
@@ -93,10 +93,10 @@ class BeerCard extends StatelessWidget {
                         "assets/icons/star_fill.svg",
                         height: 20,
                       ),
-                      SizedBox(width: kDefaultPadding / 2),
+                      const SizedBox(width: kDefaultPadding / 2),
                       Text(
                         "${beer.rating}",
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       )
                     ],
                   )
