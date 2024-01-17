@@ -19,49 +19,29 @@ class Body extends StatefulWidget {
 }
 
 class _BeerListFormState extends State<Body> {
-  Future scanBarcodeNormal() async {
-    String barcodeScanRes;
-
+  void scanBarcodeNormal(BuildContext context) {
     // Either the permission was already granted before or the user just granted it.
-    if (!await Permission.camera.request().isGranted) {
-      log("Camera permission is denied.");
-      return;
-    }
+    Permission.camera.request().isGranted.then((value) {
+      if (value) {
+        FlutterBarcodeScanner.scanBarcode(
+                "#ff6666", "Anuluj", true, ScanMode.QR)
+            .then((barcodeScanRes) {
+          final uri = Uri.parse(barcodeScanRes);
 
-    barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-        "#ff6666", "Anuluj", true, ScanMode.QR);
+          if (uri.queryParameters.containsKey('code')) {
+            log("BEER CODE: ${uri.queryParameters['code']!}");
 
-    final uri = Uri.parse(barcodeScanRes);
-    bool closeModal = false;
-
-    if (uri.queryParameters.containsKey('code')) {
-      log("BEER CODE: " + uri.queryParameters['code']!);
-
-      //todo: refactor:
-      showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return new WillPopScope(
-                onWillPop: () async {
-                  return closeModal;
-                },
-                child: AlertDialog(
-                  title: Text('Czekaj...'),
-                  content: SingleChildScrollView(
-                    child: Center(child: CircularProgressIndicator()),
-                  ),
-                ));
-          });
-      closeModal = true;
-      Navigator.pop(context); // close showDialog
-
-      BlocProvider.of<HomeBloc>(context).add(
-        AddNewBeerEvent(
-          code: uri.queryParameters['code']!,
-        ),
-      );
-    }
+            BlocProvider.of<HomeBloc>(context).add(
+              AddNewBeerEvent(
+                code: uri.queryParameters['code']!,
+              ),
+            );
+          }
+        });
+      } else {
+        log("Camera permission is denied.");
+      }
+    });
   }
 
   AppBar buildAppBar(BuildContext context) {
@@ -171,7 +151,7 @@ class _BeerListFormState extends State<Body> {
             ),
             floatingActionButton: FloatingActionButton(
               backgroundColor: Colors.red,
-              onPressed: scanBarcodeNormal,
+              onPressed: () => scanBarcodeNormal(context),
               tooltip: 'Add new',
               foregroundColor: Colors.white,
               child: const Icon(Icons.add),

@@ -117,13 +117,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> _onAddNewBeerEvent(
       AddNewBeerEvent event, Emitter<HomeState> emit) async {
+    emit(HomeLoadingState());
     String code = event.code;
     try {
       await beerRepository.addBeerByCode(code);
       emit(AddedBeerSuccessfulState());
     } catch (error) {
       emit(HomeFailureState(error: error.toString()));
-      emit(HomeLoadedState(beers: this.beers));
+      emit(HomeLoadedState(beers: beers));
     }
   }
 
