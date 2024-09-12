@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:brewery/components/simple_bloc_observer.dart';
-import 'package:brewery/constants.dart';
 import 'package:brewery/gateways/local_storage_gateway.dart';
 import 'package:brewery/models/beer.dart';
 import 'package:brewery/repositories/beer_repository.dart';
@@ -28,7 +27,7 @@ import 'firebase_options.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
-  LocalStorageGateway localStorageGateway = new LocalStorageGateway();
+  LocalStorageGateway localStorageGateway = LocalStorageGateway();
 
   Bloc.observer = SimpleBlocObserver();
   // Initialize Firebase.
@@ -38,7 +37,7 @@ Future<void> main() async {
 
   // Initialize Sentry.
   await SentryFlutter.init(
-        (options) {
+    (options) {
       options.dsn = dotenv.env['SENTRY_DSN'].toString();
       // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
       // We recommend adjusting this value in production.
@@ -48,18 +47,18 @@ Future<void> main() async {
         beerRepository: ApiBeerRepository(
             apiUrl: dotenv.env['API_URL'].toString(),
             localStorageGateway: localStorageGateway),
-        userRepository:   ApiUserRepository(
+        userRepository: ApiUserRepository(
             apiUrl: dotenv.env['API_URL'].toString(),
             localStorageGateway: localStorageGateway))),
   );
 }
-
 
 class MyApp extends StatelessWidget {
   BeerRepository beerRepository;
   UserRepository userRepository;
 
   MyApp({
+    super.key,
     required this.beerRepository,
     required this.userRepository,
   });
@@ -69,8 +68,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Zdalny Browar',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
+          useMaterial3: true,
+          primarySwatch: Colors.red,
         ),
         initialRoute: '/start',
         routes: {
@@ -83,8 +82,8 @@ class MyApp extends StatelessWidget {
               providers: [
                 BlocProvider<RegistrationBloc>(
                   create: (context) =>
-                  RegistrationBloc(userRepository: this.userRepository)
-                    ..add(DisplayRegistrationPageEvent()),
+                      RegistrationBloc(userRepository: userRepository)
+                        ..add(DisplayRegistrationPageEvent()),
                 ),
               ],
               child: RegistrationScreen(),
@@ -95,7 +94,7 @@ class MyApp extends StatelessWidget {
               providers: [
                 BlocProvider<ResetPasswordBloc>(
                   create: (context) =>
-                      ResetPasswordBloc(userRepository: this.userRepository),
+                      ResetPasswordBloc(userRepository: userRepository),
                 ),
               ],
               child: ResetPasswordScreen(),
@@ -104,13 +103,13 @@ class MyApp extends StatelessWidget {
           '/home': (context) => Home(context),
           '/details': (context) {
             final Beer beer =
-            ModalRoute.of(context)?.settings.arguments as Beer;
+                ModalRoute.of(context)?.settings.arguments as Beer;
             return MultiBlocProvider(
               providers: [
                 BlocProvider<DetailsBloc>(
                   create: (context) =>
-                  DetailsBloc(beerRepository: this.beerRepository)
-                    ..add(DisplayDetailsEvent(beer: beer)),
+                      DetailsBloc(beerRepository: beerRepository)
+                        ..add(DisplayDetailsEvent(beer: beer)),
                 ),
               ],
               child: DetailsScreen(),
@@ -124,7 +123,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<StartBloc>(
-          create: (context) => StartBloc(userRepository: this.userRepository)
+          create: (context) => StartBloc(userRepository: userRepository)
             ..add(ApplicationStarted()),
         ),
       ],
@@ -137,7 +136,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<LoginBloc>(
           create: (context) =>
-          LoginBloc(userRepository: this.userRepository)..add(AppStarted()),
+              LoginBloc(userRepository: userRepository)..add(AppStarted()),
         ),
       ],
       child: LoginScreen(),
@@ -148,8 +147,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<LoginBloc>(
-          create: (context) => LoginBloc(userRepository: this.userRepository)
-            ..add(LogoutEvent()),
+          create: (context) =>
+              LoginBloc(userRepository: userRepository)..add(LogoutEvent()),
         ),
       ],
       child: LoginScreen(),
@@ -162,7 +161,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<HomeBloc>(
-          create: (context) => HomeBloc(beerRepository: this.beerRepository)
+          create: (context) => HomeBloc(beerRepository: beerRepository)
             ..add(DisplayHomeEvent(activeBeer: beer)),
         ),
       ],

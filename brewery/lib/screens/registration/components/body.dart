@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Body extends StatefulWidget {
+  const Body({super.key});
+
   @override
   State<Body> createState() => _CreateLoginFormState();
 }
@@ -14,7 +16,7 @@ class _CreateLoginFormState extends State<Body> {
   final _loginController = TextEditingController();
   final _nickController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _isObscure = true; //todo bloc
+  bool _isObscure = true;
 
   _onLoginButtonPressed() {
     FocusScopeNode currentFocus = FocusScope.of(context);
@@ -38,7 +40,7 @@ class _CreateLoginFormState extends State<Body> {
         if (state is RegistrationCreateFailureState) {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(
-                content: Text('${state.error}'),
+                content: Text(state.error),
                 backgroundColor: Colors.redAccent,
               ))
               .closed
@@ -52,14 +54,14 @@ class _CreateLoginFormState extends State<Body> {
           _nickController.text = state.user.nick;
         }
         if (state is AlreadyRegisteredState) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('Twoje konto jest już zarejestrowane :)'),
             backgroundColor: Colors.lightGreen,
           ));
           Navigator.pushNamed(context, '/home');
         }
         if (state is RegisteredState) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             duration: Duration(milliseconds: 6000),
             content: Text(
                 'Zarejestrowano pomyślnie. Sprawdź mail w celu dokończenia procesu!'),
@@ -76,55 +78,55 @@ class _CreateLoginFormState extends State<Body> {
               children: <Widget>[
                 Center(
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.all(25.0),
+                    padding: const EdgeInsets.all(25.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         FadeAnimation(
                             2,
-                            CircleAvatar(
+                            const CircleAvatar(
                               radius: 100.0,
                               backgroundColor: Colors.transparent,
                               foregroundColor: Colors.white,
                               child: Icon(Icons.wifi, size: 220),
                             )),
-                        SizedBox(
+                        const SizedBox(
                           height: 30.0,
                         ),
                         FadeAnimation(
                             2,
-                            Center(
+                            const Center(
                               child: Text(
                                 'Zdalny browar',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 46),
                               ),
                             )),
-                        SizedBox(
+                        const SizedBox(
                           height: 20.0,
                         ),
                         FadeAnimation(
                             2,
-                            Center(
+                            const Center(
                               child: Text(
                                 'Rejestracja konta',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 20),
                               ),
                             )),
-                        SizedBox(
+                        const SizedBox(
                           height: 10.0,
                         ),
                         FadeAnimation(
                             2,
-                            Center(
+                            const Center(
                               child: Text(
                                 'Zarejestruj konto aby w pełni korzystać z możliwości aplikacji. Twoje powiązania z kontem będą trwale zapisane w naszej bazie!',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 14),
                               ),
                             )),
-                        SizedBox(
+                        const SizedBox(
                           height: 20.0,
                         ),
                         state is DisplayRegistrationPageState
@@ -132,30 +134,30 @@ class _CreateLoginFormState extends State<Body> {
                                 2,
                                 TextFormField(
                                   enabled: false,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.black45,
                                   ),
                                   controller: _nickController,
-                                  key: Key('nickInput'),
+                                  key: const Key('nickInput'),
                                   autocorrect: false,
                                   decoration: InputDecoration(
-                                      focusedBorder: UnderlineInputBorder(
+                                      focusedBorder: const UnderlineInputBorder(
                                         borderSide:
                                             BorderSide(color: Colors.red),
                                       ),
-                                      prefixIcon: Icon(
+                                      prefixIcon: const Icon(
                                         Icons.account_circle,
                                         color: Colors.black,
                                       ),
-                                      hintStyle:
-                                          TextStyle(color: Colors.black54),
+                                      hintStyle: const TextStyle(
+                                          color: Colors.black54),
                                       filled: true,
                                       fillColor: Colors.white.withOpacity(0.5),
                                       hintText: 'Twój nick'),
                                 ),
                               )
                             : Container(),
-                        SizedBox(
+                        const SizedBox(
                           height: 15.0,
                         ),
                         state is DisplayRegistrationPageState
@@ -163,8 +165,8 @@ class _CreateLoginFormState extends State<Body> {
                                 2,
                                 state.user.status ==
                                         UserStatusConstants
-                                            .GUEST_WAIT_FOR_CONFIRMATION
-                                    ? Center(
+                                            .guestWaitForConfirmation
+                                    ? const Center(
                                         child: Text(
                                           'Twoje konto jest w trakcie rejestracji. Dokończ proces klikając w link w mailu.',
                                           style: TextStyle(
@@ -173,52 +175,56 @@ class _CreateLoginFormState extends State<Body> {
                                         ),
                                       )
                                     : TextFormField(
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.black,
                                         ),
                                         controller: _loginController,
-                                        autofillHints: [AutofillHints.email],
-                                        key: Key('loginInput'),
+                                        autofillHints: const [
+                                          AutofillHints.email
+                                        ],
+                                        key: const Key('loginInput'),
                                         autocorrect: false,
                                         decoration: InputDecoration(
-                                            focusedBorder: UnderlineInputBorder(
+                                            focusedBorder:
+                                                const UnderlineInputBorder(
                                               borderSide:
                                                   BorderSide(color: Colors.red),
                                             ),
-                                            prefixIcon: Icon(
+                                            prefixIcon: const Icon(
                                               Icons.alternate_email,
                                               color: Colors.black,
                                             ),
-                                            hintStyle: TextStyle(
-                                                color: Colors.black54),
+                                            hintStyle: const TextStyle(
+                                              color: Colors.black54,
+                                            ),
                                             filled: true,
                                             fillColor:
                                                 Colors.white.withOpacity(0.5),
                                             hintText: 'Twój e-mail'),
                                       ))
                             : Container(),
-                        SizedBox(
+                        const SizedBox(
                           height: 15.0,
                         ),
                         state is DisplayRegistrationPageState &&
-                                state.user.status == UserStatusConstants.GUEST
+                                state.user.status == UserStatusConstants.guest
                             ? FadeAnimation(
                                 2,
                                 TextFormField(
                                   obscureText: _isObscure,
                                   enableSuggestions: false,
                                   autocorrect: false,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.black,
                                   ),
                                   controller: _passwordController,
-                                  key: Key('passwordInput'),
+                                  key: const Key('passwordInput'),
                                   decoration: InputDecoration(
-                                      focusedBorder: UnderlineInputBorder(
+                                      focusedBorder: const UnderlineInputBorder(
                                         borderSide:
                                             BorderSide(color: Colors.red),
                                       ),
-                                      prefixIcon: Icon(
+                                      prefixIcon: const Icon(
                                         Icons.vpn_key,
                                         color: Colors.black,
                                       ),
@@ -234,14 +240,14 @@ class _CreateLoginFormState extends State<Body> {
                                               _isObscure = !_isObscure;
                                             });
                                           }),
-                                      hintStyle:
-                                          TextStyle(color: Colors.black54),
+                                      hintStyle: const TextStyle(
+                                          color: Colors.black54),
                                       filled: true,
                                       fillColor: Colors.white.withOpacity(0.5),
                                       hintText: 'Twoje hasło'),
                                 ))
                             : Container(),
-                        SizedBox(
+                        const SizedBox(
                           height: 45.0,
                         ),
                         FadeAnimation(
@@ -250,28 +256,30 @@ class _CreateLoginFormState extends State<Body> {
                                     (state is DisplayRegistrationPageState &&
                                         state.user.status ==
                                             UserStatusConstants
-                                                .GUEST_WAIT_FOR_CONFIRMATION)
+                                                .guestWaitForConfirmation)
                                 ? ElevatedButton(
                                     onPressed: () {},
-                                    child: Padding(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.red, // background
+                                      foregroundColor:
+                                          Colors.white, // foreground
+                                    ),
+                                    child: const Padding(
                                         padding: EdgeInsets.all(5.0),
                                         child: CircularProgressIndicator()),
-                                    style: ElevatedButton.styleFrom(
-                                      primary: Colors.red, // background
-                                      onPrimary: Colors.white, // foreground
-                                    ),
                                   )
                                 : ElevatedButton(
                                     onPressed: _onLoginButtonPressed,
-                                    child: Padding(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.red, // background
+                                      foregroundColor:
+                                          Colors.white, // foreground
+                                    ),
+                                    child: const Padding(
                                         padding: EdgeInsets.all(15.0),
                                         child: Text('Zarejestruj!')),
-                                    style: ElevatedButton.styleFrom(
-                                      primary: Colors.red, // background
-                                      onPrimary: Colors.white, // foreground
-                                    ),
                                   )),
-                        SizedBox(
+                        const SizedBox(
                           height: 30.0,
                         ),
                       ],
@@ -280,7 +288,7 @@ class _CreateLoginFormState extends State<Body> {
                 ),
                 SafeArea(
                     child: Container(
-                  margin: EdgeInsets.only(
+                  margin: const EdgeInsets.only(
                       left: kDefaultPadding, top: kDefaultPadding),
                   decoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.4),

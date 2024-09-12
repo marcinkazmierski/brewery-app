@@ -1,9 +1,10 @@
 import 'dart:developer';
-
 import 'package:brewery/common/application.dart';
 import 'package:brewery/common/constants.dart';
 import 'package:brewery/components/fade_animation.dart';
 import 'package:brewery/screens/home/bloc/home_bloc.dart';
+import 'package:brewery/screens/home/components/beer_card_shimmer.dart';
+import 'package:brewery/screens/home/popup_menu_options.dart';
 import 'package:flutter/material.dart';
 import 'package:brewery/constants.dart';
 import 'package:flutter/services.dart';
@@ -18,48 +19,29 @@ class Body extends StatefulWidget {
 }
 
 class _BeerListFormState extends State<Body> {
-  Future scanBarcodeNormal() async {
-    String barcodeScanRes;
-
+  void scanBarcodeNormal(BuildContext context) {
     // Either the permission was already granted before or the user just granted it.
-    if (!await Permission.camera.request().isGranted) {
-      log("Camera permission is denied.");
-      return;
-    }
+    Permission.camera.request().isGranted.then((value) {
+      if (value) {
+        FlutterBarcodeScanner.scanBarcode(
+                "#ff6666", "Anuluj", true, ScanMode.QR)
+            .then((barcodeScanRes) {
+          final uri = Uri.parse(barcodeScanRes);
 
-    barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-        "#ff6666", "Anuluj", true, ScanMode.QR);
+          if (uri.queryParameters.containsKey('code')) {
+            log("BEER CODE: ${uri.queryParameters['code']!}");
 
-    final uri = await Uri.parse(barcodeScanRes);
-    bool closeModal = false;
-
-    if (uri != null && uri.queryParameters.containsKey('code')) {
-      log("BEER CODE: " + uri.queryParameters['code']!);
-
-      showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return new WillPopScope(
-                onWillPop: () async {
-                  return closeModal;
-                },
-                child: AlertDialog(
-                  title: Text('Czekaj...'),
-                  content: SingleChildScrollView(
-                    child: Center(child: CircularProgressIndicator()),
-                  ),
-                ));
-          });
-      closeModal = true;
-      Navigator.pop(context); // close showDialog
-
-      BlocProvider.of<HomeBloc>(context).add(
-        AddNewBeerEvent(
-          code: uri.queryParameters['code']!,
-        ),
-      );
-    }
+            BlocProvider.of<HomeBloc>(context).add(
+              AddNewBeerEvent(
+                code: uri.queryParameters['code']!,
+              ),
+            );
+          }
+        });
+      } else {
+        log("Camera permission is denied.");
+      }
+    });
   }
 
   AppBar buildAppBar(BuildContext context) {
@@ -68,51 +50,50 @@ class _BeerListFormState extends State<Body> {
       elevation: 0,
       automaticallyImplyLeading: false,
       actions: <Widget>[
-        PopupMenuButton<int>(
-          onSelected: (int value) {
-            if (value == 1) {
-              //todo: use constatnts or enum: https://api.flutter.dev/flutter/material/PopupMenuButton-class.html
+        PopupMenuButton<PopupMenuOptions>(
+          onSelected: (PopupMenuOptions value) {
+            if (value == PopupMenuOptions.logout) {
               Navigator.pushNamed(context, '/logout');
             }
-            if (value == 3) {
+            if (value == PopupMenuOptions.registration) {
               Navigator.pushNamed(context, '/registration');
             }
-            if (value == 4) {
+            if (value == PopupMenuOptions.about) {
               Navigator.pushNamed(context, '/about');
             }
-            if (value == 99) {
+            if (value == PopupMenuOptions.exit) {
               SystemNavigator.pop();
             }
-            if (value == 0) {
-              BlocProvider.of<HomeBloc>(context).add(DisplayHomeEvent());
+            if (value == PopupMenuOptions.reloadHome) {
+              BlocProvider.of<HomeBloc>(context).add(const DisplayHomeEvent());
             }
           },
-          icon: Icon(Icons.menu),
+          icon: const Icon(Icons.menu),
           itemBuilder: (BuildContext context) => [
-            PopupMenuItem(
+            const PopupMenuItem(
+              value: PopupMenuOptions.reloadHome,
               child: Text('Odśwież listę piw'),
-              value: 0,
             ),
-            Application.currentUser?.status == UserStatusConstants.ACTIVE
-                ? PopupMenuItem(
+            Application.currentUser?.status == UserStatusConstants.active
+                ? const PopupMenuItem(
+                    value: PopupMenuOptions.profile,
                     child: Text('Profil'),
-                    value: 2,
                   )
-                : PopupMenuItem(
+                : const PopupMenuItem(
+                    value: PopupMenuOptions.registration,
                     child: Text('Zarejestruj konto'),
-                    value: 3,
                   ),
-            PopupMenuItem(
+            const PopupMenuItem(
+              value: PopupMenuOptions.about,
               child: Text('O Zdalnym Browarze'),
-              value: 4,
             ),
-            PopupMenuItem(
+            const PopupMenuItem(
+              value: PopupMenuOptions.logout,
               child: Text('Wyloguj'),
-              value: 1,
             ),
-            PopupMenuItem(
+            const PopupMenuItem(
+              value: PopupMenuOptions.exit,
               child: Text('Zamknij'),
-              value: 99,
             )
           ],
         ),
@@ -126,17 +107,17 @@ class _BeerListFormState extends State<Body> {
       listener: (context, state) async {
         if (state is HomeFailureState) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('${state.error}'),
+            content: Text(state.error),
             backgroundColor: Colors.redAccent,
           ));
         } else if (state is AddedBeerSuccessfulState) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('Dodano pomyślnie nowe piwo do Twojego zbioru'),
             backgroundColor: Colors.green,
           ));
-          BlocProvider.of<HomeBloc>(context).add(DisplayHomeEvent());
+          BlocProvider.of<HomeBloc>(context).add(const DisplayHomeEvent());
         } else if (state is HomeInitialState) {
-          BlocProvider.of<HomeBloc>(context).add(DisplayHomeEvent());
+          BlocProvider.of<HomeBloc>(context).add(const DisplayHomeEvent());
         }
       },
       child: BlocBuilder<HomeBloc, HomeState>(
@@ -147,36 +128,33 @@ class _BeerListFormState extends State<Body> {
             appBar: buildAppBar(context),
             body: Center(
               child: SingleChildScrollView(
-                child: state is HomeLoadedState
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          FadeAnimation(
-                              2,
-                              Center(
-                                child: Text(
-                                  'Wybierz piwo:',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 40),
-                                ),
-                              )),
-                          SizedBox(height: kDefaultPadding),
-                          FadeAnimation(
-                              2,
-                              BeerCarousel(
-                                beers: state.beers,
-                                activeBeer: state.activeBeer,
-                              )),
-                        ],
-                      )
-                    : CircularProgressIndicator(),
-              ),
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  const FadeAnimation(
+                      2,
+                      Center(
+                        child: Text(
+                          'Wybierz piwo:',
+                          style: TextStyle(color: Colors.white, fontSize: 40),
+                        ),
+                      )),
+                  const SizedBox(height: kDefaultPadding),
+                  state is HomeLoadedState
+                      ? BeerCarousel(
+                          beers: state.beers,
+                          activeBeer: state.activeBeer,
+                        )
+                      : const BeerCardShimmer(),
+                ],
+              )),
             ),
             floatingActionButton: FloatingActionButton(
               backgroundColor: Colors.red,
-              onPressed: scanBarcodeNormal,
+              onPressed: () => scanBarcodeNormal(context),
               tooltip: 'Add new',
-              child: Icon(Icons.add),
+              foregroundColor: Colors.white,
+              child: const Icon(Icons.add),
             ),
           );
         },

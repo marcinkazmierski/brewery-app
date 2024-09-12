@@ -8,7 +8,7 @@ class BeerCard extends StatelessWidget {
   final Beer beer;
   final bool isActive;
 
-  const BeerCard({Key? key, required  this.beer, required  this.isActive}) : super(key: key);
+  const BeerCard({super.key, required this.beer, required this.isActive});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class BeerCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, '/details', arguments: this.beer);
+          Navigator.pushNamed(context, '/details', arguments: beer);
         },
         child: buildBeerCard(context),
       ),
@@ -25,21 +25,21 @@ class BeerCard extends StatelessWidget {
 
   Container buildBeerCard(BuildContext context) {
     return Container(
-        decoration: BoxDecoration(color: Colors.transparent),
+        decoration: const BoxDecoration(color: Colors.transparent),
         child: Column(
           children: <Widget>[
             Expanded(
               child: Stack(children: <Widget>[
                 Container(
-                  margin: EdgeInsets.all(5),
+                  margin: const EdgeInsets.all(5),
                   child: CachedNetworkImage(
                     placeholder: (context, url) =>
-                        Center(child: const CircularProgressIndicator()),
+                        const Center(child: CircularProgressIndicator()),
                     imageUrl: beer.icon,
                     imageBuilder: (context, imageProvider) => Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
-                        boxShadow: [kDefaultShadow],
+                        boxShadow: const [kDefaultShadow],
                         image: DecorationImage(
                           opacity: (!beer.active) ? 0.5 : 1,
                           image: imageProvider,
@@ -53,14 +53,14 @@ class BeerCard extends StatelessWidget {
                     ? Center(
                         child: Padding(
                         padding:
-                            EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                            const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                         child: Container(
-                          padding: EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
                             color: Colors.redAccent,
                             borderRadius: BorderRadius.circular(4),
                           ),
-                          child: Text(
+                          child: const Text(
                               "Tego piwa nie masz jeszcze w swoim zbiorze :(",
                               textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.white)),
@@ -70,22 +70,22 @@ class BeerCard extends StatelessWidget {
               ]),
             ),
             Padding(
-              padding: EdgeInsets.only(top: kDefaultPadding / 2),
+              padding: const EdgeInsets.only(top: kDefaultPadding / 2),
               child: Text(
                 beer.name,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 26),
+                style: const TextStyle(color: Colors.white, fontSize: 26),
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
+              padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
               child: Text(
                 beer.title,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.red, fontSize: 16),
+                style: const TextStyle(color: Colors.red, fontSize: 16),
               ),
             ),
-            (beer.reviews.length > 0)
+            (beer.reviews.isNotEmpty)
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -93,14 +93,14 @@ class BeerCard extends StatelessWidget {
                         "assets/icons/star_fill.svg",
                         height: 20,
                       ),
-                      SizedBox(width: kDefaultPadding / 2),
+                      const SizedBox(width: kDefaultPadding / 2),
                       Text(
                         "${beer.rating}",
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       )
                     ],
                   )
-                : Row(
+                : const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       SizedBox(width: kDefaultPadding / 2),

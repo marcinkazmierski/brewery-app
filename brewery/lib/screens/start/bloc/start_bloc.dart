@@ -29,7 +29,7 @@ class RegisterGuestLoadingState extends StartState {}
 class GuestAuthenticatedState extends StartState {
   final User user;
 
-  GuestAuthenticatedState({required this.user});
+  const GuestAuthenticatedState({required this.user});
 
   @override
   List<Object> get props => [user];
@@ -63,7 +63,7 @@ class ApplicationStarted extends StartEvent {
 class LoginGuestButtonPressedEvent extends StartEvent {
   final String nick;
 
-  LoginGuestButtonPressedEvent({required this.nick});
+  const LoginGuestButtonPressedEvent({required this.nick});
 
   @override
   List<Object> get props => [this.nick];
@@ -92,7 +92,7 @@ class StartBloc extends Bloc<StartEvent, StartState> {
       ApplicationStarted event, Emitter<StartState> emit) async {
     emit(CheckingAuthentication());
     try {
-      User user = await this.userRepository.profile();
+      User user = await userRepository.profile();
       Application.currentUser = user;
       NotificationsGateway(userRepository: userRepository).init();
       emit(GuestAuthenticatedState(user: user));

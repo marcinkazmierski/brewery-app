@@ -18,7 +18,7 @@ abstract class DetailsInitState extends Equatable {
 class DetailsState extends DetailsInitState {
   final Beer beer;
 
-  DetailsState({required this.beer});
+  const DetailsState({required this.beer});
 
   @override
   List<Object> get props => [beer];
@@ -30,35 +30,35 @@ class DetailsState extends DetailsInitState {
 class DetailsInitialState extends DetailsInitState {}
 
 class DetailsDisplayState extends DetailsState {
-  DetailsDisplayState({required Beer beer}) : super(beer: beer);
+  const DetailsDisplayState({required super.beer});
 
   @override
   String toString() => 'DetailsDisplayState { beer: $beer }';
 }
 
 class AddReviewLoadingState extends DetailsState {
-  AddReviewLoadingState({required Beer beer}) : super(beer: beer);
+  const AddReviewLoadingState({required super.beer});
 
   @override
   String toString() => 'AddReviewLoadingState { beer: $beer }';
 }
 
 class AddedReviewSuccessfulState extends DetailsState {
-  AddedReviewSuccessfulState({required Beer beer}) : super(beer: beer);
+  const AddedReviewSuccessfulState({required super.beer});
 
   @override
   String toString() => 'AddedReviewSuccessfulState { beer: $beer }';
 }
 
 class DeleteReviewLoadingState extends DetailsState {
-  DeleteReviewLoadingState({required Beer beer}) : super(beer: beer);
+  const DeleteReviewLoadingState({required super.beer});
 
   @override
   String toString() => 'DeleteReviewLoadingState { beer: $beer }';
 }
 
 class DeletedReviewSuccessfulState extends DetailsState {
-  DeletedReviewSuccessfulState({required Beer beer}) : super(beer: beer);
+  const DeletedReviewSuccessfulState({required super.beer});
 
   @override
   String toString() => 'DeletedReviewSuccessfulState { beer: $beer }';
@@ -67,8 +67,7 @@ class DeletedReviewSuccessfulState extends DetailsState {
 class DetailsFailureState extends DetailsState {
   final String error;
 
-  DetailsFailureState({required this.error, required Beer beer})
-      : super(beer: beer);
+  const DetailsFailureState({required this.error, required super.beer});
 
   @override
   List<Object> get props => [error, beer];
@@ -99,11 +98,14 @@ class AddNewReviewEvent extends DetailsEvent {
   final String comment;
   final int rating;
 
-  const AddNewReviewEvent(
-      {required this.beer, required this.comment, required this.rating});
+  const AddNewReviewEvent({
+    required this.beer,
+    required this.comment,
+    required this.rating,
+  });
 
   @override
-  List<Object> get props => [this.beer, this.comment, this.rating];
+  List<Object> get props => [beer, comment, rating];
 
   @override
   String toString() =>
@@ -117,7 +119,7 @@ class DeleteReviewEvent extends DetailsEvent {
   const DeleteReviewEvent({required this.beer, required this.review});
 
   @override
-  List<Object> get props => [this.beer, this.review];
+  List<Object> get props => [beer, review];
 
   @override
   String toString() => 'DeleteReviewEvent { beer: $beer, comment: $review }';
