@@ -17,7 +17,8 @@ abstract class ApiRepository {
 
   Future<Map> requestPost(Map input, String uri, [String? authToken]) async {
     var body = json.encode(input);
-
+    log("--------post");
+log(Uri.parse(apiUrl + uri).toString());
     try {
       final Response response = await http
           .post(Uri.parse(apiUrl + uri),
@@ -38,6 +39,9 @@ abstract class ApiRepository {
   }
 
   Future<Map> requestGet(String uri, [String? authToken]) async {
+    log("--------get");
+    log(authToken??"-");
+    log(Uri.parse(apiUrl + uri).toString());
     try {
       final Response response =
           await http.get(Uri.parse(apiUrl + uri), headers: {
@@ -103,6 +107,7 @@ abstract class ApiRepository {
         );
       } catch (error) {
         log(error.toString());
+        log(response.body);
         Sentry.captureException(
           error,
           hint: Hint.withMap({'error': 'Server onError'}),

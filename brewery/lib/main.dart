@@ -31,9 +31,11 @@ Future<void> main() async {
 
   Bloc.observer = SimpleBlocObserver();
   // Initialize Firebase.
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } on UnsupportedError catch (_) {}
 
   // Initialize Sentry.
   await SentryFlutter.init(

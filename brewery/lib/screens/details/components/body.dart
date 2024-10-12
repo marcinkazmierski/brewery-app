@@ -63,7 +63,7 @@ class _BeerDetailsFormState extends State<Body> {
                               ),
                               child: Text(
                                 "Opis stylu",
-                                style: Theme.of(context).textTheme.headline5,
+                                style: Theme.of(context).textTheme.headlineSmall,
                               ),
                             ),
                             Padding(
@@ -83,7 +83,7 @@ class _BeerDetailsFormState extends State<Body> {
                               ),
                               child: Text(
                                 "Chmiele",
-                                style: Theme.of(context).textTheme.headline5,
+                                style: Theme.of(context).textTheme.headlineSmall,
                               ),
                             ),
                             Padding(
@@ -103,7 +103,7 @@ class _BeerDetailsFormState extends State<Body> {
                               ),
                               child: Text(
                                 "Słody",
-                                style: Theme.of(context).textTheme.headline5,
+                                style: Theme.of(context).textTheme.headlineSmall,
                               ),
                             ),
                             Padding(
@@ -124,7 +124,7 @@ class _BeerDetailsFormState extends State<Body> {
                               ),
                               child: Text(
                                 "Recenzje",
-                                style: Theme.of(context).textTheme.headline5,
+                                style: Theme.of(context).textTheme.headlineSmall,
                               ),
                             ),
                             Container(
