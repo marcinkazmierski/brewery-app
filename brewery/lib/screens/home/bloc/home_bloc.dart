@@ -4,7 +4,7 @@ import 'package:brewery/models/beer.dart';
 import 'package:brewery/repositories/beer_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
-import 'package:uni_links/uni_links.dart';
+// import 'package:uni_links/uni_links.dart';
 
 ///STATE
 abstract class HomeState extends Equatable {
@@ -132,16 +132,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       DisplayHomeEvent event, Emitter<HomeState> emit) async {
     emit(HomeLoadingState());
     try {
-      final uri = await getInitialUri();
-      if (uri != null &&
-          uri.queryParameters.containsKey('code') &&
-          this.lastBeerCode != uri.queryParameters['code']!) {
-        log("BEER CODE: " + uri.queryParameters['code']!);
-        await beerRepository.addBeerByCode(uri.queryParameters['code']!);
-        this.lastBeerCode = uri.queryParameters['code']!;
-        emit(AddedBeerSuccessfulState());
-        return;
-      }
+      // final uri = await getInitialUri();
+      // if (uri != null &&
+      //     uri.queryParameters.containsKey('code') &&
+      //     this.lastBeerCode != uri.queryParameters['code']!) {
+      //   log("BEER CODE: " + uri.queryParameters['code']!);
+      //   await beerRepository.addBeerByCode(uri.queryParameters['code']!);
+      //   this.lastBeerCode = uri.queryParameters['code']!;
+      //   emit(AddedBeerSuccessfulState());
+      //   return;
+      // }
     } catch (error) {
       // yield HomeFailureState(error: error.toString());
     }
