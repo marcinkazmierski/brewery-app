@@ -4,14 +4,13 @@ import 'package:brewery/common/constants.dart';
 import 'package:brewery/components/fade_animation.dart';
 import 'package:brewery/screens/home/bloc/home_bloc.dart';
 import 'package:brewery/screens/home/components/beer_card_shimmer.dart';
+import 'package:brewery/screens/home/components/qr_viewer.dart';
 import 'package:brewery/screens/home/popup_menu_options.dart';
 import 'package:flutter/material.dart';
 import 'package:brewery/constants.dart';
 import 'package:flutter/services.dart';
 import 'beer_carousel.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -19,29 +18,24 @@ class Body extends StatefulWidget {
 }
 
 class _BeerListFormState extends State<Body> {
-  void scanBarcodeNormal(BuildContext context) {
-    // Either the permission was already granted before or the user just granted it.
-    Permission.camera.request().isGranted.then((value) {
-      if (value) {
-        // FlutterBarcodeScanner.scanBarcode(
-        //         "#ff6666", "Anuluj", true, ScanMode.QR)
-        //     .then((barcodeScanRes) {
-        //   final uri = Uri.parse(barcodeScanRes);
-        //
-        //   if (uri.queryParameters.containsKey('code')) {
-        //     log("BEER CODE: ${uri.queryParameters['code']!}");
-        //
-        //     BlocProvider.of<HomeBloc>(context).add(
-        //       AddNewBeerEvent(
-        //         code: uri.queryParameters['code']!,
-        //       ),
-        //     );
-        //   }
-        // });
-      } else {
-        log("Camera permission is denied.");
-      }
-    });
+  Future<void> scanBarcodeNormal(BuildContext context) async {
+    final barcodeScanRes = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => QRViewScreen(),
+      ),
+    );
+
+    final uri = Uri.parse(barcodeScanRes);
+    if (uri.queryParameters.containsKey('code')) {
+      log("BEER CODE: ${uri.queryParameters['code']!}");
+
+      BlocProvider.of<HomeBloc>(context).add(
+        AddNewBeerEvent(
+          code: uri.queryParameters['code']!,
+        ),
+      );
+    }
   }
 
   AppBar buildAppBar(BuildContext context) {
