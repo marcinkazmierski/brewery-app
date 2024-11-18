@@ -121,10 +121,11 @@ class _BeerListFormState extends State<Body> {
             extendBodyBehindAppBar: true,
             appBar: buildAppBar(context),
             body: Center(
-              child: SingleChildScrollView(
+
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
+                  const SizedBox(height: 64),
                   const FadeAnimation(
                       2,
                       Center(
@@ -135,14 +136,15 @@ class _BeerListFormState extends State<Body> {
                       )),
                   const SizedBox(height: kDefaultPadding),
                   state is HomeLoadedState
-                      ? BeerCarousel(
-                          beers: state.beers,
-                          activeBeer: state.activeBeer,
-                        )
+                      ? Expanded(child: BeerCarousel(
+                    beers: state.beers,
+                    activeBeer: state.activeBeer,
+                  ))
                       : const BeerCardShimmer(),
+                  const SizedBox(height: 32),
                 ],
               )),
-            ),
+
             floatingActionButton: FloatingActionButton(
               backgroundColor: Colors.red,
               onPressed: () => scanBarcodeNormal(context),

@@ -50,20 +50,17 @@ class _BeerCarouselState extends State<BeerCarousel> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
-      child: AspectRatio(
-        aspectRatio: 0.85,
-        child: PageView.builder(
-          onPageChanged: (value) {
-            setState(() {
-              initialPage = value;
-            });
-          },
-          controller: _pageController,
-          physics: const ClampingScrollPhysics(),
-          itemCount: widget.beers.length,
-          // we have 3 demo beers
-          itemBuilder: (context, index) => buildBeerSlider(index),
-        ),
+      child: PageView.builder(
+        onPageChanged: (value) {
+          setState(() {
+            initialPage = value;
+          });
+        },
+        controller: _pageController,
+        physics: const ClampingScrollPhysics(),
+        itemCount: widget.beers.length,
+        // we have 3 demo beers
+        itemBuilder: (context, index) => buildBeerSlider(index),
       ),
     );
   }

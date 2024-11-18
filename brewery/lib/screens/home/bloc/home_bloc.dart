@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:app_links/app_links.dart';
+import 'package:brewery/gateways/local_storage_gateway.dart';
 import 'package:brewery/models/beer.dart';
 import 'package:brewery/repositories/beer_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -101,9 +102,10 @@ class AddNewBeerEvent extends HomeEvent {
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   BeerRepository beerRepository;
   List<Beer> beers = []; //todo: cache
-  String lastBeerCode = "";
+  LocalStorageGateway localStorageGateway;
 
-  HomeBloc({required this.beerRepository}) : super(HomeInitialState()) {
+  HomeBloc({required this.beerRepository, required this.localStorageGateway})
+      : super(HomeInitialState()) {
     log(">>>> HomeBloc START");
     on<DisplayScannerEvent>(_onDisplayScannerEvent);
     on<AddNewBeerEvent>(_onAddNewBeerEvent);
@@ -137,10 +139,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       if (uri != null &&
           uri.queryParameters.containsKey('code') &&
-          this.lastBeerCode != uri.queryParameters['code']!) {
+          await localStorageGateway.getLastBeerCode() !=
+              uri.queryParameters['code']!) {
         log("BEER CODE: " + uri.queryParameters['code']!);
+        await localStorageGateway.setLastBeerCode(uri.queryParameters['code']!);
         await beerRepository.addBeerByCode(uri.queryParameters['code']!);
-        this.lastBeerCode = uri.queryParameters['code']!;
         emit(AddedBeerSuccessfulState());
         return;
       }

@@ -45,24 +45,30 @@ Future<void> main() async {
       // We recommend adjusting this value in production.
       options.tracesSampleRate = 1.0;
     },
-    appRunner: () => runApp(MyApp(
+    appRunner: () => runApp(
+      MyApp(
         beerRepository: ApiBeerRepository(
             apiUrl: dotenv.env['API_URL'].toString(),
             localStorageGateway: localStorageGateway),
         userRepository: ApiUserRepository(
             apiUrl: dotenv.env['API_URL'].toString(),
-            localStorageGateway: localStorageGateway))),
+            localStorageGateway: localStorageGateway),
+        localStorageGateway: localStorageGateway,
+      ),
+    ),
   );
 }
 
 class MyApp extends StatelessWidget {
   BeerRepository beerRepository;
   UserRepository userRepository;
+  LocalStorageGateway localStorageGateway;
 
   MyApp({
     super.key,
     required this.beerRepository,
     required this.userRepository,
+    required this.localStorageGateway,
   });
 
   @override
@@ -163,8 +169,10 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<HomeBloc>(
-          create: (context) => HomeBloc(beerRepository: beerRepository)
-            ..add(DisplayHomeEvent(activeBeer: beer)),
+          create: (context) => HomeBloc(
+            beerRepository: beerRepository,
+            localStorageGateway: localStorageGateway,
+          )..add(DisplayHomeEvent(activeBeer: beer)),
         ),
       ],
       child: HomeScreen(),

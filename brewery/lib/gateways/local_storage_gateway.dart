@@ -5,6 +5,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LocalStorageGateway {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
+  Future<bool> setLastBeerCode(String code) async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.setString("lastBeerCode", code).then((bool success) {
+      return success;
+    });
+  }
+
+  Future<String> getLastBeerCode() async {
+    final SharedPreferences prefs = await _prefs;
+    String code = prefs.getString("lastBeerCode") ?? "";
+    return code;
+  }
+
   Future<bool> setCurrentUserAuthToken(String token) async {
     final SharedPreferences prefs = await _prefs;
     return prefs.setString("X-AUTH-TOKEN", token).then((bool success) {
