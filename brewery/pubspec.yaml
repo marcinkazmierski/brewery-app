@@ -40,8 +40,6 @@ dependencies:
   package_info_plus: ^8.1.0
   sentry_flutter: ^8.9.0
   cached_network_image: ^3.3.0
-  permission_handler: ^11.0.1
-  # todo: deprecated: uni_links: ^0.5.1 - https://medium.com/@ronakofficial/deep-links-in-flutter-a-comprehensive-guide-without-firebase-1fdf471174d0
   shared_preferences: ^2.2.2
   flutter_dotenv: ^5.1.0
   loading_overlay: ^0.4.2
@@ -55,6 +53,7 @@ dependencies:
   flutter_svg: ^2.0.7
   shimmer: ^3.0.0
   qr_code_scanner_plus: ^2.0.6  # todo: deprecated: flutter_barcode_scanner: ^2.0.0 - https://pub.dev/packages/flutter_barcode_scanner
+  app_links: ^6.3.2
 
 dev_dependencies:
   flutter_test:
