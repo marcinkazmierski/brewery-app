@@ -136,9 +136,8 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
       Emitter<ResetPasswordState> emit) async {
     try {
       emit(ResetPasswordLoading());
-      bool result = await this
-          .userRepository
-          .resetPasswordConfirm(event.email, event.code, event.password);
+      bool result = await userRepository.resetPasswordConfirm(
+          event.email, event.code, event.password);
       emit(PasswordChanged());
     } catch (error) {
       emit(ResetPasswordSetNewPasswordFailureState(error: error.toString()));
@@ -154,6 +153,6 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
   void _onDisplayedResetPasswordSetNewPasswordErrorEvent(
       DisplayedResetPasswordSetNewPasswordErrorEvent event,
       Emitter<ResetPasswordState> emit) {
-    emit(ResetCodeSent(showToast: false));
+    emit(const ResetCodeSent(showToast: false));
   }
 }

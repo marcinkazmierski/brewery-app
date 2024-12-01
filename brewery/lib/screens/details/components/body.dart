@@ -19,20 +19,20 @@ class _BeerDetailsFormState extends State<Body> {
       listener: (context, state) {
         if (state is DetailsFailureState) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('${state.error}'),
+            content: Text(state.error),
             backgroundColor: Colors.redAccent,
           ));
           BlocProvider.of<DetailsBloc>(context)
               .add(DisplayDetailsEvent(beer: state.beer));
         } else if (state is AddedReviewSuccessfulState) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('Dzięki za Twoją ocenę!'),
             backgroundColor: Colors.green,
           ));
           BlocProvider.of<DetailsBloc>(context)
               .add(DisplayDetailsEvent(beer: state.beer));
         } else if (state is DeletedReviewSuccessfulState) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('Usunięto recenzję pomyślnie!'),
             backgroundColor: Colors.green,
           ));
@@ -53,17 +53,17 @@ class _BeerDetailsFormState extends State<Body> {
                             BackdropAndRating(
                                 size: MediaQuery.of(context).size,
                                 beer: state.beer),
-                            SizedBox(height: kDefaultPadding / 2),
+                            const SizedBox(height: kDefaultPadding / 2),
                             TitleDurationAndFabBtn(beer: state.beer),
                             Tags(beer: state.beer),
                             Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                 vertical: kDefaultPadding / 2,
                                 horizontal: kDefaultPadding,
                               ),
                               child: Text(
                                 "Opis stylu",
-                                style: Theme.of(context).textTheme.headline5,
+                                style: Theme.of(context).textTheme.headlineSmall,
                               ),
                             ),
                             Padding(
@@ -71,19 +71,19 @@ class _BeerDetailsFormState extends State<Body> {
                                   horizontal: kDefaultPadding),
                               child: Text(
                                 state.beer.description,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: kDescriptionColor,
                                 ),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                 vertical: kDefaultPadding / 2,
                                 horizontal: kDefaultPadding,
                               ),
                               child: Text(
                                 "Chmiele",
-                                style: Theme.of(context).textTheme.headline5,
+                                style: Theme.of(context).textTheme.headlineSmall,
                               ),
                             ),
                             Padding(
@@ -91,19 +91,19 @@ class _BeerDetailsFormState extends State<Body> {
                                   horizontal: kDefaultPadding),
                               child: Text(
                                 state.beer.hops,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: kDescriptionColor,
                                 ),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                 vertical: kDefaultPadding / 2,
                                 horizontal: kDefaultPadding,
                               ),
                               child: Text(
                                 "Słody",
-                                style: Theme.of(context).textTheme.headline5,
+                                style: Theme.of(context).textTheme.headlineSmall,
                               ),
                             ),
                             Padding(
@@ -111,31 +111,31 @@ class _BeerDetailsFormState extends State<Body> {
                                   horizontal: kDefaultPadding),
                               child: Text(
                                 state.beer.malts,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: kDescriptionColor,
                                 ),
                               ),
                             ),
-                            SizedBox(height: kDefaultPadding),
+                            const SizedBox(height: kDefaultPadding),
                             Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                 vertical: kDefaultPadding / 2,
                                 horizontal: kDefaultPadding,
                               ),
                               child: Text(
                                 "Recenzje",
-                                style: Theme.of(context).textTheme.headline5,
+                                style: Theme.of(context).textTheme.headlineSmall,
                               ),
                             ),
                             Container(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                 horizontal: kDefaultPadding,
                               ),
                               child: ReviewsList(beer: state.beer),
                             ),
                           ],
                         )
-                      : CircularProgressIndicator(),
+                      : const CircularProgressIndicator(),
                 ),
               ));
         },

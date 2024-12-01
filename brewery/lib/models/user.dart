@@ -1,5 +1,4 @@
 import 'package:brewery/models/beer.dart';
-import 'package:meta/meta.dart';
 
 class User {
   final int id;

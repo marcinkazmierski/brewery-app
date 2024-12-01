@@ -38,7 +38,7 @@ class Beer {
       icon: item['beerIcon'],
       backgroundImage: item['beerBackgroundImage'],
       rating: double.parse(item['beerRating'].toString()),
-      tags: new List<String>.from(item['beerTags']),
+      tags: List<String>.from(item['beerTags']),
       description: item['beerDescription'],
       hops: item['beerHops'],
       malts: item['beerMalts'],

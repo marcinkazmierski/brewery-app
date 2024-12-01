@@ -23,7 +23,7 @@ class TitleDurationAndFabBtn extends StatelessWidget {
               children: <Widget>[
                 Text(
                   beer.name,
-                  style: Theme.of(context).textTheme.headline5,
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 SizedBox(height: kDefaultPadding / 2),
                 Text(

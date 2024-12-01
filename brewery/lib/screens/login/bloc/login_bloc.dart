@@ -28,7 +28,7 @@ class AuthenticationAuthenticated extends LoginState {}
 class UserAuthenticatedState extends LoginState {
   final User user;
 
-  UserAuthenticatedState({required this.user});
+  const UserAuthenticatedState({required this.user});
 
   @override
   List<Object> get props => [user];
@@ -77,7 +77,7 @@ class LoginButtonPressedEvent extends LoginEvent {
   });
 
   @override
-  List<Object> get props => [this.email, this.password];
+  List<Object> get props => [email, password];
 
   @override
   String toString() =>
@@ -107,7 +107,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Future<void> _onLogoutEvent(
       LogoutEvent event, Emitter<LoginState> emit) async {
-    await this.userRepository.logout();
+    await userRepository.logout();
     emit(LoggedOutState());
   }
 
@@ -115,9 +115,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       LoginButtonPressedEvent event, Emitter<LoginState> emit) async {
     emit(LoginLoading());
     try {
-      User user = await this.userRepository.login(event.email, event.password);
+      User user = await userRepository.login(event.email, event.password);
       Application.currentUser = user;
-      NotificationsGateway(userRepository: userRepository)..init();
+      NotificationsGateway(userRepository: userRepository).init();
       emit(UserAuthenticatedState(user: user));
     } catch (error) {
       emit(LoginCreateFailureState(error: error.toString()));

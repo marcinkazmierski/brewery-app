@@ -89,7 +89,7 @@ class ReviewsList extends StatelessWidget {
           trailing: (this.beer.userBeerReview != null &&
                   review.id == this.beer.userBeerReview!.id)
               ? IconButton(
-                  icon: new Icon(Icons.delete_forever, color: Colors.red),
+                  icon: Icon(Icons.delete_forever, color: Colors.red),
                   tooltip: 'Delete your review',
                   onPressed: () {
                     showAlertDialog(context);

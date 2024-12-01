@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:app_links/app_links.dart';
+import 'package:brewery/gateways/local_storage_gateway.dart';
 import 'package:brewery/models/beer.dart';
 import 'package:brewery/repositories/beer_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
-import 'package:uni_links/uni_links.dart';
 
 ///STATE
 abstract class HomeState extends Equatable {
@@ -101,9 +102,10 @@ class AddNewBeerEvent extends HomeEvent {
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   BeerRepository beerRepository;
   List<Beer> beers = []; //todo: cache
-  String lastBeerCode = "";
+  LocalStorageGateway localStorageGateway;
 
-  HomeBloc({required this.beerRepository}) : super(HomeInitialState()) {
+  HomeBloc({required this.beerRepository, required this.localStorageGateway})
+      : super(HomeInitialState()) {
     log(">>>> HomeBloc START");
     on<DisplayScannerEvent>(_onDisplayScannerEvent);
     on<AddNewBeerEvent>(_onAddNewBeerEvent);
@@ -117,13 +119,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> _onAddNewBeerEvent(
       AddNewBeerEvent event, Emitter<HomeState> emit) async {
+    emit(HomeLoadingState());
     String code = event.code;
     try {
       await beerRepository.addBeerByCode(code);
       emit(AddedBeerSuccessfulState());
     } catch (error) {
       emit(HomeFailureState(error: error.toString()));
-      emit(HomeLoadedState(beers: this.beers));
+      emit(HomeLoadedState(beers: beers));
     }
   }
 
@@ -131,18 +134,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       DisplayHomeEvent event, Emitter<HomeState> emit) async {
     emit(HomeLoadingState());
     try {
-      final uri = await getInitialUri();
+      final appLinks = AppLinks();
+      final uri = await appLinks.getInitialLink();
+
       if (uri != null &&
           uri.queryParameters.containsKey('code') &&
-          this.lastBeerCode != uri.queryParameters['code']!) {
+          await localStorageGateway.getLastBeerCode() !=
+              uri.queryParameters['code']!) {
         log("BEER CODE: " + uri.queryParameters['code']!);
+        await localStorageGateway.setLastBeerCode(uri.queryParameters['code']!);
         await beerRepository.addBeerByCode(uri.queryParameters['code']!);
-        this.lastBeerCode = uri.queryParameters['code']!;
         emit(AddedBeerSuccessfulState());
         return;
       }
     } catch (error) {
-      // yield HomeFailureState(error: error.toString());
+      emit(HomeFailureState(error: error.toString()));
     }
     try {
       this.beers = await this.beerRepository.getBeers();

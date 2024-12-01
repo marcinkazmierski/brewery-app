@@ -7,11 +7,11 @@ class PressDoubleBackToClose extends StatefulWidget {
   final int waitForSecondBackPress;
 
   const PressDoubleBackToClose({
-    Key? key,
+    super.key,
     required this.child,
     this.message = "Press back again to exit",
     this.waitForSecondBackPress = 2,
-  }) : super(key: key);
+  });
 
   @override
   _DoubleBackState createState() => _DoubleBackState();
@@ -23,8 +23,9 @@ class _DoubleBackState extends State<PressDoubleBackToClose> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
         DateTime now = DateTime.now();
         if (currentBackPressTime == null ||
             now.difference(currentBackPressTime!) >
@@ -35,10 +36,9 @@ class _DoubleBackState extends State<PressDoubleBackToClose> {
             backgroundColor: Colors.blueGrey,
             duration: Duration(seconds: widget.waitForSecondBackPress),
           ));
-          return false;
+          return;
         }
         SystemNavigator.pop();
-        return true;
       },
       child: widget.child,
     );

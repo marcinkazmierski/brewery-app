@@ -49,21 +49,18 @@ class _BeerCarouselState extends State<BeerCarousel> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: kDefaultPadding),
-      child: AspectRatio(
-        aspectRatio: 0.85,
-        child: PageView.builder(
-          onPageChanged: (value) {
-            setState(() {
-              initialPage = value;
-            });
-          },
-          controller: _pageController,
-          physics: ClampingScrollPhysics(),
-          itemCount: widget.beers.length,
-          // we have 3 demo beers
-          itemBuilder: (context, index) => buildBeerSlider(index),
-        ),
+      padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
+      child: PageView.builder(
+        onPageChanged: (value) {
+          setState(() {
+            initialPage = value;
+          });
+        },
+        controller: _pageController,
+        physics: const ClampingScrollPhysics(),
+        itemCount: widget.beers.length,
+        // we have 3 demo beers
+        itemBuilder: (context, index) => buildBeerSlider(index),
       ),
     );
   }
@@ -82,7 +79,7 @@ class _BeerCarouselState extends State<BeerCarousel> {
           value = (value * 0.038).clamp(-1, 1);
 
           return AnimatedOpacity(
-            duration: Duration(milliseconds: 350),
+            duration: const Duration(milliseconds: 350),
             opacity: initialPage == index ? 0.9 : 0.4,
             child: Transform.rotate(
               angle: math.pi * value,

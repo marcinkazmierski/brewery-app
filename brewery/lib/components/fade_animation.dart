@@ -7,7 +7,7 @@ class FadeAnimation extends StatelessWidget {
   final double delay;
   final Widget child;
 
-  FadeAnimation(this.delay, this.child);
+  const FadeAnimation(this.delay, this.child, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class FadeAnimation extends StatelessWidget {
         delay: Duration(milliseconds: (500 * delay).round()),
         duration: tween.duration,
         tween: tween,
-        child: this.child,
+        child: child,
         builder: (BuildContext context, Movie value, Widget? child) {
           return Opacity(
               opacity: value.get(AniProps.opacity),

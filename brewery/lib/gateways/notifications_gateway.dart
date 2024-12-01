@@ -25,15 +25,15 @@ class NotificationsGateway {
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
-      print('Message ID: ${message.messageId}');
-      print('Message messageType: ${message.messageType}');
+      log('Got a message whilst in the foreground!');
+      log('Message data: ${message.data}');
+      log('Message ID: ${message.messageId}');
+      log('Message messageType: ${message.messageType}');
 
       if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
-        print('Message notification title: ${message.notification!.title}');
-        print('Message notification body: ${message.notification!.body}');
+        log('Message also contained a notification: ${message.notification}');
+        log('Message notification title: ${message.notification!.title}');
+        log('Message notification body: ${message.notification!.body}');
       }
     });
   }
